@@ -1,0 +1,22 @@
+<resources>
+    <string name="app_name">Library</string>
+    <string name="app_name_v">Library</string>
+    <string name="exit_app">再按一次退出程序</string>
+
+    <string name="statefulLayoutErrorButton">重新加载</string>
+
+    <string name="statefulLayoutEmptyTitlePlaceholder">暂无内容</string>
+    <string name="statefulLayoutEmptyContentPlaceholder"></string>
+    <string name="statefulLayoutErrorTitlePlaceholder">似乎出了点问题...</string>
+    <string name="statefulLayoutErrorContentPlaceholder"></string>
+
+    <!--通用-->
+    <string name="error_overtime">连接超时</string>
+    <string name="error_network">网络异常</string>
+    <string name="error_permission">权限错误</string>
+    <string name="error_parse">解析异常</string>
+    <string name="error_unknow">未知的错误</string>
+    <string name="error_connect">无法连接到服务器，请检查网络</string>
+    <string name="universal_empty">暂无更多内容</string>
+
+</resources>
