@@ -101,4 +101,8 @@ dependencies {
     compile "com.daimajia.swipelayout:library:1.2.0@aar"
     //处理常用的编码方法的工具类包
     compile 'commons-codec:commons-codec:1.10'
+    //下拉刷新
+    compile 'com.scwang.smartrefresh:SmartRefreshLayout:1.1.0-alpha-5'
+    //banner
+    compile 'com.youth.banner:banner:1.4.10'
 }

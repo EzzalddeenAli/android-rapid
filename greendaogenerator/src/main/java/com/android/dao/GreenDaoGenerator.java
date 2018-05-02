@@ -59,5 +59,4 @@ public class GreenDaoGenerator {
         note.addIntProperty("searchType").notNull();
     }
 
-
 }

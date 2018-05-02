@@ -8,6 +8,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 
+import com.android.frameproj.library.dialog.LoadingDialog;
 import com.android.frameproj.library.util.ToastUtil;
 import com.google.gson.JsonParseException;
 import com.gyf.barlibrary.ImmersionBar;
@@ -34,7 +35,6 @@ import butterknife.ButterKnife;
 import me.yokeyword.fragmentation.SupportActivity;
 import retrofit2.HttpException;
 
-
 /**
  * Created by WE-WIN-027 on 2016/9/27.
  *
@@ -48,6 +48,7 @@ public abstract class BaseActivity extends SupportActivity {
     SPUtil mSPUtil;
     @Inject
     UserStorage mUserStorage;
+    private LoadingDialog mLoadingDialog;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -186,13 +187,31 @@ public abstract class BaseActivity extends SupportActivity {
             ToastUtil.showToast(getResources().getString(R.string.error_parse));
         } else if (throwable instanceof UnknownHostException) {
             ToastUtil.showToast(getResources().getString(R.string.error_network));
-        } else if (throwable instanceof SocketTimeoutException) {    //超时
+        } else if (throwable instanceof SocketTimeoutException) {
             //            ToastUtil.showToast(getResources().getString(R.string.error_overtime));
         } else if (throwable instanceof ConnectException) {
             ToastUtil.showToast(getResources().getString(R.string.error_connect));
         } else {
             //            ToastUtil.showToast(getResources().getString(R.string.error_unknow));
         }
+    }
+
+    public void showLoading() {
+        mLoadingDialog = LoadingDialog.show(BaseActivity.this, "");
+    }
+
+    public void hideLoading() {
+        if (mLoadingDialog != null && mLoadingDialog.isShowing()) {
+            mLoadingDialog.dismiss();
+        }
+    }
+
+    public void showError(String error) {
+        ToastUtil.showToast(error);
+    }
+
+    public void onError(Throwable throwable) {
+        loadError(throwable);
     }
 
 }

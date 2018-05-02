@@ -2,7 +2,9 @@ package com.lh.rapid.api.common;
 
 import com.lh.rapid.bean.HttpResult;
 import com.lh.rapid.bean.LoginEntity;
+
 import java.util.Map;
+
 import io.reactivex.Observable;
 import okhttp3.ResponseBody;
 import retrofit2.http.Field;
@@ -25,6 +27,9 @@ public interface CommonService {
                                               @Field("osVersion") String osVersion,
                                               @Field("deviceModel") String deviceModel, @Field("log") String log);
 
+    @GET("https://slb.api.myhaving.com/static/app/maiyiAppVer.xml")
+    Observable<ResponseBody> maiyiAppVer();
+
     //登录
     @FormUrlEncoded
     @POST("account/login/normal")
@@ -37,7 +42,17 @@ public interface CommonService {
     Observable<HttpResult<LoginEntity>> register(@Header("timestamp") long timestamp, @Header("sign") String sign,
                                                  @FieldMap Map<String, Object> params);
 
-    @GET("https://slb.api.myhaving.com/static/app/maiyiAppVer.xml")
-    Observable<ResponseBody> maiyiAppVer();
+    //发送短信验证码
+    @FormUrlEncoded
+    @POST("common/smscode/send")
+    Observable<HttpResult<String>> smsCodeSend(@Header("timestamp") long timestamp, @Header("sign") String sign,
+                                               @FieldMap Map<String, Object> params);
+
+    //重置密码
+    @FormUrlEncoded
+    @POST("account/password/reset")
+    Observable<HttpResult<String>> accountPasswordReset(@Header("timestamp") long timestamp, @Header("sign") String sign,
+                                                        @Header("token") String token, @FieldMap Map<String, Object> params);
+
 
 }

@@ -1,14 +1,17 @@
 package com.lh.rapid.api.common;
 
 import android.content.Context;
+
 import com.lh.rapid.Constants;
 import com.lh.rapid.bean.HttpResult;
 import com.lh.rapid.bean.LoginEntity;
 import com.lh.rapid.components.retrofit.RequestHelper;
 import com.lh.rapid.components.storage.UserStorage;
 import com.lh.rapid.util.SPUtil;
+
 import java.io.File;
 import java.util.Map;
+
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
@@ -123,6 +126,22 @@ public class CommonApi {
     // =======================================  API
 
     /**
+     * 日志上传
+     */
+    public Observable<ResponseBody> uploadErrorFiles(String appId, String deviceType,
+                                                     String osVersion, String deviceModel, String log) {
+        return mCommonService.uploadErrorFiles(appId, deviceType, osVersion, deviceModel, log).subscribeOn(Schedulers.io());
+    }
+
+    /**
+     * 版本更新
+     */
+    public Observable<ResponseBody> maiyiAppVer() {
+        return mCommonService.maiyiAppVer().subscribeOn(Schedulers.io());
+    }
+
+
+    /**
      * 登录
      */
     public Observable<HttpResult<LoginEntity>> loginNormal(String username, String password) {
@@ -137,18 +156,43 @@ public class CommonApi {
     }
 
     /**
-     * 日志上传
+     * 注册
      */
-    public Observable<ResponseBody> uploadErrorFiles(String appId, String deviceType,
-                                                     String osVersion, String deviceModel, String log) {
-        return mCommonService.uploadErrorFiles(appId, deviceType, osVersion, deviceModel, log).subscribeOn(Schedulers.io());
+    public Observable<HttpResult<LoginEntity>> register(String phone, String validate, String password) {
+        long currentTimeMillis = System.currentTimeMillis();
+        Map<String, Object> params = mRequestHelper.getHttpRequestMap(currentTimeMillis);
+        params.put("mobile", phone);
+        params.put("password", password);
+        params.put("smsCode", validate);
+        params.put("source", Constants.APPTYPE);
+        params.put("pushId", mSpUtil.getREGISTRATIONID());
+        String sign = mRequestHelper.getRequestSign(params, currentTimeMillis);
+        return mCommonService.register(currentTimeMillis, sign, params).subscribeOn(Schedulers.io());
     }
 
     /**
-     * 版本更新
+     * 发送短信验证码
      */
-    public Observable<ResponseBody> maiyiAppVer() {
-        return mCommonService.maiyiAppVer().subscribeOn(Schedulers.io());
+    public Observable<HttpResult<String>> smsCodeSend(String mobile, int type) {
+        long currentTimeMillis = System.currentTimeMillis();
+        Map<String, Object> params = mRequestHelper.getHttpRequestMap(currentTimeMillis);
+        params.put("mobile", mobile);
+        params.put("type", type); // 1.注册，2.登录，3.修改密码
+        String sign = mRequestHelper.getRequestSign(params, currentTimeMillis);
+        return mCommonService.smsCodeSend(currentTimeMillis, sign, params).subscribeOn(Schedulers.io());
+    }
+
+    /**
+     * 重置密码
+     */
+    public Observable<HttpResult<String>> accountPasswordReset(String mobile, String authCode, String newPassword) {
+        long currentTimeMillis = System.currentTimeMillis();
+        Map<String, Object> params = mRequestHelper.getHttpRequestMap(currentTimeMillis);
+        params.put("mobile", mobile);
+        params.put("authCode", authCode);
+        params.put("newPassword", newPassword);
+        String sign = mRequestHelper.getRequestSign(params, currentTimeMillis);
+        return mCommonService.accountPasswordReset(currentTimeMillis, sign, mUserStorage.getToken(), params).subscribeOn(Schedulers.io());
     }
 
 }

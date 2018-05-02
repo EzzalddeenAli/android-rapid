@@ -53,6 +53,7 @@
     <color name="z000000">#000000</color>
     <color name="z454545">#3b3b3b</color>
     <color name="zd7d7d7">#d7d7d7</color>
+    <color name="h33aaff">#33aaff</color>
 
 
 
@@ -64,5 +65,35 @@
     <color name="black_87_percent">#de000000</color>
 
     <color name="im_font_color_text_hint">#abb1b6</color>
+
+    <!-- 主要颜色 -->
+    <!-- 用于主色调、按钮色、醒目标注 -->
+    <color name="library_red">#e31414</color>
+    <!-- 用于主色调、按钮色、醒目标注 -->
+    <color name="libraryk_white">#ffffff</color>
+    <!-- 用于间隙、部分背景色（秒杀） -->
+    <color name="library_grey_f1">#f1f1f1</color>
+    <!-- 分割线、部分背景色 -->
+    <color name="library_grey_df">#dfdfdf</color>
+
+    <!-- 文字色 -->
+    <!-- 大标题文字色 -->
+    <color name="library_text_color_3">#333333</color>
+    <!-- 副标题、段落文字色 -->
+    <color name="library_text_color_6">#666666</color>
+    <!-- 注释 -->
+    <color name="library_text_color_9">#999999</color>
+
+    <!-- 辅助色 -->
+    <!-- 大标题文字色 -->
+    <color name="library_support_color_yellow">#ffb80d</color>
+    <!-- 副标题、段落文字色 -->
+    <color name="library_support_color_blue">#7ecef4</color>
+    <!-- 注释 -->
+    <color name="library_support_color_red">#f95047</color>
+    <!-- 大标题文字色 -->
+    <color name="library_support_color_purple">#9b72f4</color>
+    <!-- 副标题、段落文字色 -->
+    <color name="library_support_color_green">#16ceb2</color>
 
 </resources>
