@@ -202,7 +202,7 @@
                 </RelativeLayout>
 
                 <View
-                    style="@style/line_05_f1"/>
+                    style="@style/line_05_f1_16"/>
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -301,7 +301,7 @@
             </RelativeLayout>
 
             <View
-                style="@style/line_05_f1"/>
+                style="@style/line_05_f1_16"/>
 
             <RelativeLayout
                 android:id="@+id/my_share"
@@ -339,7 +339,7 @@
             </RelativeLayout>
 
             <View
-                style="@style/line_05_f1"/>
+                style="@style/line_05_f1_16"/>
 
             <RelativeLayout
                 android:id="@+id/about_me"

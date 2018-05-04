@@ -1,32 +1,82 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
               android:layout_width="match_parent"
-              android:layout_height="match_parent">
+              android:layout_height="match_parent"
+              android:orientation="vertical">
 
     <include
         layout="@layout/title_normal"/>
 
-    <EditText
+    <com.android.frameproj.library.widget.ShapeEditText
         android:id="@+id/et_username"
+        app:btnColor="@color/library_text_color_6"
+        app:radius="1.5dp"
+        app:stroke="0.2dp"
+        android:layout_marginTop="59dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="40dp"
+        android:paddingLeft="12dp"
+        android:hint="请输入手机号"/>
 
-    <EditText
-        android:id="@+id/et_password"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="40dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp">
 
-    <Button
-        android:id="@+id/btn_login"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="确认"/>
+        <com.android.frameproj.library.widget.ShapeEditText
+            android:id="@+id/et_password"
+            app:btnColor="@color/library_text_color_6"
+            app:radius="1.5dp"
+            app:stroke="0.2dp"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:paddingLeft="12dp"
+            android:hint="请输入验证码"/>
+
+        <com.android.frameproj.library.widget.ShapeButton
+            android:id="@+id/btn_get_code"
+            android:layout_width="84dp"
+            android:layout_height="24dp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="20dp"
+            android:textColor="@color/white"
+            app:btnColor="@color/g409c1d"
+            app:radius="1.5dp"
+            app:stroke="0dp"
+            android:background="@color/g409c1d"
+            android:text="获取验证码"
+            android:textSize="14sp"/>
+
+    </RelativeLayout>
 
     <Button
         android:id="@+id/btn_register"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="新用户注册"/>
+        android:text="新用户注册"
+        android:textColor="#409c1d"
+        android:layout_marginTop="12dp"
+        android:layout_marginLeft="30dp"
+        android:background="@null"/>
+
+    <com.android.frameproj.library.widget.ShapeButton
+        android:id="@+id/btn_login"
+        android:layout_width="140dp"
+        android:layout_height="34dp"
+        android:layout_marginTop="40dp"
+        android:textColor="@color/white"
+        app:btnColor="@color/g409c1d"
+        app:radius="1.5dp"
+        app:stroke="0dp"
+        android:background="@color/g409c1d"
+        android:text="确认"
+        android:textSize="16sp"
+        android:layout_gravity="center_horizontal"/>
 
 </LinearLayout>

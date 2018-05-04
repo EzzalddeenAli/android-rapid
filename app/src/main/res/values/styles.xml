@@ -8,31 +8,6 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
-    <style name="line_05_f1">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">0.5dp</item>
-        <item name="android:layout_marginLeft">16dp</item>
-        <item name="android:background">@color/library_grey_f1</item>
-    </style>
-
-    <style name="line_05_f1_v">
-        <item name="android:layout_width">0.5dp</item>
-        <item name="android:layout_height">match_parent</item>
-        <item name="android:background">@color/library_grey_f1</item>
-    </style>
-
-    <style name="line_10_f1">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">10dp</item>
-        <item name="android:background">@color/library_grey_f1</item>
-    </style>
-
-    <style name="line_42_f1">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">42dp</item>
-        <item name="android:background">@color/library_grey_f1</item>
-    </style>
-
     <style name="rl_user_center">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">48dp</item>
@@ -85,6 +60,25 @@
         <item name="android:layout_marginTop">5dp</item>
         <item name="android:textSize">12sp</item>
         <item name="android:layout_gravity">center_horizontal</item>
+    </style>
+
+    <style name="rl_order_detail">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">30dp</item>
+    </style>
+
+    <style name="tv_order_detail">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_centerVertical">true</item>
+        <item name="android:layout_marginLeft">15dp</item>
+    </style>
+
+    <style name="tv_order_detail_2">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_centerVertical">true</item>
+        <item name="android:layout_marginLeft">80dp</item>
     </style>
 
 </resources>

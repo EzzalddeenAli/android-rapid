@@ -136,4 +136,48 @@
         <item name="android:windowContentOverlay">@null</item>
     </style>
 
+    <declare-styleable name="ShapeButton">
+        <attr name="btnColor" format="reference" />
+        <attr name="radius" format="dimension" />
+        <attr name="stroke" format="dimension" />
+        <attr name="shapeStyle" format="dimension" />
+    </declare-styleable>
+
+    <style name="line_05_f1">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">0.5dp</item>
+        <item name="android:background">@color/library_grey_f1</item>
+    </style>
+
+    <style name="line_05_f1_16">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">0.5dp</item>
+        <item name="android:layout_marginLeft">16dp</item>
+        <item name="android:background">@color/library_grey_f1</item>
+    </style>
+
+    <style name="line_05_f1_v">
+        <item name="android:layout_width">0.5dp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:background">@color/library_grey_f1</item>
+    </style>
+
+    <style name="line_1_f1">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">1dp</item>
+        <item name="android:background">@color/library_grey_f1</item>
+    </style>
+
+    <style name="line_10_f1">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">10dp</item>
+        <item name="android:background">@color/library_grey_f1</item>
+    </style>
+
+    <style name="line_42_f1">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">42dp</item>
+        <item name="android:background">@color/library_grey_f1</item>
+    </style>
+
 </resources>

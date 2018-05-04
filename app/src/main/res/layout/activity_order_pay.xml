@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+
+    <include
+        layout="@layout/title_normal"/>
+
+    <View style="@style/line_10_f1"/>
+
+    <RelativeLayout
+        style="@style/rl_order_detail">
+
+        <TextView
+            style="@style/tv_order_detail"
+            android:text="实付款"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="15dp"
+            android:textColor="#dd000b"
+            android:textSize="16sp"/>
+
+    </RelativeLayout>
+
+    <View
+        style="@style/line_10_f1"/>
+
+    <RelativeLayout
+        style="@style/rl_order_detail">
+
+        <TextView
+            style="@style/tv_order_detail"
+            android:text="请选择支付方式"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="15dp"
+            android:textColor="#dd000b"
+            android:textSize="16sp"/>
+
+    </RelativeLayout>
+
+    <View
+        style="@style/line_05_f1_16"/>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+</LinearLayout>

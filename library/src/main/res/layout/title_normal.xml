@@ -49,4 +49,8 @@
         android:visibility="invisible"
         />
 
+    <View
+        style="@style/line_05_f1"
+        android:layout_alignParentBottom="true"/>
+
 </RelativeLayout>

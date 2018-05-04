@@ -1,11 +1,11 @@
 package com.lh.rapid.ui.login;
 
 import android.view.View;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.android.frameproj.library.widget.ShapeEditText;
 import com.lh.rapid.R;
 import com.lh.rapid.components.storage.UserStorage;
 import com.lh.rapid.ui.BaseActivity;
@@ -35,9 +35,9 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
     @BindView(R.id.iv_right)
     ImageView mIvRight;
     @BindView(R.id.et_username)
-    EditText mEtUsername;
+    ShapeEditText mEtUsername;
     @BindView(R.id.et_password)
-    EditText mEtPassword;
+    ShapeEditText mEtPassword;
     @Inject
     SPUtil mSPUtil;
     @Inject
