@@ -4,4 +4,69 @@
     <color name="colorPrimaryDark">#ffffff</color>
     <color name="colorAccent">#FF4081</color>
 
+
+
+    <color name="black_overlay">#99f7f7f7</color>
+    <color name="tab_color">#409c1d</color>
+    <color name="tab_press_color">#358d13</color>
+    <color name="home_gray">#f7f7f7</color>
+    <color name="gray">#ececec</color>
+    <color name="cornor_bg">#eeeeee</color>
+    <color name="home_red">#de3827</color>
+    <color name="search_transparent_bg">#58000000</color><!--搜索的背景色-->
+    <color name="state_red_transparent_bg">#58dd000b</color>
+    <color name="community_transparent_stroke">#30000000</color><!--搜索的背景色-->
+    <color name="draw_transparent_bg">#70000000</color>
+    <color name="search_stroke">#4deeeeee</color>
+    <color name="gray_text">#666666</color>
+    <color name="gray_2c">#2c2c2c</color>
+    <color name="gray_line">#cccccc</color>
+    <color name="category_tranparent_bg">#33000000</color>
+    <color name="cart_circle">#ff7f00</color>
+    <color name="search_gray">#999999</color>
+    <color name="gray_button">#dbdbdb</color>
+    <color name="text_black">#333333</color>
+    <color name="count_stroke">#c5e1b9</color>
+    <color name="select_num_text">#666666</color>
+    <color name="select_num_bg">#bfbfbf</color>
+    <color name="product_price">#ff943c</color>
+    <color name="orange_button">#e8751c</color>
+    <color name="login_gray">#a1a1a1</color>
+    <color name="black_transparent">#aa000000</color>
+    <color name="black_txt">#313131</color>
+    <color name="red">#ff0000</color>
+    <color name="choiceness">#f69d33</color>
+
+    <color name="category14">#fb8c30</color>
+
+    <color name="site_status_on">#0bb550</color>
+    <color name="site_status_admin">#f57e1e</color>
+    <color name="site_quantity">#15b54c</color>
+    <color name="dark_yellow">#E36703</color>
+    <color name="blue">#2F3E9C</color>
+    <color name="home_brand">#67ADEA</color>
+    <color name="help_blue">#3180f8</color>
+    <drawable name="transparent_background">#00000000</drawable>
+    <color name="hot_search_textcolor">#3789dd</color>
+    <color name="red_text">#dd000b</color>
+
+    <color name="home_gray_new">#efeff4</color>
+    <color name="line">#efefef</color>
+    <color name="blue_text">#44b4d4</color>
+    <color name="orange">#fe970f</color>
+    <color name="gray_8">#888888</color>
+    <color name="gray_e7">#e7e7e7</color>
+    <color name="red_ff5e5ee">#ff5e5e</color>
+    <color name="red_e31436">#e31436</color>
+    <color name="dark_green">#116836</color>
+    <color name="color_b7b7b7">#b7b7b7</color>
+    <color name="color_f2f2f2">#f2f2f2</color>
+    <color name="color_b8b8b8">#b8b8b8</color>
+    <color name="color_d7d7d7">#d7d7d7</color>
+    <color name="color_efeff4">#efeff4</color>
+
+    <color name="white">#ffffff</color>
+    <color name="black">#000000</color>
+
+    <color name="white_tra">#50ffffff</color>
 </resources>

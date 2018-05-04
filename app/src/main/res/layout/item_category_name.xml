@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/px98dp"
+    android:id="@+id/ll_item_name"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/tv_cart_form_name"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:text="" />
+
+    <TextView
+        android:id="@+id/tv_cart_form_line"
+        android:layout_width="@dimen/px100dp"
+        android:layout_height="@dimen/px4dp"
+        android:background="@drawable/new_green_line"
+        android:layout_gravity="center_horizontal"/>
+
+</LinearLayout>

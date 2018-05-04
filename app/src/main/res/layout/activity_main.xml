@@ -1,24 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="main"/>
+    <include layout="@layout/layout_main_include"/>
 
-    <Button
-        android:id="@+id/btn_login"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="登录"/>
-
-    <com.youth.banner.Banner
-        android:id="@+id/banner"
+    <RelativeLayout
+        android:id="@+id/rl_main_bottom"
         android:layout_width="match_parent"
-        android:layout_height="200dp" />
+        android:layout_height="@dimen/px100dp"
+        android:layout_gravity="bottom">
 
-</LinearLayout>
+        <include layout="@layout/home_bottom" />
+
+    </RelativeLayout>
+
+</FrameLayout>

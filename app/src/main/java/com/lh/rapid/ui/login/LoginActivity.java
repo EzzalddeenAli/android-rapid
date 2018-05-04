@@ -88,6 +88,7 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
         String mUserName = mEtUsername.getText().toString().trim();
         String mPassword = mEtPassword.getText().toString().trim();
         mPresenter.login(mUserName, mPassword);
+        openActivity(MainActivity.class);
     }
 
     @OnClick(R.id.btn_register)

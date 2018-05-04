@@ -162,6 +162,12 @@
         <item name="android:background">@color/library_grey_f1</item>
     </style>
 
+    <style name="line_1_ef">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">1dp</item>
+        <item name="android:background">#efefef</item>
+    </style>
+
     <style name="line_1_f1">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">1dp</item>
@@ -178,6 +184,11 @@
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">42dp</item>
         <item name="android:background">@color/library_grey_f1</item>
+    </style>
+
+    <style name="rl_title_normal">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">44dp</item>
     </style>
 
 </resources>
