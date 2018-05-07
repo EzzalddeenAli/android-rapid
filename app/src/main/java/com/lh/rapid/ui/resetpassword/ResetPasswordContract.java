@@ -29,7 +29,7 @@ public class ResetPasswordContract {
 
         void accountPasswordReset(String mobile, String authCode, String newPassword, String passwordConfirm);
 
-        void smsCodeSend(String mobile, int type);
+        void smsCodeSend(String mobile, String type);
 
     }
 

@@ -71,6 +71,14 @@
         </activity>
 
         <activity
+            android:name=".ui.login.LoginByCardActivity"
+            android:screenOrientation="portrait"/>
+
+        <activity
+            android:name=".ui.login.LoginByPhoneActivity"
+            android:screenOrientation="portrait"/>
+
+        <activity
             android:name=".ui.register.RegisterActivity"
             android:screenOrientation="portrait"/>
 

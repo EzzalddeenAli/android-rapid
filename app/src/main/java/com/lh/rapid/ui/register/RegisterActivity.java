@@ -125,7 +125,7 @@ public class RegisterActivity extends BaseActivity implements RegisterContract.V
     @OnClick(R.id.bt_register_get_code)
     public void mBtRegisterGetCode() {
         String phoneNum = mEtRegisterPhoneNum.getText().toString().trim();
-        mPresenter.smsCodeSend(phoneNum, 1);
+        mPresenter.smsCodeSend(phoneNum, Constants.SMSCODE_TYPE_REGISTER);
     }
 
     @OnClick(R.id.bt_register_sure)

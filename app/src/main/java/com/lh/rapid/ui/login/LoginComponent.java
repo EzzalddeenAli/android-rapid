@@ -13,5 +13,11 @@ import dagger.Component;
 @PerActivity
 @Component(dependencies = ApplicationComponent.class, modules = {ActivityModule.class})
 public interface LoginComponent {
+
     void inject(LoginActivity activity);
+
+    void inject(LoginByCardActivity activity);
+
+    void inject(LoginByPasswordActivity activity);
+
 }

@@ -88,7 +88,7 @@ public class ResetPasswordPresenter implements ResetPasswordContract.Presenter {
     }
 
     @Override
-    public void smsCodeSend(String mobile, int type) {
+    public void smsCodeSend(String mobile, String type) {
         if (TextUtils.isEmpty(mobile)) {
             mView.showError("请输入用户名或手机号");
             return;

@@ -36,6 +36,12 @@ public interface CommonService {
     Observable<HttpResult<LoginEntity>> loginNormal(@Header("timestamp") long timestamp, @Header("sign") String sign,
                                                     @FieldMap Map<String, Object> params);
 
+    //手机号登录
+    @FormUrlEncoded
+    @POST("account/login/mobile")
+    Observable<HttpResult<LoginEntity>> loginMobile(@Header("timestamp") long timestamp, @Header("sign") String sign,
+                                                    @FieldMap Map<String, Object> params);
+
     //注册
     @FormUrlEncoded
     @POST("account/register")

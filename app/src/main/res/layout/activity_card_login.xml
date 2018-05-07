@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <com.lh.rapid.ui.widget.MyActionBar
+        android:id="@+id/actionbar"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"/>
+
+    <LinearLayout
+        android:layout_width="@dimen/px680dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="@dimen/px118dp"
+        android:layout_gravity="center_horizontal">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/px80dp"
+            android:background="@drawable/user_login_bg">
+
+            <EditText
+                android:id="@+id/et_login_card_num"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="@dimen/px24dp"
+                android:background="@null"
+                android:hint="请输入厨易卡号"
+                android:textSize="@dimen/px28sp"
+                android:inputType="phone"
+                android:textColor="@color/search_gray"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/px80dp"
+            android:background="@drawable/user_login_bg"
+            android:layout_marginTop="@dimen/px40dp">
+
+            <EditText
+                android:id="@+id/et_login_password"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="@dimen/px24dp"
+                android:background="@null"
+                android:hint="请输入密码"
+                android:inputType="number"
+                android:textSize="@dimen/px28sp"
+                android:textColor="@color/search_gray"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/px128dp">
+
+            <TextView
+                android:id="@+id/tv_login_forget_password"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/px24dp"
+                android:layout_marginTop="@dimen/px24dp"
+                android:textSize="@dimen/px24sp"
+                android:textColor="@color/tab_color"
+                android:text="@string/forget_password"/>
+        </RelativeLayout>
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/bt_login_sure"
+        android:layout_width="@dimen/px280dp"
+        android:layout_height="@dimen/px68dp"
+        android:layout_gravity="center_horizontal"
+        android:background="@drawable/user_login_bt_bg"
+        android:text="@string/sure"
+        android:textSize="@dimen/px32sp"
+        android:textColor="@color/white"/>
+
+</LinearLayout>

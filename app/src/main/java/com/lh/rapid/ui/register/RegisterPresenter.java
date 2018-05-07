@@ -102,7 +102,7 @@ public class RegisterPresenter implements RegisterContract.Presenter {
     }
 
     @Override
-    public void smsCodeSend(String mobile, int type) {
+    public void smsCodeSend(String mobile, String type) {
         if (TextUtils.isEmpty(mobile)) {
             mView.showError("请输入手机号");
             return;

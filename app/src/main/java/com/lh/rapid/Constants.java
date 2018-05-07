@@ -18,13 +18,14 @@ public class Constants {
     //用户被锁定
     public static final int TOKEN_FREEZE = -113;
     public static final String WECHAT_APPID = "wxe94192df313b992f";
-
-    public static String LH_LOG_PATH = "/LH/Log/";// 日志默认保存目录
-    //    正式
-    public static final String BASE_URL = "https://slb.api.myhaving.com/";
-    public static final String DOWNLOAD_APK_URL = BASE_URL + "static/app/maiyiAppVer.xml";
-    public static final int APPTYPE = 2;
+    // 日志默认保存目录
+    public static String LH_LOG_PATH = "/LH/Log/";
+    // 本地测试地址
+    public static final String BASE_URL = "http://192.168.10.127:8080/";
+    // APK下载地址
+    public static final String DOWNLOAD_APK_URL = BASE_URL + "static/app/ver.xml";
     // app类型：1:ios,2:andriod
+    public static final int APPTYPE = 2;
 
     //服务端自定义API key、value
     public static String app_key = "B272F43387B8504C";
@@ -48,4 +49,13 @@ public class Constants {
     public static final int RESULT_REGISTER_CODE = 109;
 
     public static boolean isAllCheck = true;
+
+    /**
+     * 验证码类型 1.注册，2。登录，3.修改密码，4.修改手机号 5.修改个人信息 6.第三方登录注册,7-扫码绑定
+     */
+    public static final String SMSCODE_TYPE_REGISTER = "1";
+    public static final String SMSCODE_TYPE_LOGIN = "2";
+    public static final String SMSCODE_TYPE_MODIFY_PASSWORD = "3";
+
+
 }

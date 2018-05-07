@@ -30,7 +30,7 @@ public class RegisterContract {
 
         void register(String phone, String validate, String password, String passwordConfirm);
 
-        void smsCodeSend(String mobile, int type);
+        void smsCodeSend(String mobile, String type);
 
     }
 

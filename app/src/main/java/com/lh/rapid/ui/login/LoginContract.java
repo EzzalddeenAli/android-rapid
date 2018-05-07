@@ -22,12 +22,16 @@ public interface LoginContract {
 
         void onError(Throwable throwable);
 
+        void refreshSmsCodeUi();
     }
 
     interface Presenter extends BasePresenter<View> {
 
-        void login(String userName, String identifyingCode);
+        void login(String userName, String identifyingCode, int type);
 
+        void loginMobile(String userName, String smsCode);
+
+        void smsCodeSend(String mobile, String type);
     }
 
 }

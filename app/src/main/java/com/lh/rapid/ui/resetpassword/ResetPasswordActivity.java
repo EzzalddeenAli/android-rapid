@@ -133,7 +133,7 @@ public class ResetPasswordActivity extends BaseActivity implements ResetPassword
     @OnClick(R.id.btn_validate)
     public void mBtnValidate() {
         String phoneNum = mEtPhone.getText().toString().trim();
-        mPresenter.smsCodeSend(phoneNum, 1);
+        mPresenter.smsCodeSend(phoneNum, Constants.SMSCODE_TYPE_MODIFY_PASSWORD);
     }
 
     @OnClick(R.id.btn_register)

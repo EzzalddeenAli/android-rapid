@@ -156,6 +156,20 @@ public class CommonApi {
     }
 
     /**
+     * 手机号登录
+     */
+    public Observable<HttpResult<LoginEntity>> loginMobile(String username, String smsCode) {
+        long currentTimeMillis = System.currentTimeMillis();
+        Map<String, Object> params = mRequestHelper.getHttpRequestMap(currentTimeMillis);
+        params.put("username", username);
+        params.put("smsCode", smsCode);
+        params.put("appType", Constants.APPTYPE);
+        params.put("pushId", mSpUtil.getREGISTRATIONID());
+        String sign = mRequestHelper.getRequestSign(params, currentTimeMillis);
+        return mCommonService.loginMobile(currentTimeMillis, sign, params).subscribeOn(Schedulers.io());
+    }
+
+    /**
      * 注册
      */
     public Observable<HttpResult<LoginEntity>> register(String phone, String validate, String password) {
@@ -173,7 +187,7 @@ public class CommonApi {
     /**
      * 发送短信验证码
      */
-    public Observable<HttpResult<String>> smsCodeSend(String mobile, int type) {
+    public Observable<HttpResult<String>> smsCodeSend(String mobile, String type) {
         long currentTimeMillis = System.currentTimeMillis();
         Map<String, Object> params = mRequestHelper.getHttpRequestMap(currentTimeMillis);
         params.put("mobile", mobile);
