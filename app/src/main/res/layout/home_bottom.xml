@@ -28,6 +28,7 @@
         android:textSize="@dimen/px32sp" />
 
     <LinearLayout
+        android:id="@+id/ll_cart"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_toLeftOf="@id/tv_cart_product_detail">

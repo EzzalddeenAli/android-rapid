@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <dimen name="actionbar_height">48dp</dimen>
+    <dimen name="select_num_width">35dp</dimen>
+    <dimen name="gridview_space">7dp</dimen>
+    <dimen name="community_bg_margin">35dp</dimen>
+    <dimen name="site_float_height">34dp</dimen>
+    <dimen name="site_discount_width">41dp</dimen>
+    <dimen name="discount_textsize">10sp</dimen>
+</resources>

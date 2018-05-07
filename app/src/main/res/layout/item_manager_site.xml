@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/px108dp"
+    android:layout_marginLeft="@dimen/px28dp">
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:id="@+id/tv_site_address"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/text_black"
+            android:textSize="@dimen/px28sp"
+            android:text="南大路458号"/>
+
+        <TextView
+            android:id="@+id/tv_site_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_site_address"
+            android:textSize="@dimen/px28sp"
+            android:textColor="@color/gray_text"
+            android:layout_marginTop="@dimen/px16dp"
+            android:text="某某某"/>
+
+        <TextView
+            android:id="@+id/tv_site_phone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/tv_site_name"
+            android:layout_alignTop="@id/tv_site_name"
+            android:layout_marginLeft="@dimen/px28dp"
+            android:textColor="@color/gray_text"
+            android:textSize="@dimen/px28sp"
+            android:text="13333333333"/>
+
+    </RelativeLayout>
+
+
+    <LinearLayout
+        android:id="@+id/ll_change_address"
+        android:layout_width="@dimen/px128dp"
+        android:layout_height="match_parent"
+        android:layout_alignParentRight="true"
+        android:orientation="vertical"
+        android:gravity="center">
+
+        <ImageView
+            android:id="@+id/iv_site_address"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/icon_address_xiugai"/>
+
+        <TextView
+            android:id="@+id/tv_site_change"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/px12dp"
+            android:textSize="@dimen/px24sp"
+            android:textColor="@color/gray_text"
+            android:text="修改"/>
+    </LinearLayout>
+
+    <View
+        android:id="@+id/view_line"
+        android:layout_width="@dimen/px2dp"
+        android:layout_height="@dimen/px86dp"
+        android:layout_toLeftOf="@id/ll_change_address"
+        android:layout_centerVertical="true"
+        android:background="@color/line"/>
+
+</RelativeLayout>

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="72dp"
+        android:background="@mipmap/dropdown"
+        android:id="@+id/rl_choose_broadcast"
+        android:gravity="center_horizontal"
+        android:layout_height="112dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_weight="1"
+            android:layout_height="0dp" />
+        <TextView
+            android:id="@+id/tv_all_broadcast"
+            android:layout_width="wrap_content"
+            android:text="全部广播"
+            android:gravity="center_vertical"
+            android:layout_weight="3"
+            android:textColor="@color/white"
+            android:layout_height="0dp" />
+
+        <TextView
+            android:id="@+id/tv_cy_broadcast"
+            android:layout_width="wrap_content"
+            android:text="厨易广播"
+            android:textColor="@color/white"
+            android:layout_weight="3"
+            android:gravity="center_vertical"
+            android:layout_height="0dp" />
+
+        <TextView
+            android:layout_below="@id/tv_cy_broadcast"
+            android:id="@+id/tv_xq_broadcast"
+            android:layout_width="wrap_content"
+            android:text="小区广播"
+            android:gravity="center_vertical"
+            android:textColor="@color/white"
+            android:layout_weight="3"
+            android:layout_height="0dp" />
+
+    </LinearLayout>
+</RelativeLayout>

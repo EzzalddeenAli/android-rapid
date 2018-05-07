@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/px192dp">
+
+    <ImageView
+        android:id="@+id/iv_cart_comm"
+        android:layout_width="@dimen/px140dp"
+        android:layout_height="@dimen/px140dp"
+        android:layout_marginTop="@dimen/px20dp" />
+
+    <TextView
+        android:id="@+id/tv_cart_comm_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/iv_cart_comm"
+        android:layout_marginLeft="@dimen/px20sp"
+        android:layout_toRightOf="@id/iv_cart_comm"
+        android:maxLines="2"
+        android:text="0000000"
+        android:textColor="@color/text_black"
+        android:textSize="@dimen/px28dp" />
+
+    <TextView
+        android:id="@+id/tv_cart_comm_norm"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_cart_comm_name"
+        android:layout_toRightOf="@id/iv_cart_comm"
+        android:layout_marginTop="@dimen/px10dp"
+        android:layout_marginLeft="@dimen/px20dp"
+        android:textColor="@color/gray_text"
+        android:textSize="@dimen/px20sp"
+        android:text="000"/>
+
+    <TextView
+        android:id="@+id/tv_cart_comm_price"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/iv_cart_comm"
+        android:layout_alignBottom="@id/iv_cart_comm"
+        android:layout_marginLeft="@dimen/px20dp"
+        android:textSize="@dimen/px28sp"
+        android:textColor="@color/red_text"
+        android:text="000"/>
+
+    <RelativeLayout
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="@dimen/px16dp"
+        android:layout_marginRight="@dimen/px40dp"
+        android:gravity="center_vertical">
+
+        <ImageView
+            android:id="@+id/iv_cart_comm_add"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:src="@mipmap/icon_home_add"/>
+
+        <TextView
+            android:id="@+id/tv_cart_comm_num"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@id/iv_cart_comm_add"
+            android:layout_marginRight="@dimen/px28dp"
+            android:inputType="number"
+            android:textColor="@color/text_black"
+            android:textSize="@dimen/px28sp"
+            android:visibility="invisible"/>
+
+        <ImageView
+            android:id="@+id/iv_cart_comm_minus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/icon_home_minus"
+            android:layout_toLeftOf="@id/tv_cart_comm_num"
+            android:layout_marginRight="@dimen/px28dp"
+            android:visibility="invisible"/>
+    </RelativeLayout>
+
+
+</RelativeLayout>

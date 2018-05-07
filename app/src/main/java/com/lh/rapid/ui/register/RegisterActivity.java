@@ -1,17 +1,18 @@
 package com.lh.rapid.ui.register;
 
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
+
 import com.lh.rapid.Constants;
 import com.lh.rapid.R;
 import com.lh.rapid.ui.BaseActivity;
 import com.lh.rapid.ui.main.MainActivity;
+import com.lh.rapid.ui.widget.MyActionBar;
+
 import java.util.concurrent.TimeUnit;
+
 import javax.inject.Inject;
+
 import butterknife.BindView;
 import butterknife.OnClick;
 import io.reactivex.Observable;
@@ -29,27 +30,20 @@ import io.reactivex.schedulers.Schedulers;
 
 public class RegisterActivity extends BaseActivity implements RegisterContract.View {
 
-    @BindView(R.id.tv_title)
-    TextView mTvTitle;
-    @BindView(R.id.rl_back)
-    RelativeLayout mRlBack;
-    @BindView(R.id.tv_right)
-    TextView mTvRight;
-    @BindView(R.id.iv_right)
-    ImageView mIvRight;
-    @BindView(R.id.et_phone)
-    EditText mEtPhone;
-    @BindView(R.id.et_validate)
-    EditText mEtValidate;
-    @BindView(R.id.btn_validate)
-    Button mBtnValidate;
-    @BindView(R.id.et_password)
-    EditText mEtPassword;
-    @BindView(R.id.et_confirm_password)
-    EditText mEtConfirmPassword;
-
     @Inject
     RegisterPresenter mPresenter;
+    @BindView(R.id.actionbar)
+    MyActionBar mActionbar;
+    @BindView(R.id.et_register_phone_num)
+    EditText mEtRegisterPhoneNum;
+    @BindView(R.id.et_register_code_num)
+    EditText mEtRegisterCodeNum;
+    @BindView(R.id.et_register_password)
+    EditText mEtRegisterPassword;
+    @BindView(R.id.et_register_password_two)
+    EditText mEtConfirmPassword;
+    @BindView(R.id.bt_register_get_code)
+    Button mBtRegisterGetCode;
 
     @Override
     public int initContentView() {
@@ -68,10 +62,10 @@ public class RegisterActivity extends BaseActivity implements RegisterContract.V
     @Override
     public void initUiAndListener() {
         mPresenter.attachView(this);
-        mTvTitle.setText("用户注册");
-        mRlBack.setOnClickListener(new View.OnClickListener() {
+        mActionbar.setTitle("用户注册");
+        mActionbar.setBackClickListener(new MyActionBar.IActionBarClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onActionBarClicked() {
                 finish();
             }
         });
@@ -100,8 +94,8 @@ public class RegisterActivity extends BaseActivity implements RegisterContract.V
                 .doOnSubscribe(new Consumer<Disposable>() {
                     @Override
                     public void accept(@NonNull Disposable disposable) throws Exception {
-                        mBtnValidate.setEnabled(false);
-                        mBtnValidate.setClickable(false);
+                        mBtRegisterGetCode.setEnabled(false);
+                        mBtRegisterGetCode.setClickable(false);
                     }
                 })
                 .subscribe(new Observer<Long>() {
@@ -111,7 +105,7 @@ public class RegisterActivity extends BaseActivity implements RegisterContract.V
 
                     @Override
                     public void onNext(Long aLong) {
-                        mBtnValidate.setText("剩余" + aLong + "秒");
+                        mBtRegisterGetCode.setText("剩余" + aLong + "秒");
                     }
 
                     @Override
@@ -121,24 +115,24 @@ public class RegisterActivity extends BaseActivity implements RegisterContract.V
 
                     @Override
                     public void onComplete() {
-                        mBtnValidate.setEnabled(true);
-                        mBtnValidate.setClickable(true);
-                        mBtnValidate.setText("获取验证码");
+                        mBtRegisterGetCode.setEnabled(true);
+                        mBtRegisterGetCode.setClickable(true);
+                        mBtRegisterGetCode.setText("获取验证码");
                     }
                 });
     }
 
-    @OnClick(R.id.btn_validate)
-    public void mBtnValidate() {
-        String phoneNum = mEtPhone.getText().toString().trim();
+    @OnClick(R.id.bt_register_get_code)
+    public void mBtRegisterGetCode() {
+        String phoneNum = mEtRegisterPhoneNum.getText().toString().trim();
         mPresenter.smsCodeSend(phoneNum, 1);
     }
 
-    @OnClick(R.id.btn_register)
-    public void mBtnRegister() {
-        String phone = mEtPhone.getText().toString().trim();
-        String validate = mEtValidate.getText().toString().trim();
-        String password = mEtPassword.getText().toString().trim();
+    @OnClick(R.id.bt_register_sure)
+    public void mBtRegisterSure() {
+        String phone = mEtRegisterPhoneNum.getText().toString().trim();
+        String validate = mEtRegisterCodeNum.getText().toString().trim();
+        String password = mEtRegisterPassword.getText().toString().trim();
         String passwordConfirm = mEtConfirmPassword.getText().toString().trim();
         mPresenter.register(phone, validate, password, passwordConfirm);
     }

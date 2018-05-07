@@ -47,4 +47,5 @@ public class Constants {
     public static final int REQUEST_REGISTER_CODE = 108;
     public static final int RESULT_REGISTER_CODE = 109;
 
+    public static boolean isAllCheck = true;
 }

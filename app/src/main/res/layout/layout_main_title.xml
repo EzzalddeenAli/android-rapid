@@ -45,6 +45,7 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:src="@mipmap/icon_home_mine"/>
+
     </RelativeLayout>
 
     <LinearLayout

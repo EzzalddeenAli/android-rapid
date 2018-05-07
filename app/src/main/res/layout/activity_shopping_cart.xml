@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/color_efeff4">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <com.lh.rapid.ui.widget.MyActionBar
+            android:id="@+id/actionbar"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/actionbar_height" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginLeft="@dimen/px28dp"
+            android:background="@color/line" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:orientation="vertical">
+
+            <ExpandableListView
+                android:id="@+id/lv_cart_cate"
+                android:layout_width="match_parent"
+                android:layout_height="100dp" />
+
+            <RelativeLayout
+                android:id="@+id/rl_cart_topay"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/px100dp"
+                android:visibility="visible">
+
+                <Button
+                    android:id="@+id/bt_cart_jiesuan"
+                    android:layout_width="@dimen/px160dp"
+                    android:layout_height="@dimen/px60dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="@dimen/px40dp"
+                    android:background="@drawable/button_cornor_green_bg"
+                    android:text="去结算"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/px32sp" />
+
+                <TextView
+                    android:id="@+id/tv_cart_total_price"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="@dimen/px20dp"
+                    android:layout_toLeftOf="@id/bt_cart_jiesuan"
+                    android:text="36000000"
+                    android:textColor="@color/red_text"
+                    android:textSize="@dimen/px36sp" />
+            </RelativeLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_cart_show"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="@dimen/px28dp"
+            android:background="@color/white">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/px68dp"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/px28sp"
+                    android:textColor="@color/text_black"
+                    android:layout_marginLeft="@dimen/px28dp"
+                    android:text="不在配送范围内的圈主"/>
+
+                <ImageView
+                    android:id="@+id/iv_cart_down"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:src="@mipmap/icon_shoppingtrolley_down"
+                    android:layout_marginRight="@dimen/px40dp"/>
+
+                <ImageView
+                    android:id="@+id/iv_cart_up"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:src="@mipmap/icon_shoppingtrolley_up"
+                    android:layout_marginRight="@dimen/px40dp"
+                    android:visibility="gone"/>
+
+            </RelativeLayout>
+
+            <FrameLayout
+                android:id="@+id/fl_cart_show"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="visible">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="@dimen/px28dp">
+
+                    <ExpandableListView
+                        android:id="@+id/lv_cart_out"
+                        android:layout_width="match_parent"
+                        android:layout_height="100dp" />
+
+                </RelativeLayout>
+
+                <ImageView
+                    android:id="@+id/iv_cart_bg"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@mipmap/bg_gouwuche" />
+
+            </FrameLayout>
+
+            <FrameLayout
+                android:id="@+id/fl_cart_shows"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone">
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="@dimen/px28dp">
+
+                    <ExpandableListView
+                        android:id="@+id/lv_cart_outs"
+                        android:layout_width="match_parent"
+                        android:layout_height="100dp" />
+                </RelativeLayout>
+
+                <ImageView
+                    android:id="@+id/iv_cart_bgs"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@mipmap/bg_gouwuche" />
+            </FrameLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/ll_cart_delete"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:visibility="visible"
+        android:orientation="vertical">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/px2dp"
+            android:background="@color/line"/>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/px98dp"
+            android:background="@color/white">
+
+            <ImageView
+                android:id="@+id/iv_cart_choose"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/px28dp"
+                android:src="@mipmap/icon_shoppingtrolley_choose__n"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/iv_cart_choose"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/px20dp"
+                android:textSize="@dimen/px32sp"
+                android:textColor="@color/text_black"
+                android:text="全选"/>
+
+            <Button
+                android:id="@+id/bt_cart_delete"
+                android:layout_width="@dimen/px160dp"
+                android:layout_height="@dimen/px60dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:background="@drawable/button_delete_bg"
+                android:text="删除"
+                android:textSize="@dimen/px32sp"
+                android:textColor="@color/red_text"/>
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+</RelativeLayout>
