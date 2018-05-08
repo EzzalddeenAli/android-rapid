@@ -161,7 +161,7 @@ public class CommonApi {
     public Observable<HttpResult<LoginEntity>> loginMobile(String username, String smsCode) {
         long currentTimeMillis = System.currentTimeMillis();
         Map<String, Object> params = mRequestHelper.getHttpRequestMap(currentTimeMillis);
-        params.put("username", username);
+        params.put("mobile", username);
         params.put("smsCode", smsCode);
         params.put("appType", Constants.APPTYPE);
         params.put("pushId", mSpUtil.getREGISTRATIONID());

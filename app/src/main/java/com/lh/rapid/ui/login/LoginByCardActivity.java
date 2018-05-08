@@ -8,7 +8,6 @@ import com.lh.rapid.R;
 import com.lh.rapid.components.storage.UserStorage;
 import com.lh.rapid.ui.BaseActivity;
 import com.lh.rapid.ui.main.MainActivity;
-import com.lh.rapid.ui.register.RegisterActivity;
 import com.lh.rapid.ui.widget.MyActionBar;
 import com.lh.rapid.util.SPUtil;
 
@@ -91,11 +90,6 @@ public class LoginByCardActivity extends BaseActivity implements LoginContract.V
         String mUserName = mEtLoginCardNum.getText().toString().trim();
         String mPassword = mEtLoginPassword.getText().toString().trim();
         mPresenter.login(mUserName, mPassword, 2);
-    }
-
-    @OnClick(R.id.btn_register)
-    public void mBtnRegister() {
-        openActivity(RegisterActivity.class);
     }
 
 }

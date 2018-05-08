@@ -7,7 +7,6 @@ import com.lh.rapid.R;
 import com.lh.rapid.components.storage.UserStorage;
 import com.lh.rapid.ui.BaseActivity;
 import com.lh.rapid.ui.main.MainActivity;
-import com.lh.rapid.ui.register.RegisterActivity;
 import com.lh.rapid.ui.widget.MyActionBar;
 import com.lh.rapid.util.SPUtil;
 
@@ -66,6 +65,8 @@ public class LoginByPasswordActivity extends BaseActivity implements LoginContra
             }
         });
         mActionbar.setTitle("用户登录");
+        mEtLoginPhoneNum.setText("15300936554");
+        mEtLoginPassword.setText("a123456");
     }
 
     @Override
@@ -89,11 +90,6 @@ public class LoginByPasswordActivity extends BaseActivity implements LoginContra
         String mUserName = mEtLoginPhoneNum.getText().toString().trim();
         String mPassword = mEtLoginPassword.getText().toString().trim();
         mPresenter.login(mUserName, mPassword,1);
-    }
-
-    @OnClick(R.id.btn_register)
-    public void mBtnRegister() {
-        openActivity(RegisterActivity.class);
     }
 
 }

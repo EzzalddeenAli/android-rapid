@@ -31,7 +31,6 @@ import io.reactivex.schedulers.Schedulers;
 /**
  * Created by lh on 2018/4/25.
  */
-
 public class LoginActivity extends BaseActivity implements LoginContract.View {
 
     @Inject

@@ -7,6 +7,7 @@ import android.widget.TextView;
 import com.lh.rapid.R;
 import com.lh.rapid.ui.BaseActivity;
 import com.lh.rapid.ui.addressmanager.AddressManagerActivity;
+import com.lh.rapid.ui.myshare.MyShareActivity;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -51,7 +52,7 @@ public class UserCenterActivity extends BaseActivity {
 
     @OnClick(R.id.my_share)
     public void mMyShare(){
-
+        openActivity(MyShareActivity.class);
     }
 
     @OnClick(R.id.service_center)

@@ -11,6 +11,7 @@ import com.android.frameproj.library.decoration.DividerGridItemDecoration;
 import com.android.frameproj.library.util.log.Logger;
 import com.lh.rapid.R;
 import com.lh.rapid.ui.BaseActivity;
+import com.lh.rapid.ui.widget.MyActionBar;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
@@ -33,6 +34,8 @@ public class MyShareActivity extends BaseActivity {
     TextView mTvEmpty;
     @BindView(R.id.refreshLayout)
     SmartRefreshLayout mRefreshLayout;
+    @BindView(R.id.actionbar)
+    MyActionBar mActionbar;
 
     private LinearLayoutManager mLinearLayoutManager;
     private CommonAdapter mCommonAdapter;
@@ -49,6 +52,14 @@ public class MyShareActivity extends BaseActivity {
 
     @Override
     public void initUiAndListener() {
+        mActionbar.setBackClickListener(new MyActionBar.IActionBarClickListener() {
+            @Override
+            public void onActionBarClicked() {
+                finish();
+            }
+        });
+        mActionbar.setTitle("我的分享");
+
         mRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(RefreshLayout refreshlayout) {
@@ -63,7 +74,7 @@ public class MyShareActivity extends BaseActivity {
             }
         });
         mRefreshLayout.setEnableLoadMore(false);
-//        mRefreshLayout.autoRefresh();
+        //        mRefreshLayout.autoRefresh();
         initRecyclerView();
     }
 
@@ -75,7 +86,7 @@ public class MyShareActivity extends BaseActivity {
         mCommonAdapter = new CommonAdapter<String>(MyShareActivity.this, R.layout.layout_my_share, data) {
             @Override
             protected void convert(ViewHolder holder, final String string, int position) {
-                holder.setText(R.id.textView, string);
+                holder.setText(R.id.tv_cart_item_name, string +"商品啊啊啊啊啊");
             }
         };
         mLinearLayoutManager = new LinearLayoutManager(MyShareActivity.this);

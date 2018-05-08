@@ -16,7 +16,6 @@ import android.widget.TextView;
 
 import com.lh.rapid.R;
 import com.lh.rapid.bean.Hover;
-import com.lh.rapid.ui.main.MainActivity;
 
 import java.util.List;
 
@@ -52,7 +51,7 @@ public class ProductDetailAdapter extends RecyclerView.Adapter<ProductDetailAdap
             } else {
                 holder.iv_product_minus.setVisibility(View.VISIBLE);
                 holder.tv_product_num.setVisibility(View.VISIBLE);
-                holder.tv_product_num.setText(list.get(position).getNum());
+                holder.tv_product_num.setText(list.get(position).getNum()+"");
             }
         } else {
             holder.iv_product_add.setVisibility(View.VISIBLE);
@@ -86,7 +85,7 @@ public class ProductDetailAdapter extends RecyclerView.Adapter<ProductDetailAdap
                 holder.iv_product_minus.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        int count = ((MainActivity) context).getSelectedItemCountById(list.get(position).getProduct_id());
+                        int count = ((ProductDetailActivity) context).getSelectedItemCountById(list.get(position).getProduct_id());
                         Log.i("fyg", "iv_remove" + String.valueOf(count));
                         if (count < 2) {
                             holder.iv_product_minus.setAnimation(getHiddenAnimation());

@@ -18,17 +18,12 @@ public class SecurityUtil {
 
     /**
      * 对 String 进行HMAC-md5运算
-     *
      * @param message 要进行HMAC-md5运算的数据 × @param str1 HMAC-md5密钥
      * @param key
      * @return 返回签名后的 byte 数组十六进制签名
      */
-
     public static String generateDigest(String message, byte[] key) throws NoSuchAlgorithmException, InvalidKeyException {
-        SecretKeySpec keySpec = new SecretKeySpec(
-                key,
-                "HmacMD5");
-
+        SecretKeySpec keySpec = new SecretKeySpec(key,"HmacMD5");
         Mac mac = Mac.getInstance("HmacMD5");
         mac.init(keySpec);
         byte[] rawHmac = mac.doFinal(message.getBytes(Charset.defaultCharset()));
@@ -37,12 +32,10 @@ public class SecurityUtil {
 
     /**
      * 对 String 进行HMAC-md5运算
-     *
      * @param message 要进行HMAC-md5运算的数据 × @param str1 HMAC-md5密钥
      * @param key
      * @return 返回签名后的 byte 数组十六进制签名
      */
-
     public static String generateDigest(String message, String key) throws NoSuchAlgorithmException, InvalidKeyException {
         return generateDigest(message, key.getBytes(Charset.defaultCharset()));
     }
@@ -54,7 +47,6 @@ public class SecurityUtil {
     public static String generateDigest16(String message, String key) throws InvalidKeyException, NoSuchAlgorithmException {
         return generateDigest(message, key).substring(8, 24);
     }
-
 
     public static String getMd5(Map<String, Object> stringObjectMap, long currentTimeMillis) {
         HashMap<String, Object> stringObjectHashMap = MapSortUtil.sortMap(stringObjectMap);
