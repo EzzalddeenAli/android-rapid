@@ -10,33 +10,40 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/px88dp">
 
-        <ImageView
-            android:id="@+id/iv_home_place"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:src="@mipmap/icon_home_weizhi"/>
+       <RelativeLayout
+           android:id="@+id/rl_location"
+           android:layout_width="match_parent"
+           android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/tv_home_location"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="@dimen/px16dp"
-            android:layout_toRightOf="@id/iv_home_place"
-            android:maxLength="8"
-            android:text="南大路458号"
-            android:textColor="@color/tab_color"
-            android:textSize="@dimen/px28sp"/>
+           <ImageView
+               android:id="@+id/iv_home_place"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:layout_centerVertical="true"
+               android:src="@mipmap/icon_home_weizhi"/>
 
-        <ImageView
-            android:id="@+id/iv_home_down"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="@dimen/px16dp"
-            android:layout_toRightOf="@id/tv_home_location"
-            android:src="@mipmap/icon_home_down"/>
+           <TextView
+               android:id="@+id/tv_home_location"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:layout_centerVertical="true"
+               android:layout_marginLeft="@dimen/px16dp"
+               android:layout_toRightOf="@id/iv_home_place"
+               android:maxLength="8"
+               android:text="南大路458号"
+               android:textColor="@color/tab_color"
+               android:textSize="@dimen/px28sp"/>
+
+           <ImageView
+               android:id="@+id/iv_home_down"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:layout_centerVertical="true"
+               android:layout_marginLeft="@dimen/px16dp"
+               android:layout_toRightOf="@id/tv_home_location"
+               android:src="@mipmap/icon_home_down"/>
+
+       </RelativeLayout>
 
         <ImageView
             android:id="@+id/iv_home_mine"

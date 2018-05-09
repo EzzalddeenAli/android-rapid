@@ -1,113 +1,125 @@
 package com.lh.rapid.ui.main;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
-import android.support.design.widget.CoordinatorLayout;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.util.Log;
-import android.util.SparseArray;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.animation.AccelerateInterpolator;
-import android.view.animation.Animation;
-import android.view.animation.AnimationSet;
-import android.view.animation.LinearInterpolator;
-import android.view.animation.TranslateAnimation;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.os.Build;
+import android.os.Bundle;
+import android.os.Environment;
+import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.Fragment;
+import android.text.TextUtils;
+import android.widget.FrameLayout;
 
-import com.android.frameproj.library.bean.BannerItem;
-import com.android.frameproj.library.decoration.RecyclerViewDivider;
-import com.android.frameproj.library.util.ToastUtil;
-import com.android.frameproj.library.widget.GlideImageLoader;
+import com.android.frameproj.library.interf.CallbackChangeFragment;
+import com.android.frameproj.library.util.NetWorkUtils;
+import com.android.frameproj.library.util.UpdateAppHttpUtil;
+import com.android.frameproj.library.widget.BottomBar;
+import com.android.frameproj.library.widget.BottomBarTab;
+import com.gyf.barlibrary.ImmersionBar;
+import com.lh.rapid.Constants;
+import com.lh.rapid.MyApplication;
 import com.lh.rapid.R;
-import com.lh.rapid.bean.CategoryName;
-import com.lh.rapid.bean.GoodBean;
+import com.lh.rapid.api.common.CommonApi;
+import com.lh.rapid.components.storage.UserStorage;
+import com.lh.rapid.injector.HasComponent;
 import com.lh.rapid.ui.BaseActivity;
-import com.lh.rapid.ui.productdetail.ProductDetailActivity;
-import com.lh.rapid.ui.shoppingcart.ShoppingCartActivity;
-import com.lh.rapid.ui.usercenter.UserCenterActivity;
-import com.tbruyelle.rxpermissions2.RxPermissions;
-import com.youth.banner.Banner;
+import com.lh.rapid.ui.BaseFragment;
+import com.lh.rapid.ui.BaseMainFragment;
+import com.lh.rapid.ui.fragment1.FirstFragment;
+import com.lh.rapid.ui.fragment1.Fragment1;
+import com.lh.rapid.ui.fragment2.Fragment2;
+import com.lh.rapid.ui.fragment2.SecondFragment;
+import com.lh.rapid.ui.fragment3.Fragment3;
+import com.lh.rapid.ui.fragment3.ThirdFragment;
+import com.lh.rapid.ui.fragment4.FourthFragment;
+import com.lh.rapid.ui.fragment4.Fragment4;
+import com.lh.rapid.util.CommonEvent;
+import com.lh.rapid.util.SPUtil;
+import com.luck.picture.lib.config.PictureConfig;
+import com.squareup.otto.Bus;
+import com.vector.update_app.UpdateAppBean;
+import com.vector.update_app.UpdateAppManager;
+import com.vector.update_app.UpdateCallback;
 
-import java.math.BigDecimal;
-import java.text.DecimalFormat;
-import java.util.ArrayList;
+import org.dom4j.Document;
+import org.dom4j.DocumentHelper;
+import org.dom4j.Element;
+import org.dom4j.io.SAXReader;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.lang.reflect.Method;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import butterknife.BindView;
-import butterknife.OnClick;
+import butterknife.ButterKnife;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.functions.Consumer;
+import me.yokeyword.fragmentation.ISupportFragment;
+import me.yokeyword.fragmentation.SupportFragment;
+import okhttp3.ResponseBody;
 
-public class MainActivity extends BaseActivity {
+public class MainActivity extends BaseActivity implements MainContract.View
+        , HasComponent<MainComponent>, CallbackChangeFragment, BaseMainFragment.OnBackToFirstListener {
 
-    @BindView(R.id.iv_home_place)
-    ImageView mIvHomePlace;
-    @BindView(R.id.tv_home_location)
-    TextView mTvHomeLocation;
-    @BindView(R.id.iv_home_down)
-    ImageView mIvHomeDown;
-    @BindView(R.id.iv_home_mine)
-    ImageView mIvHomeMine;
-    @BindView(R.id.iv_home_search)
-    ImageView mIvHomeSearch;
-    @BindView(R.id.et_home_name)
-    EditText mEtHomeName;
-    @BindView(R.id.iv_home_delete)
-    ImageView mIvHomeDelete;
-    @BindView(R.id.tv_home_search)
-    TextView mTvHomeSearch;
-    @BindView(R.id.iv_alf)
-    ImageView mIvAlf;
-    @BindView(R.id.main_banner)
-    Banner mMainBanner;
-    @BindView(R.id.iv_location)
-    ImageView mIvLocation;
-    @BindView(R.id.rv_form_name)
-    RecyclerView mRvFormName;
-    @BindView(R.id.rv_form_detail)
-    RecyclerView mRvFormDetail;
-    @BindView(R.id.cl_main)
-    CoordinatorLayout mClMain;
-    @BindView(R.id.tv_cart_product_detail)
-    TextView mTvCartProductDetail;
-    @BindView(R.id.tv_cart_product_detail_send)
-    TextView mTvCartProductDetailSend;
-    @BindView(R.id.iv_footer_cart_product_detail)
-    ImageView mIvFooterCartProductDetail;
-    @BindView(R.id.tv_cart_num_product_detail)
-    TextView mTvCartNumProductDetail;
-    @BindView(R.id.rl_footer_cart_product_detail)
-    RelativeLayout mRlFooterCartProductDetail;
-    @BindView(R.id.tv_favorite_product_detail_chose)
-    TextView mTvFavoriteProductDetailChose;
-    @BindView(R.id.rl_main_bottom)
-    RelativeLayout mRlMainBottom;
-    @BindView(R.id.ll_cart)
-    LinearLayout mLlCart;
-    private RxPermissions mRxPermissions;
-    private CategoryCommNameAdapter nameAdapter;
-    private CategoryCommodityAdapter commodityAdapter;
+    @BindView(R.id.frame_layout)
+    FrameLayout mFrameLayout;
 
-    private List<CategoryName> mNames = new ArrayList<>();
-    private List<GoodBean> list3 = new ArrayList<GoodBean>();
-    private List<GoodBean> list4 = new ArrayList<GoodBean>();
-    private List<GoodBean> list5 = new ArrayList<GoodBean>();
-    private List<GoodBean> goodBeans = new ArrayList<>();
-    private SparseArray<GoodBean> selectedList;
+    @Inject
+    CommonApi mCommonApi;
 
-    public static int num = 0;
-    private ViewGroup anim_mask_layout;//动画层
-    Double totleMoney = 0.00;
-    private static DecimalFormat df;
+    @Inject
+    Bus mBus;
+
+    @Inject
+    SPUtil mSPUtil;
+
+    @BindView(R.id.bottomBar)
+    BottomBar mBottomBar;
+    @Inject
+    UserStorage mUserStorage;
+
+    private MainComponent mMainComponent;
+    private long firstTime = 0;
+    private static final int BACK_TIME = 2000;
+
+
+    public static final int FIRST = 0;
+    public static final int SECOND = 1;
+    public static final int THIRD = 2;
+    public static final int FOURTH = 3;
+    public static final int FIFTH = 4;
+
+    private SupportFragment[] mFragments = new SupportFragment[5];
+
+    @Inject
+    MainPresenter mPresenter;
+
+    public void setStatusBar() {
+        mImmersionBar = ImmersionBar.with(this);
+        mImmersionBar.transparentStatusBar()  //透明状态栏，不写默认透明色
+                .statusBarDarkFont(true)   //状态栏字体是深色，不写默认为亮色
+                .init();
+    }
+
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        //友盟测试
+//        String deviceInfo = getDeviceInfo(MainActivity.this);
+//        Logger.i("友盟deviceInfo：" + deviceInfo);
+    }
 
     @Override
     public int initContentView() {
@@ -116,330 +128,427 @@ public class MainActivity extends BaseActivity {
 
     @Override
     public void initInjector() {
+        mMainComponent = DaggerMainComponent.builder()
+                .applicationComponent(getApplicationComponent())
+                .activityModule(getActivityModule())
+                .mainModule(new MainModule(this))
+                .build();
+        mMainComponent.inject(this);
     }
 
     @Override
     public void initUiAndListener() {
-        mRxPermissions = new RxPermissions(MainActivity.this);
-        mRxPermissions
-                .request(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.ACCESS_FINE_LOCATION,
-                        Manifest.permission.READ_PHONE_STATE, Manifest.permission.CAMERA
-                )
-                .subscribe(new Consumer<Boolean>() {
+        mSPUtil.setFIRST_LOGIN(1);
+
+        mPresenter.attachView(this);
+        ButterKnife.bind(this);
+        mBus.register(this);
+
+        SupportFragment firstFragment = findFragment(FirstFragment.class);
+        if (firstFragment == null) {
+            mFragments[FIRST] = FirstFragment.newInstance();
+            mFragments[SECOND] = SecondFragment.newInstance();
+            mFragments[THIRD] = ThirdFragment.newInstance();
+            mFragments[FOURTH] = FourthFragment.newInstance();
+
+            loadMultipleRootFragment(R.id.frame_layout, FIRST,
+                    mFragments[FIRST],
+                    mFragments[SECOND],
+                    mFragments[THIRD],
+                    mFragments[FOURTH]);
+        } else {
+            // 这里库已经做了Fragment恢复,所有不需要额外的处理了, 不会出现重叠问题
+
+            // 这里我们需要拿到mFragments的引用,也可以通过getSupportFragmentManager.findFragmentByTag()自行进行判断查找(效率更高些),用下面的方法查找更方便些
+            mFragments[FIRST] = firstFragment;
+            mFragments[SECOND] = findFragment(SecondFragment.class);
+            mFragments[THIRD] = findFragment(ThirdFragment.class);
+            mFragments[FOURTH] = findFragment(FourthFragment.class);
+        }
+
+        initView();
+
+        // 默认为上海市中心点
+        mSPUtil.setLONGITUDE(121.5060657907);
+        mSPUtil.setLATITUDE(31.2434075787);
+
+        handlerIntent(getIntent());
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        setIntent(intent);
+        handlerIntent(intent);
+    }
+
+    private void handlerIntent(Intent intent) {
+        if (intent != null) {
+            int cometo = getIntent().getIntExtra("cometo", -1);
+            if (cometo != -1 && mBottomBar != null) {
+                mBottomBar.setCurrentItem(cometo);
+            }
+        }
+    }
+
+    private void initView() {
+        mBottomBar.addItem(new BottomBarTab(this, R.mipmap.bottom_icon_1_r, R.mipmap.bottom_icon_1_g, "首页"))
+                .addItem(new BottomBarTab(this, R.mipmap.bottom_icon_2_r, R.mipmap.bottom_icon_2_g, "分类"))
+                .addItem(new BottomBarTab(this, R.mipmap.bottom_icon_4_r, R.mipmap.bottom_icon_4_g, "购物车"))
+                .addItem(new BottomBarTab(this, R.mipmap.bottom_icon_5_r, R.mipmap.bottom_icon_5_g, "我的"));
+
+        mBottomBar.setOnTabSelectedListener(new BottomBar.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(int position, int prePosition) {
+                showHideFragment(mFragments[position], mFragments[prePosition]);
+                if (position == 3 && TextUtils.isEmpty(mUserStorage.getToken())) {
+//                    Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+//                    startActivityForResult(intent, Constants.REQUEST_LOGIN_CODE);
+                }
+            }
+
+            @Override
+            public void onTabUnselected(int position) {
+
+            }
+
+            @Override
+            public void onTabReselected(int position) {
+                if (position == 3 && TextUtils.isEmpty(mUserStorage.getToken())) {
+//                    Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+//                    startActivityForResult(intent, Constants.REQUEST_LOGIN_CODE);
+                }
+                final SupportFragment currentFragment = mFragments[position];
+                int count = currentFragment.getChildFragmentManager().getBackStackEntryCount();
+
+                // 如果不在该类别Fragment的主页,则回到主页;
+                if (count > 1) {
+                    if (currentFragment instanceof FirstFragment) {
+                        currentFragment.popToChild(Fragment1.class, false);
+                    } else if (currentFragment instanceof SecondFragment) {
+                        currentFragment.popToChild(Fragment2.class, false);
+                    } else if (currentFragment instanceof ThirdFragment) {
+                        currentFragment.popToChild(Fragment3.class, false);
+                    } else if (currentFragment instanceof FourthFragment) {
+                        currentFragment.popToChild(Fragment4.class, false);
+                    }
+                    return;
+                }
+
+                // 这里推荐使用EventBus来实现 -> 解耦
+                if (count == 1) {
+                    // 在FirstPagerFragment中接收, 因为是嵌套的孙子Fragment 所以用EventBus比较方便
+                    // 主要为了交互: 重选tab 如果列表不在顶部则移动到顶部,如果已经在顶部,则刷新
+                    mBus.post(new CommonEvent().new TabSelectedEvent(position));
+                }
+
+            }
+        });
+    }
+
+    /**
+     * 筛选条件
+     */
+
+    @Override
+    public void addFragment(Fragment fragment) {
+        getSupportFragmentManager().beginTransaction().add(R.id.frame_layout, fragment).commit();
+    }
+
+    @Override
+    public void showFragment(Fragment fragment) {
+        getSupportFragmentManager().beginTransaction().show(fragment).commit();
+    }
+
+    @Override
+    public void hideFragment(Fragment fragment) {
+        getSupportFragmentManager().beginTransaction().hide(fragment).commit();
+    }
+
+    @Override
+    public MainComponent getComponent() {
+        return mMainComponent;
+    }
+
+    @Override
+    public void changeFragment(int which) {
+        mBottomBar.setCurrentItem(which);
+    }
+
+    private boolean isCheckUpdate = true;
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // 上传错误日志
+        uploadLog();
+        // 检查更新
+        if (isCheckUpdate) {
+//            checkUpdate();
+            isCheckUpdate = false;
+        }
+    }
+
+    /**
+     * 检查版本更新
+     */
+    private void checkUpdate() {
+        //版本更新
+        new UpdateAppManager
+                .Builder()
+                //当前Activity
+                .setActivity(MainActivity.this)
+                //更新地址
+                .setUpdateUrl(Constants.DOWNLOAD_APK_URL)
+                //实现httpManager接口的对象
+                .setHttpManager(new UpdateAppHttpUtil())
+                .build()
+                .checkNewApp(new UpdateCallback() {
                     @Override
-                    public void accept(@NonNull Boolean granted) throws Exception {
-                        if (granted) {
+                    protected UpdateAppBean parseJson(String json) {
+
+                        SAXReader saxReader = new SAXReader();
+
+                        Document document = null;
+                        UpdateAppBean updateAppBean = new UpdateAppBean();
+                        try {
+                            document = DocumentHelper.parseText(json);
+
+                            // 获取根元素
+                            Element root = document.getRootElement();
+                            System.out.println("Root: " + root.getName());
+                            // 获取所有子元素
+                            List<Element> childList = root.elements();
+                            System.out.println("total child count: " + childList.size());
+
+                            Element verElement = root.element("ver");
+                            Element urlElement = root.element("url");
+                            Element newVersionElement = root.element("new_version");
+                            Element updateLogElement = root.element("update_log");
+                            Element targetSizeElement = root.element("target_size");
+                            updateAppBean
+                                    .setUpdate((getVersion() >= Integer.parseInt(verElement.getTextTrim())) ? "No" : "Yes")
+                                    .setNewVersion(newVersionElement.getTextTrim())
+                                    .setApkFileUrl(urlElement.getTextTrim())
+                                    .setUpdateLog(updateLogElement.getTextTrim())
+                                    .setTargetSize(targetSizeElement.getTextTrim());
+
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+
+                        return updateAppBean;
+                    }
+
+                    @Override
+                    protected void hasNewApp(UpdateAppBean updateApp, UpdateAppManager updateAppManager) {
+                        updateAppManager.showDialogFragment();
+                    }
+
+                });
+    }
+
+    /**
+     * 上传错误日志
+     * TODO 有空吧这个放到Presenter里面去
+     */
+    private void uploadLog() {
+        //检查是否有日志文件 要是有的话上传
+        String savePath = "";
+        File logDir = null;
+        if (NetWorkUtils.isNetworkConnected(MainActivity.this)) {
+            try {
+                //判断是否挂载了SD卡
+                String storageState = Environment.getExternalStorageState();
+                if (storageState.equals(Environment.MEDIA_MOUNTED)) {
+                    savePath = MyApplication.getContext().getExternalCacheDir() + Constants.LH_LOG_PATH;
+                    logDir = new File(savePath);
+                    if (!logDir.exists()) {
+                        logDir.mkdirs();
+                    }
+                    if (logDir.list().length > 0) {
+                        File[] files = logDir.listFiles();
+                        if (null == files) {
+                            return;
                         } else {
-                            ToastUtil.showToast("没有权限部分功能不能正常运行!");
+                            for (final File file :
+                                    files) {
+
+                                FileInputStream fin = new FileInputStream(file);
+                                int length = fin.available();
+                                byte[] buffer = new byte[length];
+                                fin.read(buffer);
+                                final String res = new String(buffer, "UTF-8");
+                                fin.close();
+
+                                mCommonApi.uploadErrorFiles(MainActivity.this.getPackageName(), "android",
+                                        Build.VERSION.RELEASE, Build.MODEL, res)
+                                        .observeOn(AndroidSchedulers.mainThread())
+                                        .subscribe(new Consumer<ResponseBody>() {
+                                            @Override
+                                            public void accept(@NonNull ResponseBody responseBody) throws Exception {
+                                                if (file.exists()) {
+                                                    if (file.isFile()) {
+                                                        file.delete();
+                                                    }
+                                                }
+                                            }
+                                        }, new Consumer<Throwable>() {
+                                            @Override
+                                            public void accept(@NonNull Throwable throwable) throws Exception {
+                                                throwable.printStackTrace();
+                                            }
+                                        });
+                            }
+
+                        }
+                    } else {
+
+                    }
+                    //没有挂载SD卡，无法写文件
+                    if (logDir == null || !logDir.exists() || !logDir.canWrite()) {
+                        return;
+                    }
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            } finally {
+
+            }
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mBus.unregister(this);
+        mPresenter.detachView();
+    }
+
+    /**
+     * 获取版本号
+     *
+     * @return 当前应用的版本号
+     */
+    public int getVersion() {
+        try {
+            PackageManager manager = this.getPackageManager();
+            PackageInfo info = manager.getPackageInfo(this.getPackageName(), 0);
+            String version = info.versionName;
+            int versionCode = info.versionCode;
+            return versionCode;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return -1;
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == PictureConfig.CHOOSE_REQUEST) {
+            ISupportFragment topFragment = getTopFragment();
+            ((BaseFragment) ((FourthFragment) topFragment).getTopChildFragment()).onActivityResult(requestCode, resultCode, data);
+        }
+        if (resultCode == Constants.RESULT_LOGIN_CODE) {
+            mBottomBar.setCurrentItem(0);
+        }
+    }
+
+    @Override
+    public void onBackPressedSupport() {
+        if (getSupportFragmentManager().getBackStackEntryCount() > 1) {
+            pop();
+        } else {
+            ActivityCompat.finishAfterTransition(this);
+        }
+    }
+
+    @Override
+    public void onBackToFirstFragment() {
+        mBottomBar.setCurrentItem(0);
+    }
+
+
+    // =============================友盟测试代码
+    public static boolean checkPermission(Context context, String permission) {
+        boolean result = false;
+        if (Build.VERSION.SDK_INT >= 23) {
+            try {
+                Class<?> clazz = Class.forName("android.content.Context");
+                Method method = clazz.getMethod("checkSelfPermission", String.class);
+                int rest = (Integer) method.invoke(context, permission);
+                if (rest == PackageManager.PERMISSION_GRANTED) {
+                    result = true;
+                } else {
+                    result = false;
+                }
+            } catch (Exception e) {
+                result = false;
+            }
+        } else {
+            PackageManager pm = context.getPackageManager();
+            if (pm.checkPermission(permission, context.getPackageName()) == PackageManager.PERMISSION_GRANTED) {
+                result = true;
+            }
+        }
+        return result;
+    }
+
+    public static String getDeviceInfo(Context context) {
+        try {
+            org.json.JSONObject json = new org.json.JSONObject();
+            android.telephony.TelephonyManager tm = (android.telephony.TelephonyManager) context
+                    .getSystemService(Context.TELEPHONY_SERVICE);
+            String device_id = null;
+            if (checkPermission(context, Manifest.permission.READ_PHONE_STATE)) {
+                device_id = tm.getDeviceId();
+            }
+            String mac = null;
+            FileReader fstream = null;
+            try {
+                fstream = new FileReader("/sys/class/net/wlan0/address");
+            } catch (FileNotFoundException e) {
+                fstream = new FileReader("/sys/class/net/eth0/address");
+            }
+            BufferedReader in = null;
+            if (fstream != null) {
+                try {
+                    in = new BufferedReader(fstream, 1024);
+                    mac = in.readLine();
+                } catch (IOException e) {
+                } finally {
+                    if (fstream != null) {
+                        try {
+                            fstream.close();
+                        } catch (IOException e) {
+                            e.printStackTrace();
                         }
                     }
-                });
-
-
-        selectedList = new SparseArray<>();
-        df = new DecimalFormat("0.00");
-        initTitle();
-        initBanner();
-        initRecyclerView();
-    }
-
-    private void initRecyclerView() {
-
-        for (int j = 30; j < 45; j++) {
-            GoodBean goodsBean = new GoodBean();
-            goodsBean.setName("胡辣汤");
-            goodsBean.setProduct_id(j);
-            goodsBean.setCategory_id(j);
-            goodsBean.setIcon("http://c.hiphotos.baidu.com/image/h%3D200/sign=5992ce78530fd9f9bf175269152cd42b/4ec2d5628535e5dd557b44db74c6a7efce1b625b.jpg");
-            goodsBean.setWeight("200");
-            goodsBean.setPrice("18");
-            list3.add(goodsBean);
-        }
-        //商品
-        for (int j = 5; j < 10; j++) {
-            GoodBean goodsBean = new GoodBean();
-            goodsBean.setName("胡辣汤");
-            goodsBean.setProduct_id(j);
-            goodsBean.setCategory_id(j);
-            goodsBean.setIcon("http://e.hiphotos.baidu.com/image/h%3D200/sign=c898bddf19950a7b6a3549c43ad0625c/14ce36d3d539b600be63e95eed50352ac75cb7ae.jpg");
-            goodsBean.setWeight("80");
-            goodsBean.setPrice("15");
-            list4.add(goodsBean);
-        }
-
-        //商品
-        for (int j = 10; j < 25; j++) {
-            GoodBean goodsBean = new GoodBean();
-            goodsBean.setName("胡辣汤");
-            goodsBean.setProduct_id(j);
-            goodsBean.setCategory_id(j);
-            goodsBean.setIcon("http://g.hiphotos.baidu.com/image/pic/item/03087bf40ad162d9ec74553b14dfa9ec8a13cd7a.jpg");
-            goodsBean.setWeight("40");
-            goodsBean.setPrice("10");
-            list5.add(goodsBean);
-        }
-
-        CategoryName catograyBean3 = new CategoryName();
-        catograyBean3.setKind("江湖餐品");
-        catograyBean3.setList(list3);
-        mNames.add(catograyBean3);
-
-        CategoryName catograyBean4 = new CategoryName();
-        catograyBean4.setKind("江湖餐品");
-        catograyBean4.setList(list4);
-        mNames.add(catograyBean4);
-
-        CategoryName catograyBean5 = new CategoryName();
-        catograyBean5.setKind("江湖餐品");
-        catograyBean5.setList(list5);
-        mNames.add(catograyBean5);
-
-        mRvFormName.setLayoutManager(new LinearLayoutManager(this));
-        mRvFormName.addItemDecoration(new RecyclerViewDivider(getApplicationContext(), LinearLayout.VERTICAL, 2, R.color.white));
-        nameAdapter = new CategoryCommNameAdapter(this, mNames);
-        mRvFormName.setAdapter(nameAdapter);
-
-
-        goodBeans.clear();
-        goodBeans.addAll(mNames.get(0).getList());
-        mRvFormDetail.setLayoutManager(new LinearLayoutManager(this));
-        mRvFormDetail.addItemDecoration(new RecyclerViewDivider(getApplicationContext(), LinearLayout.VERTICAL, 2, R.color.line));
-        commodityAdapter = new CategoryCommodityAdapter(this, goodBeans, nameAdapter);
-        mRvFormDetail.setAdapter(commodityAdapter);
-
-        nameAdapter.setItemClickLitener(new CategoryCommNameAdapter.rvItemClickLitener() {
-            @Override
-            public void itemClick(int position) {
-                Log.i("fyg", "list.get(position).getList():" + mNames.get(position).getList());
-                goodBeans.clear();
-                goodBeans.addAll(mNames.get(position).getList());
-                nameAdapter.setSelection(position);
-                nameAdapter.notifyDataSetChanged();
-                commodityAdapter.notifyDataSetChanged();
-            }
-        });
-
-        commodityAdapter.setItemClickLitener(new CategoryCommodityAdapter.rvCateItemClickLitener() {
-            @Override
-            public void itemClick(int position) {
-                Intent intent = new Intent(getApplicationContext(), ProductDetailActivity.class);
-                startActivity(intent);
-            }
-        });
-    }
-
-    private void initTitle() {
-        mEtHomeName.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                if (mEtHomeName.getText().toString().equals("")) {
-                    mIvHomeDelete.setVisibility(View.GONE);
-                    mTvHomeSearch.setVisibility(View.GONE);
-                } else {
-                    mIvHomeDelete.setVisibility(View.VISIBLE);
-                    mTvHomeSearch.setVisibility(View.VISIBLE);
+                    if (in != null) {
+                        try {
+                            in.close();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
                 }
             }
-        });
-    }
-
-    private void initBanner() {
-        mMainBanner.setImageLoader(new GlideImageLoader());
-        mMainBanner.setImages(BANNER_ITEMS);
-        mMainBanner.setDelayTime(2000);
-        mMainBanner.start();
-    }
-
-    public List<BannerItem> BANNER_ITEMS = new ArrayList<BannerItem>() {{
-        add(new BannerItem("最后的骑士", "http://p1.meituan.net/movie/f1e42208897d8674bb7aab89fb078baf487236.jpg"));
-        add(new BannerItem("三生三世十里桃花", "http://p1.meituan.net/movie/aa3c2bac8f9aaa557e63e20d56e214dc192471.jpg"));
-        add(new BannerItem("豆福传", "http://p0.meituan.net/movie/07b7f22e2ca1820f8b240f50ee6aa269481512.jpg"));
-    }};
-
-
-    @OnClick(R.id.iv_home_mine)
-    public void mIvHomeMine() {
-        openActivity(UserCenterActivity.class);
-    }
-
-    //根据商品id获取当前商品的采购数量
-    public int getSelectedItemCountById(int id) {
-        GoodBean temp = selectedList.get(id);
-        if (temp == null) {
-            return 0;
-        }
-        return temp.getNum();
-    }
-
-    public void handlerCarNum(int type, GoodBean goodsBean, boolean refreshGoodList) {
-        if (type == 0) {
-            GoodBean temp = selectedList.get(goodsBean.getProduct_id());
-            if (temp != null) {
-                if (temp.getNum() < 2) {
-                    goodsBean.setNum(0);
-                    selectedList.remove(goodsBean.getProduct_id());
-
-                } else {
-                    int i = goodsBean.getNum();
-                    goodsBean.setNum(--i);
-                }
+            json.put("mac", mac);
+            if (TextUtils.isEmpty(device_id)) {
+                device_id = mac;
             }
-
-        } else if (type == 1) {
-            GoodBean temp = selectedList.get(goodsBean.getProduct_id());
-            if (temp == null) {
-                goodsBean.setNum(1);
-                selectedList.append(goodsBean.getProduct_id(), goodsBean);
-            } else {
-                int i = goodsBean.getNum();
-                goodsBean.setNum(++i);
+            if (TextUtils.isEmpty(device_id)) {
+                device_id = android.provider.Settings.Secure.getString(context.getContentResolver(),
+                        android.provider.Settings.Secure.ANDROID_ID);
             }
+            json.put("device_id", device_id);
+            return json.toString();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        update(refreshGoodList);
-    }
-
-    private void update(boolean refreshGoodList) {
-        int size = selectedList.size();
-        int count = 0;
-        for (int i = 0; i < size; i++) {
-            GoodBean item = selectedList.valueAt(i);
-            count += item.getNum();
-            totleMoney += item.getNum() * Double.parseDouble(item.getPrice());
-        }
-        if (count < 1) {
-            mTvCartNumProductDetail.setVisibility(View.GONE);
-            mTvFavoriteProductDetailChose.setText("还未选择商品");
-            totleMoney = 0.00;
-            mTvCartProductDetailSend.setText("¥20.0起送");
-            mTvCartProductDetailSend.setTextColor(ContextCompat.getColor(this, R.color.white));
-            mTvCartProductDetailSend.setBackgroundColor(ContextCompat.getColor(this, R.color.color_b7b7b7));
-        } else {
-            Double mAmount = Double.valueOf(df.format(totleMoney));
-            mTvCartProductDetail.setVisibility(View.VISIBLE);
-            BigDecimal bAmount = new BigDecimal(mAmount.toString());
-            if (bAmount.compareTo(new BigDecimal(20.0)) < 0) {
-
-                mTvCartProductDetailSend.setText("还差" + new BigDecimal(20.0).subtract(bAmount) + "起送");
-                mTvCartNumProductDetail.setVisibility(View.VISIBLE);
-                mTvCartProductDetailSend.setVisibility(View.VISIBLE);
-                mTvCartProductDetail.setVisibility(View.GONE);
-            } else {
-                mTvCartProductDetailSend.setVisibility(View.GONE);
-                mTvCartProductDetail.setVisibility(View.VISIBLE);
-            }
-            totleMoney = 0.00;
-            mTvFavoriteProductDetailChose.setText("¥" + bAmount);
-        }
-        mTvCartNumProductDetail.setText(String.valueOf(count));
-
-        if (commodityAdapter != null) {
-            commodityAdapter.notifyDataSetChanged();
-        }
-
-        if (nameAdapter != null) {
-            nameAdapter.notifyDataSetChanged();
-        }
-
-    }
-
-    public void setAnim(final View v, int[] startLocation) {
-        anim_mask_layout = null;
-        anim_mask_layout = createAnimLayout();
-        anim_mask_layout.addView(v);//把动画小球添加到动画层
-        final View view = addViewToAnimLayout(anim_mask_layout, v, startLocation);
-        int[] endLocation = new int[2];// 存储动画结束位置的X、Y坐标
-        mIvFooterCartProductDetail.getLocationInWindow(endLocation);
-        // 计算位移
-        int endX = 0 - startLocation[0] + 40;// 动画位移的X坐标
-        int endY = endLocation[1] - startLocation[1];// 动画位移的y坐标
-
-        TranslateAnimation translateAnimationX = new TranslateAnimation(0, endX, 0, 0);
-        translateAnimationX.setInterpolator(new LinearInterpolator());
-        translateAnimationX.setRepeatCount(0);// 动画重复执行的次数
-        translateAnimationX.setFillAfter(true);
-
-        TranslateAnimation translateAnimationY = new TranslateAnimation(0, 0, 0, endY);
-        translateAnimationY.setInterpolator(new AccelerateInterpolator());
-        translateAnimationY.setRepeatCount(0);// 动画重复执行的次数
-        translateAnimationY.setFillAfter(true);
-
-        AnimationSet set = new AnimationSet(false);
-        set.setFillAfter(false);
-        set.addAnimation(translateAnimationY);
-        set.addAnimation(translateAnimationX);
-        set.setDuration(800);// 动画的执行时间
-        view.startAnimation(set);
-        // 动画监听事件
-        set.setAnimationListener(new Animation.AnimationListener() {
-            // 动画的开始
-            @Override
-            public void onAnimationStart(Animation animation) {
-                v.setVisibility(View.VISIBLE);
-            }
-
-            @Override
-            public void onAnimationRepeat(Animation animation) {
-                // TODO Auto-generated method stub
-            }
-
-            // 动画的结束
-            @Override
-            public void onAnimationEnd(Animation animation) {
-                v.setVisibility(View.GONE);
-            }
-        });
-
-    }
-
-    private ViewGroup createAnimLayout() {
-        ViewGroup rootView = (ViewGroup) this.getWindow().getDecorView();
-        LinearLayout animLayout = new LinearLayout(this);
-        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.MATCH_PARENT);
-        animLayout.setLayoutParams(lp);
-        animLayout.setId(Integer.MAX_VALUE - 1);
-        animLayout.setBackgroundResource(android.R.color.transparent);
-        rootView.addView(animLayout);
-        return animLayout;
-    }
-
-    private View addViewToAnimLayout(final ViewGroup parent, final View view,
-                                     int[] location) {
-        int x = location[0];
-        int y = location[1];
-        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.WRAP_CONTENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT);
-        lp.leftMargin = x;
-        lp.topMargin = y;
-        view.setLayoutParams(lp);
-        return view;
-    }
-
-    public void setCartNum(int num) {
-        this.num = num;
-        if (num > 0) {
-            mTvCartNumProductDetail.setVisibility(View.VISIBLE);
-            mTvCartNumProductDetail.setText(num + "");
-        } else {
-            mTvCartNumProductDetail.setVisibility(View.GONE);
-        }
-    }
-
-    @OnClick(R.id.ll_cart)
-    public void mLlCart(){
-        openActivity(ShoppingCartActivity.class);
+        return null;
     }
 
 }

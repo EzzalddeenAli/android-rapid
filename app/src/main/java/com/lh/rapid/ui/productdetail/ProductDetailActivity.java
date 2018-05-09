@@ -16,9 +16,12 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.android.frameproj.library.util.imageloader.ImageLoaderUtil;
 import com.android.frameproj.library.widget.AdvertView;
 import com.android.frameproj.library.widget.CommonWebView;
+import com.daimajia.slider.library.SliderTypes.BaseSliderView;
 import com.lh.rapid.R;
+import com.lh.rapid.bean.GoodsDetailBean;
 import com.lh.rapid.bean.Hover;
 import com.lh.rapid.ui.BaseActivity;
 import com.lh.rapid.ui.widget.MyActionBar;
@@ -29,13 +32,15 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import butterknife.BindView;
 
 /**
  * Created by lh on 2018/5/7.
  */
 
-public class ProductDetailActivity extends BaseActivity implements PullUpToLoadMore.IProductDetailListener {
+public class ProductDetailActivity extends BaseActivity implements PullUpToLoadMore.IProductDetailListener, ProductDetailContract.View {
 
     @BindView(R.id.tv_cart_product_detail)
     TextView mTvCartProductDetail;
@@ -88,6 +93,10 @@ public class ProductDetailActivity extends BaseActivity implements PullUpToLoadM
     private ViewGroup anim_mask_layout;//动画层
     private List<Hover> hovers = new ArrayList<>();
 
+    private int mGoodsId;
+    @Inject
+    ProductDetailPresenter mPresenter;
+
     @Override
     public int initContentView() {
         return R.layout.activity_product_detail;
@@ -95,7 +104,11 @@ public class ProductDetailActivity extends BaseActivity implements PullUpToLoadM
 
     @Override
     public void initInjector() {
-
+        DaggerProductDetailComponent.builder()
+                .applicationComponent(getApplicationComponent())
+                .activityModule(getActivityModule())
+                .build()
+                .inject(this);
     }
 
     @Override
@@ -103,26 +116,17 @@ public class ProductDetailActivity extends BaseActivity implements PullUpToLoadM
 
         selectedList = new SparseArray<>();
         df = new DecimalFormat("0.00");
-        hovers = getData();
-        adapter = new ProductDetailAdapter(this,hovers);
-        mRvProductDetail.setLayoutManager(new LinearLayoutManager(this));
-        mRvProductDetail.setAdapter(adapter);
+
         mPtlmProduct.setIProductDetailListener(new PullUpToLoadMore.IProductDetailListener() {
             @Override
             public void onProductDetail() {
 
             }
         });
-    }
 
-    private List<Hover> getData() {
-        List<Hover> list = new ArrayList<>();
-        Hover hover = new Hover();
-        hover.setName("名字名字名字名字名字名字名字名字名字名字名字名字名字名字名字名字");
-        hover.setDiscounts("又是一大堆乱七八糟的不知所以然的东西");
-        hover.setPrice("36.00");
-        list.add(hover);
-        return list;
+        mGoodsId = getIntent().getIntExtra("goodsId", -1);
+        mPresenter.attachView(this);
+        mPresenter.loadDate(mGoodsId+"");
     }
 
     @Override
@@ -299,6 +303,48 @@ public class ProductDetailActivity extends BaseActivity implements PullUpToLoadM
         lp.topMargin = y;
         view.setLayoutParams(lp);
         return view;
+    }
+
+    @Override
+    public void onLoadDateCompleted(GoodsDetailBean goodsDetailBean) {
+        hovers = getData(goodsDetailBean);
+        adapter = new ProductDetailAdapter(this,hovers);
+        mRvProductDetail.setLayoutManager(new LinearLayoutManager(this));
+        mRvProductDetail.setAdapter(adapter);
+        mTvProductWeight.setText(goodsDetailBean.getStandard());
+        mTvProductTime.setText(goodsDetailBean.getSendTime());
+
+        List<BaseSliderView> baseSliderViews = new ArrayList<>();
+        List<String> imgs = goodsDetailBean.getImgs();
+        for (int i = 0; i < imgs.size(); i++) {
+            final String image = imgs.get(i);
+            BaseSliderView baseSliderView = new BaseSliderView(ProductDetailActivity.this) {
+                @Override
+                public View getView() {
+                    ImageView imageView = new ImageView(ProductDetailActivity.this);
+                    ImageLoaderUtil.getInstance().loadImage(image,imageView);
+                    return imageView;
+                }
+            };
+            baseSliderViews.add(baseSliderView);
+        }
+        mAvProductDetail.setAdvert(baseSliderViews);
+    }
+
+    private List<Hover> getData(GoodsDetailBean goodsDetailBean) {
+        List<Hover> list = new ArrayList<>();
+        Hover hover = new Hover();
+        hover.setName(goodsDetailBean.getGoodsName());
+        hover.setDiscounts(goodsDetailBean.getShareDesc());
+        hover.setPrice(goodsDetailBean.getSalePrice()+"");
+        list.add(hover);
+        return list;
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mPresenter.detachView();
     }
 
 }

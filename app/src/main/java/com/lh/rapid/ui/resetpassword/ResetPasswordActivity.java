@@ -6,12 +6,16 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
 import com.lh.rapid.Constants;
 import com.lh.rapid.R;
 import com.lh.rapid.ui.BaseActivity;
 import com.lh.rapid.ui.main.MainActivity;
+
 import java.util.concurrent.TimeUnit;
+
 import javax.inject.Inject;
+
 import butterknife.BindView;
 import butterknife.OnClick;
 import io.reactivex.Observable;

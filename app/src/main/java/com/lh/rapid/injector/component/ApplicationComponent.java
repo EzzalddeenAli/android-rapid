@@ -12,9 +12,11 @@ import com.lh.rapid.injector.PerApp;
 import com.lh.rapid.injector.module.ApiModule;
 import com.lh.rapid.injector.module.ApplicationModule;
 import com.lh.rapid.injector.module.DBModule;
+import com.lh.rapid.service.LocationService;
 import com.lh.rapid.ui.BaseActivity;
 import com.lh.rapid.util.SPUtil;
 import com.squareup.otto.Bus;
+
 import dagger.Component;
 
 /**
@@ -54,4 +56,5 @@ public interface ApplicationComponent { //4 接口，自动生成实现
 
     SPUtil provideSPUtil();
 
+    LocationService getLocationService();
 }

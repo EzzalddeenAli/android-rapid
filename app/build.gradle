@@ -42,6 +42,13 @@ android {
         }
     }
 
+    //百度地图配置SO文件的使用
+    sourceSets {
+        main {
+            jniLibs.srcDirs = ['libs']
+        }
+    }
+
     dexOptions {
         incremental true
         javaMaxHeapSize "4g" // 增加java堆内存大小
@@ -63,7 +70,7 @@ dependencies {
     implementation 'com.jakewharton:butterknife:8.6.0'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.6.0'
     compileOnly 'org.glassfish:javax.annotation:10.0-b28'
-    compileOnly "org.projectlombok:lombok:1.16.16"
+    compileOnly 'org.projectlombok:lombok:1.16.16'
     annotationProcessor "org.projectlombok:lombok:1.16.16"
     //dagger
     provided 'javax.annotation:javax.annotation-api:1.2'
@@ -72,7 +79,6 @@ dependencies {
     // leakcanary
     debugCompile 'com.squareup.leakcanary:leakcanary-android:1.4'
     releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.4'
-
     //multidex
     compile 'com.android.support:multidex:1.0.0'
     //fragmentation

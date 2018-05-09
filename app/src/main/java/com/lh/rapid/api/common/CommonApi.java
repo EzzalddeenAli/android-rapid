@@ -3,6 +3,10 @@ package com.lh.rapid.api.common;
 import android.content.Context;
 
 import com.lh.rapid.Constants;
+import com.lh.rapid.bean.CategoryDetailsBean;
+import com.lh.rapid.bean.CategoryOneLevelBean;
+import com.lh.rapid.bean.GoodsDetailBean;
+import com.lh.rapid.bean.HomePageBean;
 import com.lh.rapid.bean.HttpResult;
 import com.lh.rapid.bean.LoginEntity;
 import com.lh.rapid.components.retrofit.RequestHelper;
@@ -10,6 +14,8 @@ import com.lh.rapid.components.storage.UserStorage;
 import com.lh.rapid.util.SPUtil;
 
 import java.io.File;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import io.reactivex.Observable;
@@ -207,6 +213,64 @@ public class CommonApi {
         params.put("newPassword", newPassword);
         String sign = mRequestHelper.getRequestSign(params, currentTimeMillis);
         return mCommonService.accountPasswordReset(currentTimeMillis, sign, mUserStorage.getToken(), params).subscribeOn(Schedulers.io());
+    }
+
+    /**
+     * 首页
+     */
+    public Observable<HttpResult<HomePageBean>> homePage(String circleId) {
+        long currentTimeMillis = System.currentTimeMillis();
+        Map<String, Object> params = mRequestHelper.getHttpRequestMap(currentTimeMillis);
+        params.put("circleId", circleId);
+        String sign = mRequestHelper.getRequestSign(params, currentTimeMillis);
+        return mCommonService.homePage(currentTimeMillis, sign, mUserStorage.getToken(), params).subscribeOn(Schedulers.io());
+    }
+
+    /**
+     * 商品详情
+     */
+    public Observable<HttpResult<GoodsDetailBean>> goodsDetail(String goodsId) {
+        long currentTimeMillis = System.currentTimeMillis();
+        Map<String, Object> params = mRequestHelper.getHttpRequestMap(currentTimeMillis);
+        params.put("goodsId", goodsId);
+        String sign = mRequestHelper.getRequestSign(params, currentTimeMillis);
+        return mCommonService.goodsDetail(currentTimeMillis, sign, mUserStorage.getToken(), params).subscribeOn(Schedulers.io());
+    }
+
+    /**
+     * 商品分类
+     */
+    public Observable<HttpResult<List<CategoryOneLevelBean>>> categoryOneLevel() {
+        long currentTimeMillis = System.currentTimeMillis();
+        Map<String, Object> params = mRequestHelper.getHttpRequestMap(currentTimeMillis);
+        String sign = mRequestHelper.getRequestSign(params, currentTimeMillis);
+        return mCommonService.categoryOneLevel(currentTimeMillis, sign, mUserStorage.getToken()).subscribeOn(Schedulers.io());
+    }
+
+    /**
+     * 商品分类详情
+     */
+    public Observable<HttpResult<List<CategoryDetailsBean>>> categoryDetails(int parentId) {
+        long currentTimeMillis = System.currentTimeMillis();
+        Map<String, Object> params = mRequestHelper.getHttpRequestMap(currentTimeMillis);
+        params.put("parentId", parentId);
+        String sign = mRequestHelper.getRequestSign(params, currentTimeMillis);
+        return mCommonService.categoryDetails(currentTimeMillis, sign, mUserStorage.getToken(), params).subscribeOn(Schedulers.io());
+    }
+
+    /**
+     * 提供从地址到经纬度坐标或者从经纬度坐标到地址的转换服务
+     */
+    public Observable<ResponseBody> geocoderApi(String latLng) {
+        Map<String, Object> params = new HashMap<>();
+        // ak:百度地图api key
+        params.put("ak", "mFPjNn9HWii1KiKWLTFdgvb3KI7LQVoF");
+        params.put("callback", "renderReverse");
+        params.put("location", latLng);
+        params.put("output", "json");
+        params.put("pois", "1");
+        params.put("mcode", "CC:DE:0D:85:1D:4A:71:BF:9B:E3:53:F4:7F:37:4D:B3:72:DF:07:D7;com.xjgj.mall");
+        return mCommonService.geocoderApi(params).subscribeOn(Schedulers.io());
     }
 
 }

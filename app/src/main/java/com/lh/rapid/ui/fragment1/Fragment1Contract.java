@@ -1,6 +1,7 @@
 package com.lh.rapid.ui.fragment1;
 
 
+import com.lh.rapid.bean.HomePageBean;
 import com.lh.rapid.ui.BasePresenter;
 import com.lh.rapid.ui.BaseView;
 
@@ -17,9 +18,15 @@ public interface Fragment1Contract {
 
         void hideLoading();
 
+        void loadError(Throwable throwable);
+
+        void onLoadDateCompleted(HomePageBean homePageBean);
+
     }
 
     interface Presenter extends BasePresenter<View> {
+
+        void loadDate(String circleId);
 
     }
 

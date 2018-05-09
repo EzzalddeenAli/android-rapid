@@ -8,6 +8,7 @@ import com.android.frameproj.library.util.ToastUtil;
 import com.android.frameproj.library.util.log.CrashlyticsTree;
 import com.android.frameproj.library.util.log.Logger;
 import com.android.frameproj.library.util.log.Settings;
+import com.baidu.mapapi.SDKInitializer;
 import com.lh.rapid.injector.component.ApplicationComponent;
 import com.lh.rapid.injector.component.DaggerApplicationComponent;
 import com.lh.rapid.injector.module.ApplicationModule;
@@ -65,6 +66,8 @@ public class MyApplication extends MultiDexApplication {
         ToastUtil.register(this);
         initLogger();
         initFragmentation();
+        //初始化百度地图SDK
+        SDKInitializer.initialize(getApplicationContext());
     }
 
     private void initFragmentation() {

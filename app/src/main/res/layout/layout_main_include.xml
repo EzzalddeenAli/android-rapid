@@ -5,6 +5,12 @@
               android:layout_height="match_parent"
               android:orientation="vertical">
 
+    <View
+        android:id="@+id/fake_status_bar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/statusbar_view_height"
+        android:background="@android:color/transparent"/>
+
     <include layout="@layout/layout_main_title"/>
 
     <View

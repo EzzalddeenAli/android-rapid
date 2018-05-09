@@ -10,6 +10,7 @@ import com.lh.rapid.components.okhttp.TokenInterceptor;
 import com.lh.rapid.components.retrofit.RequestHelper;
 import com.lh.rapid.components.storage.UserStorage;
 import com.lh.rapid.injector.PerApp;
+import com.lh.rapid.service.LocationService;
 import com.lh.rapid.util.SPUtil;
 import com.squareup.otto.Bus;
 
@@ -159,6 +160,12 @@ public class ApplicationModule {
     @PerApp
     UserStorage provideUserStorage(Context mContext, SPUtil spUtil) {
         return new UserStorage(mContext, spUtil);
+    }
+
+    @Provides
+    @PerApp
+    LocationService provideLocationService(Context mContext) {
+        return new LocationService(mContext);
     }
 
 }

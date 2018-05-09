@@ -8,4 +8,28 @@
     <dimen name="site_float_height">34dp</dimen>
     <dimen name="site_discount_width">41dp</dimen>
     <dimen name="discount_textsize">10sp</dimen>
+
+    <dimen name="font_size_special_large">40px</dimen>
+    <dimen name="font_size_primary_small">34px</dimen>
+    <dimen name="font_size_primary_normal">32px</dimen>
+    <dimen name="font_size_primary_large">30px</dimen>
+    <dimen name="font_size_support_small">24px</dimen>
+    <dimen name="font_size_support_normal">20px</dimen>
+    <dimen name="font_size_support_large">18px</dimen>
+
+    <!-- 控件尺寸 -->
+    <!-- 导航栏 -->
+    <dimen name="widget_navigation_bar_height">44dp</dimen>
+    <!-- 底部栏 -->
+    <dimen name="widget_bottom_bar_height">40dp</dimen>
+    <!-- 按钮 -->
+    <dimen name="widget_button_height">44dp</dimen>
+    <!-- 标签栏-->
+    <dimen name="widget_label_height">49dp</dimen>
+    <!-- 控件布局 -->
+    <dimen name="widget_layout">4dp</dimen>
+
+    <!-- 边距 -->
+    <dimen name="my_padding">15dp</dimen>
+
 </resources>

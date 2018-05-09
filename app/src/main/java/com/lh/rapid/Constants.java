@@ -45,8 +45,14 @@ public class Constants {
     public static final int SERVICE_UNAVAILABLE = 503;
     public static final int GATEWAY_TIMEOUT = 504;
 
+    public static final int REQUEST_CHOOSE_LOCATION_CODE = 100;
+    public static final int RESULT_CHOOSE_LOCATION_CODE = 101;
     public static final int REQUEST_REGISTER_CODE = 108;
     public static final int RESULT_REGISTER_CODE = 109;
+    public static final int REQUEST_LOGIN_CODE = 112;
+    public static final int RESULT_LOGIN_CODE = 113;
+    public static final int REQUEST_CHOOSE_LOCATION_CODE_CUSTOM_MAP = 120;
+    public static final int RESULT_CHOOSE_LOCATION_CODE_CUSTOM_MAP = 121;
 
     public static boolean isAllCheck = true;
 

@@ -91,10 +91,6 @@
             android:screenOrientation="portrait"/>
 
         <activity
-            android:name=".ui.usercenter.UserCenterActivity"
-            android:screenOrientation="portrait"/>
-
-        <activity
             android:name=".ui.orderconfirm.OrderConfirmActivity"
             android:screenOrientation="portrait"/>
 
@@ -119,7 +115,7 @@
             android:screenOrientation="portrait"/>
 
         <activity
-            android:name=".ui.shoppingcart.ShoppingCartActivity"
+            android:name=".ui.location.ChooseLocationActivity"
             android:screenOrientation="portrait"/>
 
         <provider
@@ -131,6 +127,18 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths"/>
         </provider>
+
+        <!--百度地图定位SERVICE -->
+        <service
+            android:name="com.baidu.location.f"
+            android:enabled="true"
+            android:process=":remote">
+        </service>
+
+        <!-- 百度地图AcessKey -->
+        <meta-data
+            android:name="com.baidu.lbsapi.API_KEY"
+            android:value="BnnQlvpOeKrQ8cUklty3CQzm30Mfa0ky"/>
 
     </application>
 
