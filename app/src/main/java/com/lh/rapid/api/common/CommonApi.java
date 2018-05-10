@@ -1,14 +1,18 @@
 package com.lh.rapid.api.common;
 
 import android.content.Context;
+import android.text.TextUtils;
 
 import com.lh.rapid.Constants;
+import com.lh.rapid.bean.AddressListBean;
 import com.lh.rapid.bean.CategoryDetailsBean;
 import com.lh.rapid.bean.CategoryOneLevelBean;
 import com.lh.rapid.bean.GoodsDetailBean;
+import com.lh.rapid.bean.HomeCircleBean;
 import com.lh.rapid.bean.HomePageBean;
 import com.lh.rapid.bean.HttpResult;
 import com.lh.rapid.bean.LoginEntity;
+import com.lh.rapid.bean.ProductListBean;
 import com.lh.rapid.components.retrofit.RequestHelper;
 import com.lh.rapid.components.storage.UserStorage;
 import com.lh.rapid.util.SPUtil;
@@ -34,6 +38,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * Created by WE-WIN-027 on 2016/9/27.
+ *
  * @des ${实现接口的调用}
  */
 public class CommonApi {
@@ -271,6 +276,101 @@ public class CommonApi {
         params.put("pois", "1");
         params.put("mcode", "CC:DE:0D:85:1D:4A:71:BF:9B:E3:53:F4:7F:37:4D:B3:72:DF:07:D7;com.xjgj.mall");
         return mCommonService.geocoderApi(params).subscribeOn(Schedulers.io());
+    }
+
+    /**
+     * 首页圈主信息
+     */
+    public Observable<HttpResult<List<HomeCircleBean>>> homeCircle(double longitude, double latitude) {
+        long currentTimeMillis = System.currentTimeMillis();
+        Map<String, Object> params = mRequestHelper.getHttpRequestMap(currentTimeMillis);
+        params.put("longitude", longitude);
+        params.put("latitude", latitude);
+        String sign = mRequestHelper.getRequestSign(params, currentTimeMillis);
+        return mCommonService.homeCircle(currentTimeMillis, sign, mUserStorage.getToken(), params).subscribeOn(Schedulers.io());
+    }
+
+    /**
+     * 商品列表
+     * <p>
+     * type		int	1.通常商品；2.积分商品	FALSE
+     * categoryId		int	分类ID	FALSE
+     * page		int	页码 default=1	FALSE
+     * pageSize		int	每页大小	FALSE
+     * sortStr		String	排序字段:focus-人气，sale-销量，price-价格	FALSE
+     * sortType		int	排序方向：asc-升序，desc-降序	FALSE
+     *
+     * @return
+     */
+    public Observable<HttpResult<List<ProductListBean>>> goodsList(String type, String goodsName, String sortType,
+                                                                   String sortStr, String categoryId, String circleId,
+                                                                   int page, int pageSize) {
+        long currentTimeMillis = System.currentTimeMillis();
+        Map<String, Object> params = mRequestHelper.getHttpRequestMap(currentTimeMillis);
+        if (type != null && !TextUtils.isEmpty(type)) {
+            params.put("type", type);
+        }
+        if (goodsName != null && !TextUtils.isEmpty(goodsName)) {
+            params.put("goodsName", goodsName);
+        }
+        if (sortType != null && !TextUtils.isEmpty(sortType)) {
+            params.put("sortType", sortType);
+        }
+        if (sortStr != null && !TextUtils.isEmpty(sortStr)) {
+            params.put("sortStr", sortStr);
+        }
+        if (categoryId != null && !TextUtils.isEmpty(categoryId)) {
+            params.put("categoryId", categoryId);
+        }
+        if (circleId != null && !TextUtils.isEmpty(circleId)) {
+            params.put("circleId", circleId);
+        }
+        params.put("page", page);
+        params.put("pageSize", pageSize);
+        String sign = mRequestHelper.getRequestSign(params, currentTimeMillis);
+        return mCommonService.goodsList(currentTimeMillis, sign, mUserStorage.getToken(), params).subscribeOn(Schedulers.io());
+    }
+
+    /**
+     * 收货地址列表
+     */
+    public Observable<HttpResult<List<AddressListBean>>> addressList() {
+        long currentTimeMillis = System.currentTimeMillis();
+        Map<String, Object> params = mRequestHelper.getHttpRequestMap(currentTimeMillis);
+        String sign = mRequestHelper.getRequestSign(params, currentTimeMillis);
+        return mCommonService.addressList(currentTimeMillis, sign, mUserStorage.getToken()).subscribeOn(Schedulers.io());
+    }
+
+    /**
+     * 更新收货地址
+     */
+    public Observable<HttpResult<String>> addressUpdate(String addressId, String receiveName, String phone, String area,
+                                                        String detailAddress, String longitude, String latitude) {
+        long currentTimeMillis = System.currentTimeMillis();
+        Map<String, Object> params = mRequestHelper.getHttpRequestMap(currentTimeMillis);
+        if (addressId != null && !TextUtils.isEmpty(addressId)) {
+            params.put("addressId", addressId);
+        }
+        if (receiveName != null && !TextUtils.isEmpty(receiveName)) {
+            params.put("receiveName", receiveName);
+        }
+        if (phone != null && !TextUtils.isEmpty(phone)) {
+            params.put("phone", phone);
+        }
+        if (area != null && !TextUtils.isEmpty(area)) {
+            params.put("area", area);
+        }
+        if (detailAddress != null && !TextUtils.isEmpty(detailAddress)) {
+            params.put("detailAddress", detailAddress);
+        }
+        if (longitude != null && !TextUtils.isEmpty(longitude)) {
+            params.put("longitude", longitude);
+        }
+        if (latitude != null && !TextUtils.isEmpty(latitude)) {
+            params.put("latitude", latitude);
+        }
+        String sign = mRequestHelper.getRequestSign(params, currentTimeMillis);
+        return mCommonService.addressUpdate(currentTimeMillis, sign, mUserStorage.getToken(), params).subscribeOn(Schedulers.io());
     }
 
 }

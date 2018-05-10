@@ -26,6 +26,7 @@ public class SPUtil {
     private final String FLGSETPAY  = "flgsetpay";
     private final String FIRST_LOGIN = "first_login";
     private final String FLG_MALL = "flg_mall";
+    private final String CIRCLE_ID = "circle_id";
 
     private SharedPreferences sharedPreferences;
     private SharedPreferences.Editor editor;
@@ -97,6 +98,14 @@ public class SPUtil {
 
     public String getTOKNE() {
         return getString(TOKNE);
+    }
+
+    public void setCIRCLE_ID(int circle_id) {
+        save(CIRCLE_ID, circle_id);
+    }
+
+    public int getCIRCLE_ID() {
+        return getInt(CIRCLE_ID);
     }
 
     public void setUSER(String user) {

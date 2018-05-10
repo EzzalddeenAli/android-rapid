@@ -75,16 +75,12 @@ public class MainActivity extends BaseActivity implements MainContract.View
 
     @BindView(R.id.frame_layout)
     FrameLayout mFrameLayout;
-
     @Inject
     CommonApi mCommonApi;
-
     @Inject
     Bus mBus;
-
     @Inject
     SPUtil mSPUtil;
-
     @BindView(R.id.bottomBar)
     BottomBar mBottomBar;
     @Inject

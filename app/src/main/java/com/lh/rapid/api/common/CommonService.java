@@ -1,11 +1,14 @@
 package com.lh.rapid.api.common;
 
+import com.lh.rapid.bean.AddressListBean;
 import com.lh.rapid.bean.CategoryDetailsBean;
 import com.lh.rapid.bean.CategoryOneLevelBean;
 import com.lh.rapid.bean.GoodsDetailBean;
+import com.lh.rapid.bean.HomeCircleBean;
 import com.lh.rapid.bean.HomePageBean;
 import com.lh.rapid.bean.HttpResult;
 import com.lh.rapid.bean.LoginEntity;
+import com.lh.rapid.bean.ProductListBean;
 
 import java.util.List;
 import java.util.Map;
@@ -91,8 +94,31 @@ public interface CommonService {
     Observable<HttpResult<List<CategoryDetailsBean>>> categoryDetails(@Header("timestamp") long timestamp, @Header("sign") String sign,
                                                                       @Header("token") String token, @FieldMap Map<String, Object> params);
 
-    // 提供从地址到经纬度坐标或者从经纬度坐标到地址的转换服务
+    //提供从地址到经纬度坐标或者从经纬度坐标到地址的转换服务
     @GET("http://api.map.baidu.com/geocoder/v2/?")
     Observable<ResponseBody> geocoderApi(@QueryMap Map<String, Object> params);
+
+    //首页圈主信息
+    @FormUrlEncoded
+    @POST("home/circle")
+    Observable<HttpResult<List<HomeCircleBean>>> homeCircle(@Header("timestamp") long timestamp, @Header("sign") String sign,
+                                                            @Header("token") String token, @FieldMap Map<String, Object> params);
+
+    //商品列表
+    @FormUrlEncoded
+    @POST("goods/list")
+    Observable<HttpResult<List<ProductListBean>>> goodsList(@Header("timestamp") long timestamp, @Header("sign") String sign,
+                                                            @Header("token") String token, @FieldMap Map<String, Object> params);
+
+    //收货地址列表
+    @POST("address/list")
+    Observable<HttpResult<List<AddressListBean>>> addressList(@Header("timestamp") long timestamp, @Header("sign") String sign,
+                                                              @Header("token") String token);
+
+    //更新收货地址
+    @FormUrlEncoded
+    @POST("address/update")
+    Observable<HttpResult<String>> addressUpdate(@Header("timestamp") long timestamp, @Header("sign") String sign,
+                                                 @Header("token") String token, @FieldMap Map<String, Object> params);
 
 }

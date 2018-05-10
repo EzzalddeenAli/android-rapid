@@ -63,5 +63,4 @@ public class Constants {
     public static final String SMSCODE_TYPE_LOGIN = "2";
     public static final String SMSCODE_TYPE_MODIFY_PASSWORD = "3";
 
-
 }

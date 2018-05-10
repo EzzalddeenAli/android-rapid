@@ -30,7 +30,6 @@
                android:layout_marginLeft="@dimen/px16dp"
                android:layout_toRightOf="@id/iv_home_place"
                android:maxLength="8"
-               android:text="南大路458号"
                android:textColor="@color/tab_color"
                android:textSize="@dimen/px28sp"/>
 

@@ -4,44 +4,41 @@ import android.Manifest;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.util.SparseArray;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.animation.AccelerateInterpolator;
-import android.view.animation.Animation;
-import android.view.animation.AnimationSet;
-import android.view.animation.LinearInterpolator;
-import android.view.animation.TranslateAnimation;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.android.frameproj.library.adapter.CommonAdapter;
 import com.android.frameproj.library.adapter.wrapper.LoadMoreWrapper;
 import com.android.frameproj.library.decoration.RecyclerViewDivider;
 import com.android.frameproj.library.util.ToastUtil;
+import com.lh.rapid.Constants;
 import com.lh.rapid.R;
 import com.lh.rapid.bean.CategoryName;
 import com.lh.rapid.bean.GoodBean;
+import com.lh.rapid.bean.HomeCircleBean;
 import com.lh.rapid.bean.HomePageBean;
+import com.lh.rapid.bean.ProductListBean;
 import com.lh.rapid.ui.BaseFragment;
 import com.lh.rapid.ui.location.ChooseLocationActivity;
 import com.lh.rapid.ui.main.MainComponent;
 import com.lh.rapid.ui.productdetail.ProductDetailActivity;
+import com.lh.rapid.util.BusUtil;
+import com.lh.rapid.util.CommonEvent;
+import com.lh.rapid.util.LocationUtil;
 import com.lh.rapid.util.MyGlideImageLoader;
+import com.lh.rapid.util.SPUtil;
+import com.squareup.otto.Subscribe;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 import com.youth.banner.Banner;
 
-import java.math.BigDecimal;
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -49,8 +46,11 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.functions.Consumer;
+import io.reactivex.schedulers.Schedulers;
 
 public class Fragment1 extends BaseFragment implements Fragment1Contract.View, LoadMoreWrapper.OnLoadMoreListener {
 
@@ -105,23 +105,13 @@ public class Fragment1 extends BaseFragment implements Fragment1Contract.View, L
     private CategoryCommodityAdapter commodityAdapter;
 
     private List<CategoryName> mNames = new ArrayList<>();
-    private List<GoodBean> list3 = new ArrayList<GoodBean>();
-    private List<GoodBean> list4 = new ArrayList<GoodBean>();
-    private List<GoodBean> list5 = new ArrayList<GoodBean>();
     private List<HomePageBean.CategoryListsBean.GoodListBean> goodBeans = new ArrayList<>();
     private SparseArray<GoodBean> selectedList;
 
-    public static int num = 0;
-    private ViewGroup anim_mask_layout;//动画层
-    Double totleMoney = 0.00;
-    private static DecimalFormat df;
-
     @Inject
     Fragment1Presenter mPresenter;
-    private CommonAdapter mRecommendCommonAdapter;
-
-    private String mScanResult;
-    private int mCircleId;
+    @Inject
+    SPUtil mSPUtil;
 
     public static BaseFragment newInstance() {
         Fragment1 fragment1 = new Fragment1();
@@ -149,6 +139,7 @@ public class Fragment1 extends BaseFragment implements Fragment1Contract.View, L
     //  3
     @Override
     public void initUI(View view) {
+        BusUtil.getBus().register(this);
         mPresenter.attachView(this);
         mRxPermissions = new RxPermissions(getActivity());
         mRxPermissions
@@ -159,18 +150,15 @@ public class Fragment1 extends BaseFragment implements Fragment1Contract.View, L
                     @Override
                     public void accept(@NonNull Boolean granted) throws Exception {
                         if (granted) {
+                            LocationUtil.getInstance(getActivity()).startMonitor();
                         } else {
                             ToastUtil.showToast("没有权限部分功能不能正常运行!");
+                            mPresenter.homeCircle(mSPUtil.getLONGITUDE(), mSPUtil.getLATITUDE());
                         }
                     }
                 });
-
-
         selectedList = new SparseArray<>();
-        df = new DecimalFormat("0.00");
-
         initTitle();
-        mPresenter.loadDate(2 + "");
     }
 
     private void initTitle() {
@@ -237,168 +225,11 @@ public class Fragment1 extends BaseFragment implements Fragment1Contract.View, L
         return temp.getNum();
     }
 
-    public void handlerCarNum(int type, GoodBean goodsBean, boolean refreshGoodList) {
-        if (type == 0) {
-            GoodBean temp = selectedList.get(goodsBean.getProduct_id());
-            if (temp != null) {
-                if (temp.getNum() < 2) {
-                    goodsBean.setNum(0);
-                    selectedList.remove(goodsBean.getProduct_id());
-
-                } else {
-                    int i = goodsBean.getNum();
-                    goodsBean.setNum(--i);
-                }
-            }
-
-        } else if (type == 1) {
-            GoodBean temp = selectedList.get(goodsBean.getProduct_id());
-            if (temp == null) {
-                goodsBean.setNum(1);
-                selectedList.append(goodsBean.getProduct_id(), goodsBean);
-            } else {
-                int i = goodsBean.getNum();
-                goodsBean.setNum(++i);
-            }
-        }
-        update(refreshGoodList);
-    }
-
-    private void update(boolean refreshGoodList) {
-        int size = selectedList.size();
-        int count = 0;
-        for (int i = 0; i < size; i++) {
-            GoodBean item = selectedList.valueAt(i);
-            count += item.getNum();
-            totleMoney += item.getNum() * Double.parseDouble(item.getPrice());
-        }
-        if (count < 1) {
-            mTvCartNumProductDetail.setVisibility(View.GONE);
-            mTvFavoriteProductDetailChose.setText("还未选择商品");
-            totleMoney = 0.00;
-            mTvCartProductDetailSend.setText("¥20.0起送");
-            mTvCartProductDetailSend.setTextColor(ContextCompat.getColor(getActivity(), R.color.white));
-            mTvCartProductDetailSend.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.color_b7b7b7));
-        } else {
-            Double mAmount = Double.valueOf(df.format(totleMoney));
-            mTvCartProductDetail.setVisibility(View.VISIBLE);
-            BigDecimal bAmount = new BigDecimal(mAmount.toString());
-            if (bAmount.compareTo(new BigDecimal(20.0)) < 0) {
-
-                mTvCartProductDetailSend.setText("还差" + new BigDecimal(20.0).subtract(bAmount) + "起送");
-                mTvCartNumProductDetail.setVisibility(View.VISIBLE);
-                mTvCartProductDetailSend.setVisibility(View.VISIBLE);
-                mTvCartProductDetail.setVisibility(View.GONE);
-            } else {
-                mTvCartProductDetailSend.setVisibility(View.GONE);
-                mTvCartProductDetail.setVisibility(View.VISIBLE);
-            }
-            totleMoney = 0.00;
-            mTvFavoriteProductDetailChose.setText("¥" + bAmount);
-        }
-        mTvCartNumProductDetail.setText(String.valueOf(count));
-
-        if (commodityAdapter != null) {
-            commodityAdapter.notifyDataSetChanged();
-        }
-
-        if (nameAdapter != null) {
-            nameAdapter.notifyDataSetChanged();
-        }
-
-    }
-
-    public void setAnim(final View v, int[] startLocation) {
-        anim_mask_layout = null;
-        anim_mask_layout = createAnimLayout();
-        anim_mask_layout.addView(v);//把动画小球添加到动画层
-        final View view = addViewToAnimLayout(anim_mask_layout, v, startLocation);
-        int[] endLocation = new int[2];// 存储动画结束位置的X、Y坐标
-        mIvFooterCartProductDetail.getLocationInWindow(endLocation);
-        // 计算位移
-        int endX = 0 - startLocation[0] + 40;// 动画位移的X坐标
-        int endY = endLocation[1] - startLocation[1];// 动画位移的y坐标
-
-        TranslateAnimation translateAnimationX = new TranslateAnimation(0, endX, 0, 0);
-        translateAnimationX.setInterpolator(new LinearInterpolator());
-        translateAnimationX.setRepeatCount(0);// 动画重复执行的次数
-        translateAnimationX.setFillAfter(true);
-
-        TranslateAnimation translateAnimationY = new TranslateAnimation(0, 0, 0, endY);
-        translateAnimationY.setInterpolator(new AccelerateInterpolator());
-        translateAnimationY.setRepeatCount(0);// 动画重复执行的次数
-        translateAnimationY.setFillAfter(true);
-
-        AnimationSet set = new AnimationSet(false);
-        set.setFillAfter(false);
-        set.addAnimation(translateAnimationY);
-        set.addAnimation(translateAnimationX);
-        set.setDuration(800);// 动画的执行时间
-        view.startAnimation(set);
-        // 动画监听事件
-        set.setAnimationListener(new Animation.AnimationListener() {
-            // 动画的开始
-            @Override
-            public void onAnimationStart(Animation animation) {
-                v.setVisibility(View.VISIBLE);
-            }
-
-            @Override
-            public void onAnimationRepeat(Animation animation) {
-                // TODO Auto-generated method stub
-            }
-
-            // 动画的结束
-            @Override
-            public void onAnimationEnd(Animation animation) {
-                v.setVisibility(View.GONE);
-            }
-        });
-
-    }
-
-    private ViewGroup createAnimLayout() {
-        ViewGroup rootView = (ViewGroup) getActivity().getWindow().getDecorView();
-        LinearLayout animLayout = new LinearLayout(getActivity());
-        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.MATCH_PARENT);
-        animLayout.setLayoutParams(lp);
-        animLayout.setId(Integer.MAX_VALUE - 1);
-        animLayout.setBackgroundResource(android.R.color.transparent);
-        rootView.addView(animLayout);
-        return animLayout;
-    }
-
-    private View addViewToAnimLayout(final ViewGroup parent, final View view,
-                                     int[] location) {
-        int x = location[0];
-        int y = location[1];
-        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.WRAP_CONTENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT);
-        lp.leftMargin = x;
-        lp.topMargin = y;
-        view.setLayoutParams(lp);
-        return view;
-    }
-
-    public void setCartNum(int num) {
-        this.num = num;
-        if (num > 0) {
-            mTvCartNumProductDetail.setVisibility(View.VISIBLE);
-            mTvCartNumProductDetail.setText(num + "");
-        } else {
-            mTvCartNumProductDetail.setVisibility(View.GONE);
-        }
-    }
-
     @Override
     public void onLoadDateCompleted(HomePageBean homePageBean) {
         initBanner(homePageBean.getBnTop());
         initRecyclerView(homePageBean.getCategoryLists());
         mTvCircleName.setText(homePageBean.getCircleName());
-        mCircleId = homePageBean.getCircleId();
     }
 
     private void initBanner(List<HomePageBean.BnTopBean> bnTop) {
@@ -409,57 +240,91 @@ public class Fragment1 extends BaseFragment implements Fragment1Contract.View, L
     }
 
     private void initRecyclerView(final List<HomePageBean.CategoryListsBean> categoryLists) {
-        //商品
-        for (int j = 10; j < 25; j++) {
-            GoodBean goodsBean = new GoodBean();
-            goodsBean.setName("胡辣汤");
-            goodsBean.setProduct_id(j);
-            goodsBean.setCategory_id(j);
-            goodsBean.setIcon("http://g.hiphotos.baidu.com/image/pic/item/03087bf40ad162d9ec74553b14dfa9ec8a13cd7a.jpg");
-            goodsBean.setWeight("40");
-            goodsBean.setPrice("10");
-            list5.add(goodsBean);
-        }
 
         mRvFormName.setLayoutManager(new LinearLayoutManager(getActivity()));
         mRvFormName.addItemDecoration(new RecyclerViewDivider(getActivity().getApplicationContext(), LinearLayout.VERTICAL, 2, R.color.white));
         nameAdapter = new CategoryCommNameAdapter(this, getActivity(), categoryLists);
-        mRvFormName.setAdapter(nameAdapter);
+        nameAdapter.setItemClickLitener(new CategoryCommNameAdapter.rvItemClickLitener() {
+            @Override
+            public void itemClick(int position) {
 
+                nameAdapter.setSelection(position);
+                nameAdapter.notifyDataSetChanged();
+                mPresenter.onLoadProductList(categoryLists.get(position).getCategoryId() + "", mSPUtil.getCIRCLE_ID() + "");
+            }
+        });
+        mRvFormName.setAdapter(nameAdapter);
 
         goodBeans.clear();
         goodBeans.addAll(categoryLists.get(0).getGoodList());
         mRvFormDetail.setLayoutManager(new LinearLayoutManager(getActivity()));
         mRvFormDetail.addItemDecoration(new RecyclerViewDivider(getActivity().getApplicationContext(), LinearLayout.VERTICAL, 2, R.color.line));
         commodityAdapter = new CategoryCommodityAdapter(this, getActivity(), goodBeans, nameAdapter);
-        mRvFormDetail.setAdapter(commodityAdapter);
-
-        nameAdapter.setItemClickLitener(new CategoryCommNameAdapter.rvItemClickLitener() {
-            @Override
-            public void itemClick(int position) {
-                if(mNames.get(position).getList()!=null){
-                    Log.i("fyg", "list.get(position).getList():" + mNames.get(position).getList());
-                    goodBeans.clear();
-                    goodBeans.addAll(categoryLists.get(position).getGoodList());
-                }
-                nameAdapter.setSelection(position);
-                nameAdapter.notifyDataSetChanged();
-                commodityAdapter.notifyDataSetChanged();
-            }
-        });
-
         commodityAdapter.setItemClickLitener(new CategoryCommodityAdapter.rvCateItemClickLitener() {
             @Override
             public void itemClick(int position) {
                 Intent intent = new Intent(getActivity(), ProductDetailActivity.class);
-                intent.putExtra("goodsId",goodBeans.get(position).getGoodsId());
+                intent.putExtra("goodsId", goodBeans.get(position).getGoodsId());
                 startActivity(intent);
             }
         });
+        mRvFormDetail.setAdapter(commodityAdapter);
     }
 
     @OnClick(R.id.rl_location)
-    public void mRlLocation(View view){
-        openActivity(ChooseLocationActivity.class);
+    public void mRlLocation(View view) {
+        Intent intent = new Intent(getActivity(), ChooseLocationActivity.class);
+        startActivityForResult(intent, Constants.REQUEST_CHOOSE_LOCATION_CODE);
     }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == Constants.REQUEST_CHOOSE_LOCATION_CODE && resultCode == Constants.RESULT_CHOOSE_LOCATION_CODE) {
+            double longitude = data.getDoubleExtra("longitude", -1);
+            double latitude = data.getDoubleExtra("latitude", -1);
+            String name = data.getStringExtra("name");
+            String addr = data.getStringExtra("addr");
+            mPresenter.homeCircle(longitude, latitude);
+            mTvHomeLocation.setText(addr);
+        }
+    }
+
+    @Subscribe
+    public void onPaySuccessEvent(final CommonEvent.LocationEvent locationEvent) {
+        mPresenter.homeCircle(locationEvent.getLongitude(), locationEvent.getLatitude());
+        Observable.just(1)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<Integer>() {
+                    @Override
+                    public void accept(@NonNull Integer integer) throws Exception {
+                        mTvHomeLocation.setText(locationEvent.getAddrStr());
+                    }
+                });
+    }
+
+    @Override
+    public void homeCircleSuccess(List<HomeCircleBean> homeCircleBeanList) {
+        if (homeCircleBeanList != null && homeCircleBeanList.size() > 0) {
+            int circleId = homeCircleBeanList.get(0).getCircleId();
+            String circleName = homeCircleBeanList.get(0).getCircleName();
+            mPresenter.loadDate(circleId + "");
+            mSPUtil.setCIRCLE_ID(circleId);
+        }
+    }
+
+    @Override
+    public void onLoadProductListSuccess(List<ProductListBean> goodsDetailBeanList) {
+//        goodBeans.clear();
+//        goodBeans.addAll(goodsDetailBeanList);
+//        commodityAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        BusUtil.getBus().unregister(this);
+    }
+
 }

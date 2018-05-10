@@ -40,7 +40,7 @@ import butterknife.BindView;
  * Created by lh on 2018/5/7.
  */
 
-public class ProductDetailActivity extends BaseActivity implements PullUpToLoadMore.IProductDetailListener, ProductDetailContract.View {
+public class ProductDetailActivity extends BaseActivity implements ProductDetailContract.View {
 
     @BindView(R.id.tv_cart_product_detail)
     TextView mTvCartProductDetail;
@@ -96,6 +96,7 @@ public class ProductDetailActivity extends BaseActivity implements PullUpToLoadM
     private int mGoodsId;
     @Inject
     ProductDetailPresenter mPresenter;
+    private String mGoodsDesc;
 
     @Override
     public int initContentView() {
@@ -116,13 +117,6 @@ public class ProductDetailActivity extends BaseActivity implements PullUpToLoadM
 
         selectedList = new SparseArray<>();
         df = new DecimalFormat("0.00");
-
-        mPtlmProduct.setIProductDetailListener(new PullUpToLoadMore.IProductDetailListener() {
-            @Override
-            public void onProductDetail() {
-
-            }
-        });
 
         mGoodsId = getIntent().getIntExtra("goodsId", -1);
         mPresenter.attachView(this);
@@ -150,11 +144,6 @@ public class ProductDetailActivity extends BaseActivity implements PullUpToLoadM
             return 0;
         }
         return temp.getNum();
-    }
-
-    @Override
-    public void onProductDetail() {
-        mWbProductDetail.setVisibility(View.VISIBLE);
     }
 
     public void handlerCarNum(int type, Hover hover, boolean refreshGoodList) {
@@ -306,13 +295,20 @@ public class ProductDetailActivity extends BaseActivity implements PullUpToLoadM
     }
 
     @Override
-    public void onLoadDateCompleted(GoodsDetailBean goodsDetailBean) {
+    public void onLoadDateCompleted(final GoodsDetailBean goodsDetailBean) {
         hovers = getData(goodsDetailBean);
         adapter = new ProductDetailAdapter(this,hovers);
         mRvProductDetail.setLayoutManager(new LinearLayoutManager(this));
         mRvProductDetail.setAdapter(adapter);
         mTvProductWeight.setText(goodsDetailBean.getStandard());
         mTvProductTime.setText(goodsDetailBean.getSendTime());
+        mPtlmProduct.setIProductDetailListener(new PullUpToLoadMore.IProductDetailListener() {
+            @Override
+            public void onProductDetail() {
+                mWbProductDetail.setVisibility(View.VISIBLE);
+                mWbProductDetail.setCommonWebView(goodsDetailBean.getGoodsDesc());
+            }
+        });
 
         List<BaseSliderView> baseSliderViews = new ArrayList<>();
         List<String> imgs = goodsDetailBean.getImgs();

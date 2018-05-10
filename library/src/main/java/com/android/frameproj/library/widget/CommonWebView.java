@@ -68,7 +68,7 @@ public class CommonWebView extends FrameLayout {
         webSettings.setJavaScriptCanOpenWindowsAutomatically(true);
         webSettings.setBlockNetworkImage(false);
         webSettings.setDisplayZoomControls(false);//设定缩放控件隐藏
-//        webSettings.setCacheMode(WebSettings.LOAD_NO_CACHE);
+        //        webSettings.setCacheMode(WebSettings.LOAD_NO_CACHE);
         webSettings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.NARROW_COLUMNS);
         webSettings.setUseWideViewPort(true);//将图片调整到适合webview的大小
         webSettings.setLoadWithOverviewMode(true);
@@ -80,12 +80,12 @@ public class CommonWebView extends FrameLayout {
             webSettings.setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
         }
 
-//        mWebView.getSettings().setJavaScriptCanOpenWindowsAutomatically(true);//设置js可以直接打开窗口，如window.open()，默认为false
-//        mWebView.getSettings().setJavaScriptEnabled(true);//是否允许执行js，默认为false。设置true时，会提醒可能造成XSS漏洞
-//        mWebView.getSettings().setSupportZoom(true);//是否可以缩放，默认true
-//        mWebView.getSettings().setBuiltInZoomControls(true);//是否显示缩放按钮，默认false
-//        mWebView.getSettings().setUseWideViewPort(true);//设置此属性，可任意比例缩放。大视图模式
-//        mWebView.getSettings().setLoadWithOverviewMode(true);//和setUseWideViewPort(true)一起解决网页自适应问题
+        //        mWebView.getSettings().setJavaScriptCanOpenWindowsAutomatically(true);//设置js可以直接打开窗口，如window.open()，默认为false
+        //        mWebView.getSettings().setJavaScriptEnabled(true);//是否允许执行js，默认为false。设置true时，会提醒可能造成XSS漏洞
+        //        mWebView.getSettings().setSupportZoom(true);//是否可以缩放，默认true
+        //        mWebView.getSettings().setBuiltInZoomControls(true);//是否显示缩放按钮，默认false
+        //        mWebView.getSettings().setUseWideViewPort(true);//设置此属性，可任意比例缩放。大视图模式
+        //        mWebView.getSettings().setLoadWithOverviewMode(true);//和setUseWideViewPort(true)一起解决网页自适应问题
         mWebView.getSettings().setAppCacheEnabled(false);//是否使用缓存
         mWebView.getSettings().setDomStorageEnabled(true);//DOM Storage
         webSettings.setJavaScriptEnabled(true);//启动JavaScript功能
@@ -95,8 +95,8 @@ public class CommonWebView extends FrameLayout {
         webSettings.setAllowFileAccess(true);  //设置可以访问文件
         webSettings.setNeedInitialFocus(true); //当webview调用requestFocus时为webview设置节点
         webSettings.setBuiltInZoomControls(true);
-//        webSettings.setJavaScriptCanOpenWindowsAutomatically(true); //支持通过JS打开新窗口
-//        webSettings.setLoadWithOverviewMode(true); // 缩放至屏幕的大小
+        //        webSettings.setJavaScriptCanOpenWindowsAutomatically(true); //支持通过JS打开新窗口
+        //        webSettings.setLoadWithOverviewMode(true); // 缩放至屏幕的大小
         webSettings.setLoadsImagesAutomatically(true);  //支持自动加载图片
         webSettings.setRenderPriority(WebSettings.RenderPriority.HIGH);
         webSettings.setSupportZoom(false); //
@@ -106,7 +106,7 @@ public class CommonWebView extends FrameLayout {
             @Override
             public void onPageFinished(WebView view, String url) {
                 mProgressBar.setVisibility(View.GONE);
-//                webSettings.setBlockNetworkImage(false);
+                //                webSettings.setBlockNetworkImage(false);
                 if (mWebViewClient != null) {
                     mWebViewClient.onPageFinished();
                 }
@@ -131,7 +131,12 @@ public class CommonWebView extends FrameLayout {
             }
         });
         mWebView.setScrollBarStyle(SCROLLBARS_OUTSIDE_INSET);
-        mWebView.loadUrl(mUrl);
+        //        mWebView.loadUrl(mUrl);
+        if (mUrl.startsWith("http")) {
+            mWebView.loadUrl(mUrl);
+        } else {
+            mWebView.loadDataWithBaseURL(null, mUrl, "text/html", "utf-8", null);
+        }
     }
 
     public void setCommonWebView(String url) {

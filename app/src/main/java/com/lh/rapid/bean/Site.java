@@ -8,8 +8,8 @@ public class Site {
     private String site;
     private String name;
     private String phone;
-    private int image;
     private String change;
+    private int image;
     private int line;
 
     public Site(String site, String name, String phone, int image, String change, int line) {

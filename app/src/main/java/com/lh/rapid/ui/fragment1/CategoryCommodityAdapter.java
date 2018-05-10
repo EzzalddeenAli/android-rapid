@@ -106,7 +106,6 @@ public class CategoryCommodityAdapter extends RecyclerView.Adapter<CategoryCommo
                 v.getLocationInWindow(startLocation);// 这是获取购买按钮的在屏幕的X、Y坐标（这也是动画开始的坐标）
                 ImageView ball = new ImageView(context);
                 ball.setImageResource(R.drawable.empty);
-                mFragment1.setAnim(ball, startLocation);// 开始执行动画
 
 
 //                myViewHolder.iv_cart_comm_minus.setOnClickListener(new View.OnClickListener() {

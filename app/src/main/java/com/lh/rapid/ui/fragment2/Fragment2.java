@@ -1,6 +1,7 @@
 package com.lh.rapid.ui.fragment2;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
@@ -20,6 +21,7 @@ import com.lh.rapid.bean.CategoryDetailsBean;
 import com.lh.rapid.bean.CategoryOneLevelBean;
 import com.lh.rapid.ui.BaseFragment;
 import com.lh.rapid.ui.main.MainComponent;
+import com.lh.rapid.ui.productlist.ProductListActivity;
 import com.lh.rapid.ui.widget.MyActionBar;
 import com.squareup.otto.Bus;
 
@@ -169,10 +171,9 @@ public class Fragment2 extends BaseFragment implements Fragment2Contract.View {
                     public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
                         int categoryid = categoryDetailsBean.getCategory().get(position).getId();
                         String categoryname = categoryDetailsBean.getCategory().get(position).getCategoryName();
-                        //                        Intent intent = new Intent(getActivity(), ProductListActivity.class);
-                        //                        intent.putExtra("categoryid", categoryid);
-                        //                        intent.putExtra("categoryname", categoryname);
-                        //                        startActivity(intent);
+                        Intent intent = new Intent(getActivity(), ProductListActivity.class);
+                        intent.putExtra("categoryId", categoryid);
+                        startActivity(intent);
                     }
 
                     @Override

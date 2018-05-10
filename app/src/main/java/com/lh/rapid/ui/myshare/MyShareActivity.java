@@ -74,7 +74,6 @@ public class MyShareActivity extends BaseActivity {
             }
         });
         mRefreshLayout.setEnableLoadMore(false);
-        //        mRefreshLayout.autoRefresh();
         initRecyclerView();
     }
 

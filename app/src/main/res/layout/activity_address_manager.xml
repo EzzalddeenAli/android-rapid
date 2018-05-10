@@ -9,11 +9,18 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/actionbar_height"/>
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/rv_manage_address"
+    <com.scwang.smartrefresh.layout.SmartRefreshLayout
+        android:id="@+id/refreshLayout"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"/>
+        android:layout_weight="1">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_manage_address"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 
     <View
         android:layout_width="match_parent"
@@ -24,20 +31,21 @@
         android:id="@+id/ll_manage_address"
         android:layout_width="match_parent"
         android:layout_height="@dimen/px98dp"
-        android:orientation="horizontal"
-        android:gravity="center">
+        android:gravity="center"
+        android:orientation="horizontal">
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@mipmap/icon_address_add"/>
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="@dimen/px32dp"
-            android:textColor="@color/tab_color"
+            android:layout_marginLeft="@dimen/px16dp"
             android:text="新增收货地址"
-            android:layout_marginLeft="@dimen/px16dp"/>
+            android:textColor="@color/tab_color"
+            android:textSize="@dimen/px32dp"/>
 
     </LinearLayout>
 
