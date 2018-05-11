@@ -70,4 +70,28 @@ public class AddressManagerPresenter implements AddressManagerContract.Presenter
                     }
                 }));
     }
+
+    @Override
+    public void addressDelete(String addressId) {
+        disposables.add(mCommonApi.addressDelete(addressId)
+                .debounce(800, TimeUnit.MILLISECONDS)
+                .flatMap(new Function<HttpResult<String>, ObservableSource<String>>() {
+                    @Override
+                    public ObservableSource<String> apply(@io.reactivex.annotations.NonNull HttpResult<String> homePageBeanHttpResult) throws Exception {
+                        return CommonApi.flatResponse(homePageBeanHttpResult);
+                    }
+                })
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<String>() {
+                    @Override
+                    public void accept(@io.reactivex.annotations.NonNull String s) throws Exception {
+                        mView.addressDeleteSuccess(s);
+                    }
+                }, new Consumer<Throwable>() {
+                    @Override
+                    public void accept(@io.reactivex.annotations.NonNull Throwable throwable) throws Exception {
+                        mView.loadError(throwable);
+                    }
+                }));
+    }
 }

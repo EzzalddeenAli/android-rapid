@@ -1,6 +1,7 @@
 package com.lh.rapid.api.common;
 
 import com.lh.rapid.bean.AddressListBean;
+import com.lh.rapid.bean.CartGoodsBean;
 import com.lh.rapid.bean.CategoryDetailsBean;
 import com.lh.rapid.bean.CategoryOneLevelBean;
 import com.lh.rapid.bean.GoodsDetailBean;
@@ -68,19 +69,19 @@ public interface CommonService {
     @FormUrlEncoded
     @POST("account/password/reset")
     Observable<HttpResult<String>> accountPasswordReset(@Header("timestamp") long timestamp, @Header("sign") String sign,
-                                                        @Header("token") String token, @FieldMap Map<String, Object> params);
+                                                        @FieldMap Map<String, Object> params);
 
     //首页
     @FormUrlEncoded
     @POST("home/page")
     Observable<HttpResult<HomePageBean>> homePage(@Header("timestamp") long timestamp, @Header("sign") String sign,
-                                                  @Header("token") String token, @FieldMap Map<String, Object> params);
+                                                  @FieldMap Map<String, Object> params);
 
     //商品详情
     @FormUrlEncoded
     @POST("goods/detail")
     Observable<HttpResult<GoodsDetailBean>> goodsDetail(@Header("timestamp") long timestamp, @Header("sign") String sign,
-                                                        @Header("token") String token, @FieldMap Map<String, Object> params);
+                                                        @FieldMap Map<String, Object> params);
 
 
     //商品分类
@@ -92,7 +93,7 @@ public interface CommonService {
     @FormUrlEncoded
     @POST("category/details")
     Observable<HttpResult<List<CategoryDetailsBean>>> categoryDetails(@Header("timestamp") long timestamp, @Header("sign") String sign,
-                                                                      @Header("token") String token, @FieldMap Map<String, Object> params);
+                                                                      @FieldMap Map<String, Object> params);
 
     //提供从地址到经纬度坐标或者从经纬度坐标到地址的转换服务
     @GET("http://api.map.baidu.com/geocoder/v2/?")
@@ -102,13 +103,13 @@ public interface CommonService {
     @FormUrlEncoded
     @POST("home/circle")
     Observable<HttpResult<List<HomeCircleBean>>> homeCircle(@Header("timestamp") long timestamp, @Header("sign") String sign,
-                                                            @Header("token") String token, @FieldMap Map<String, Object> params);
+                                                            @FieldMap Map<String, Object> params);
 
     //商品列表
     @FormUrlEncoded
     @POST("goods/list")
     Observable<HttpResult<List<ProductListBean>>> goodsList(@Header("timestamp") long timestamp, @Header("sign") String sign,
-                                                            @Header("token") String token, @FieldMap Map<String, Object> params);
+                                                            @FieldMap Map<String, Object> params);
 
     //收货地址列表
     @POST("address/list")
@@ -119,6 +120,42 @@ public interface CommonService {
     @FormUrlEncoded
     @POST("address/update")
     Observable<HttpResult<String>> addressUpdate(@Header("timestamp") long timestamp, @Header("sign") String sign,
-                                                 @Header("token") String token, @FieldMap Map<String, Object> params);
+                                                 @FieldMap Map<String, Object> params);
+
+    //删除收货地址
+    @FormUrlEncoded
+    @POST("address/delete")
+    Observable<HttpResult<String>> addressDelete(@Header("timestamp") long timestamp, @Header("sign") String sign,
+                                                 @FieldMap Map<String, Object> params);
+
+    //购物车列表
+    @FormUrlEncoded
+    @POST("cart/goods/list")
+    Observable<HttpResult<List<CartGoodsBean>>> cartGoodsList(@Header("timestamp") long timestamp, @Header("sign") String sign,
+                                                              @FieldMap Map<String, Object> params);
+
+    //添加购物车
+    @FormUrlEncoded
+    @POST("cart/goods/add")
+    Observable<HttpResult<String>> cartGoodsAdd(@Header("timestamp") long timestamp, @Header("sign") String sign,
+                                                @FieldMap Map<String, Object> params);
+
+    //删除购物车
+    @FormUrlEncoded
+    @POST("cart/goods/delete")
+    Observable<HttpResult<String>> cartGoodsDelete(@Header("timestamp") long timestamp, @Header("sign") String sign,
+                                                   @FieldMap Map<String, Object> params);
+
+    //查询购物车商品数量
+    @FormUrlEncoded
+    @POST("cart/findShoppingCartGoodsCount")
+    Observable<HttpResult<Integer>> cartFindShoppingCartGoodsCount(@Header("timestamp") long timestamp, @Header("sign") String sign,
+                                                                   @FieldMap Map<String, Object> params);
+
+    //商品列表分类
+    @FormUrlEncoded
+    @POST("goods/list/home")
+    Observable<HttpResult<List<HomePageBean.CategoryListsBean.GoodListBean>>> goodsListHome(@Header("timestamp") long timestamp, @Header("sign") String sign,
+                                                                                            @FieldMap Map<String, Object> params);
 
 }

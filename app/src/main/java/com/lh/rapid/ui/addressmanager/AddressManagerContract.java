@@ -21,12 +21,14 @@ public class AddressManagerContract {
 
         void onLoadDateCompleted(List<AddressListBean> addressListBeans);
 
+        void addressDeleteSuccess(String s);
     }
 
     interface Presenter extends BasePresenter<View> {
 
         void loadDate();
 
+        void addressDelete(String addressId);
     }
 
 }

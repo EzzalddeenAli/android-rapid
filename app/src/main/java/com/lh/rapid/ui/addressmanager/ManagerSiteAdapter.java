@@ -5,12 +5,15 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.daimajia.swipe.SwipeLayout;
 import com.lh.rapid.R;
 import com.lh.rapid.bean.AddressListBean;
+import com.lh.rapid.inter.OnCartGoodsDelete;
 
 import java.util.List;
 
@@ -49,6 +52,21 @@ public class ManagerSiteAdapter extends RecyclerView.Adapter<ManagerSiteAdapter.
             }
         });
 
+        holder.swipeLayout.setLeftSwipeEnabled(true);
+        //删除订单
+        holder.btn_delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mOnCartGoodsDelete.cartGoodsDelete(list.get(position).getAddressId());
+            }
+        });
+
+    }
+
+    private OnCartGoodsDelete mOnCartGoodsDelete;
+
+    public void setOnCartGoodsDelete(OnCartGoodsDelete onCartGoodsDelete) {
+        mOnCartGoodsDelete = onCartGoodsDelete;
     }
 
     @Override
@@ -62,6 +80,8 @@ public class ManagerSiteAdapter extends RecyclerView.Adapter<ManagerSiteAdapter.
         LinearLayout ll_change_address;
         View view_line;
         ImageView iv_site_address;
+        SwipeLayout swipeLayout;
+        Button btn_delete;
 
         public MyViewHolder(View itemView) {
             super(itemView);
@@ -72,6 +92,8 @@ public class ManagerSiteAdapter extends RecyclerView.Adapter<ManagerSiteAdapter.
             ll_change_address = (LinearLayout) itemView.findViewById(R.id.ll_change_address);
             iv_site_address = (ImageView) itemView.findViewById(R.id.iv_site_address);
             view_line = itemView.findViewById(R.id.view_line);
+            swipeLayout = (SwipeLayout) itemView.findViewById(R.id.swipeLayout);
+            btn_delete = (Button) itemView.findViewById(R.id.btn_delete);
         }
 
     }

@@ -5,6 +5,7 @@ import android.text.TextUtils;
 
 import com.lh.rapid.Constants;
 import com.lh.rapid.bean.AddressListBean;
+import com.lh.rapid.bean.CartGoodsBean;
 import com.lh.rapid.bean.CategoryDetailsBean;
 import com.lh.rapid.bean.CategoryOneLevelBean;
 import com.lh.rapid.bean.GoodsDetailBean;
@@ -217,7 +218,7 @@ public class CommonApi {
         params.put("authCode", authCode);
         params.put("newPassword", newPassword);
         String sign = mRequestHelper.getRequestSign(params, currentTimeMillis);
-        return mCommonService.accountPasswordReset(currentTimeMillis, sign, mUserStorage.getToken(), params).subscribeOn(Schedulers.io());
+        return mCommonService.accountPasswordReset(currentTimeMillis, sign, params).subscribeOn(Schedulers.io());
     }
 
     /**
@@ -228,18 +229,19 @@ public class CommonApi {
         Map<String, Object> params = mRequestHelper.getHttpRequestMap(currentTimeMillis);
         params.put("circleId", circleId);
         String sign = mRequestHelper.getRequestSign(params, currentTimeMillis);
-        return mCommonService.homePage(currentTimeMillis, sign, mUserStorage.getToken(), params).subscribeOn(Schedulers.io());
+        return mCommonService.homePage(currentTimeMillis, sign, params).subscribeOn(Schedulers.io());
     }
 
     /**
      * 商品详情
      */
-    public Observable<HttpResult<GoodsDetailBean>> goodsDetail(String goodsId) {
+    public Observable<HttpResult<GoodsDetailBean>> goodsDetail(String circleId, String goodsId) {
         long currentTimeMillis = System.currentTimeMillis();
         Map<String, Object> params = mRequestHelper.getHttpRequestMap(currentTimeMillis);
+        params.put("circleId", circleId);
         params.put("goodsId", goodsId);
         String sign = mRequestHelper.getRequestSign(params, currentTimeMillis);
-        return mCommonService.goodsDetail(currentTimeMillis, sign, mUserStorage.getToken(), params).subscribeOn(Schedulers.io());
+        return mCommonService.goodsDetail(currentTimeMillis, sign, params).subscribeOn(Schedulers.io());
     }
 
     /**
@@ -260,7 +262,7 @@ public class CommonApi {
         Map<String, Object> params = mRequestHelper.getHttpRequestMap(currentTimeMillis);
         params.put("parentId", parentId);
         String sign = mRequestHelper.getRequestSign(params, currentTimeMillis);
-        return mCommonService.categoryDetails(currentTimeMillis, sign, mUserStorage.getToken(), params).subscribeOn(Schedulers.io());
+        return mCommonService.categoryDetails(currentTimeMillis, sign, params).subscribeOn(Schedulers.io());
     }
 
     /**
@@ -287,7 +289,7 @@ public class CommonApi {
         params.put("longitude", longitude);
         params.put("latitude", latitude);
         String sign = mRequestHelper.getRequestSign(params, currentTimeMillis);
-        return mCommonService.homeCircle(currentTimeMillis, sign, mUserStorage.getToken(), params).subscribeOn(Schedulers.io());
+        return mCommonService.homeCircle(currentTimeMillis, sign, params).subscribeOn(Schedulers.io());
     }
 
     /**
@@ -328,7 +330,7 @@ public class CommonApi {
         params.put("page", page);
         params.put("pageSize", pageSize);
         String sign = mRequestHelper.getRequestSign(params, currentTimeMillis);
-        return mCommonService.goodsList(currentTimeMillis, sign, mUserStorage.getToken(), params).subscribeOn(Schedulers.io());
+        return mCommonService.goodsList(currentTimeMillis, sign, params).subscribeOn(Schedulers.io());
     }
 
     /**
@@ -370,7 +372,75 @@ public class CommonApi {
             params.put("latitude", latitude);
         }
         String sign = mRequestHelper.getRequestSign(params, currentTimeMillis);
-        return mCommonService.addressUpdate(currentTimeMillis, sign, mUserStorage.getToken(), params).subscribeOn(Schedulers.io());
+        return mCommonService.addressUpdate(currentTimeMillis, sign, params).subscribeOn(Schedulers.io());
+    }
+
+    /**
+     * 删除收货地址
+     */
+    public Observable<HttpResult<String>> addressDelete(String addressId) {
+        long currentTimeMillis = System.currentTimeMillis();
+        Map<String, Object> params = mRequestHelper.getHttpRequestMap(currentTimeMillis);
+        params.put("addressId", addressId);
+        String sign = mRequestHelper.getRequestSign(params, currentTimeMillis);
+        return mCommonService.addressDelete(currentTimeMillis, sign, params).subscribeOn(Schedulers.io());
+    }
+
+    /**
+     * 购物车列表
+     */
+    public Observable<HttpResult<List<CartGoodsBean>>> cartGoodsList() {
+        long currentTimeMillis = System.currentTimeMillis();
+        Map<String, Object> params = mRequestHelper.getHttpRequestMap(currentTimeMillis);
+        String sign = mRequestHelper.getRequestSign(params, currentTimeMillis);
+        return mCommonService.cartGoodsList(currentTimeMillis, sign, params).subscribeOn(Schedulers.io());
+    }
+
+    /**
+     * 添加购物车
+     */
+    public Observable<HttpResult<String>> cartGoodsAdd(String goodsId, String quantity, String circleId) {
+        long currentTimeMillis = System.currentTimeMillis();
+        Map<String, Object> params = mRequestHelper.getHttpRequestMap(currentTimeMillis);
+        params.put("goodsId", goodsId);
+        params.put("quantity", quantity);
+        params.put("circleId", circleId);
+        String sign = mRequestHelper.getRequestSign(params, currentTimeMillis);
+        return mCommonService.cartGoodsAdd(currentTimeMillis, sign, params).subscribeOn(Schedulers.io());
+    }
+
+    /**
+     * 删除购物车
+     */
+    public Observable<HttpResult<String>> cartGoodsDelete(String goodsId, String circleId) {
+        long currentTimeMillis = System.currentTimeMillis();
+        Map<String, Object> params = mRequestHelper.getHttpRequestMap(currentTimeMillis);
+        params.put("goodsId", goodsId);
+        params.put("circleId", circleId);
+        String sign = mRequestHelper.getRequestSign(params, currentTimeMillis);
+        return mCommonService.cartGoodsDelete(currentTimeMillis, sign, params).subscribeOn(Schedulers.io());
+    }
+
+    /**
+     * 查询购物车商品数量
+     */
+    public Observable<HttpResult<Integer>> cartFindShoppingCartGoodsCount() {
+        long currentTimeMillis = System.currentTimeMillis();
+        Map<String, Object> params = mRequestHelper.getHttpRequestMap(currentTimeMillis);
+        String sign = mRequestHelper.getRequestSign(params, currentTimeMillis);
+        return mCommonService.cartFindShoppingCartGoodsCount(currentTimeMillis, sign, params).subscribeOn(Schedulers.io());
+    }
+
+    /**
+     * 商品列表分类
+     */
+    public Observable<HttpResult<List<HomePageBean.CategoryListsBean.GoodListBean>>> goodsListHome(String categoryId, String circleId) {
+        long currentTimeMillis = System.currentTimeMillis();
+        Map<String, Object> params = mRequestHelper.getHttpRequestMap(currentTimeMillis);
+        params.put("categoryId", categoryId);
+        params.put("circleId", circleId);
+        String sign = mRequestHelper.getRequestSign(params, currentTimeMillis);
+        return mCommonService.goodsListHome(currentTimeMillis, sign, params).subscribeOn(Schedulers.io());
     }
 
 }

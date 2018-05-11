@@ -8,7 +8,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.SparseArray;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -16,16 +15,14 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.android.frameproj.library.adapter.wrapper.LoadMoreWrapper;
 import com.android.frameproj.library.decoration.RecyclerViewDivider;
 import com.android.frameproj.library.util.ToastUtil;
+import com.android.frameproj.library.util.log.Logger;
 import com.lh.rapid.Constants;
 import com.lh.rapid.R;
 import com.lh.rapid.bean.CategoryName;
-import com.lh.rapid.bean.GoodBean;
 import com.lh.rapid.bean.HomeCircleBean;
 import com.lh.rapid.bean.HomePageBean;
-import com.lh.rapid.bean.ProductListBean;
 import com.lh.rapid.ui.BaseFragment;
 import com.lh.rapid.ui.location.ChooseLocationActivity;
 import com.lh.rapid.ui.main.MainComponent;
@@ -52,7 +49,7 @@ import io.reactivex.annotations.NonNull;
 import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 
-public class Fragment1 extends BaseFragment implements Fragment1Contract.View, LoadMoreWrapper.OnLoadMoreListener {
+public class Fragment1 extends BaseFragment implements Fragment1Contract.View {
 
     @BindView(R.id.iv_home_place)
     ImageView mIvHomePlace;
@@ -106,7 +103,6 @@ public class Fragment1 extends BaseFragment implements Fragment1Contract.View, L
 
     private List<CategoryName> mNames = new ArrayList<>();
     private List<HomePageBean.CategoryListsBean.GoodListBean> goodBeans = new ArrayList<>();
-    private SparseArray<GoodBean> selectedList;
 
     @Inject
     Fragment1Presenter mPresenter;
@@ -157,7 +153,6 @@ public class Fragment1 extends BaseFragment implements Fragment1Contract.View, L
                         }
                     }
                 });
-        selectedList = new SparseArray<>();
         initTitle();
     }
 
@@ -186,6 +181,18 @@ public class Fragment1 extends BaseFragment implements Fragment1Contract.View, L
         });
     }
 
+    private boolean isFirst = true;
+
+    @Override
+    public void onSupportVisible() {
+        super.onSupportVisible();
+        Logger.i("Fragment1 onSupportVisible");
+        if (!isFirst) {
+            mPresenter.loadDate(mSPUtil.getCIRCLE_ID() + "");
+            isFirst = false;
+        }
+    }
+
     @Override
     public void initData() {
     }
@@ -196,21 +203,6 @@ public class Fragment1 extends BaseFragment implements Fragment1Contract.View, L
     }
 
 
-    @Override
-    public void showLoading() {
-
-    }
-
-    @Override
-    public void hideLoading() {
-
-    }
-
-    @Override
-    public void onLoadMoreRequested() {
-
-    }
-
     @OnClick(R.id.iv_home_mine)
     public void mIvHomeMine() {
 
@@ -218,11 +210,11 @@ public class Fragment1 extends BaseFragment implements Fragment1Contract.View, L
 
     //根据商品id获取当前商品的采购数量
     public int getSelectedItemCountById(int id) {
-        GoodBean temp = selectedList.get(id);
+        HomePageBean.CategoryListsBean.GoodListBean temp = goodBeans.get(id);
         if (temp == null) {
             return 0;
         }
-        return temp.getNum();
+        return temp.getCounts();
     }
 
     @Override
@@ -315,16 +307,57 @@ public class Fragment1 extends BaseFragment implements Fragment1Contract.View, L
     }
 
     @Override
-    public void onLoadProductListSuccess(List<ProductListBean> goodsDetailBeanList) {
-//        goodBeans.clear();
-//        goodBeans.addAll(goodsDetailBeanList);
-//        commodityAdapter.notifyDataSetChanged();
+    public void onLoadProductListSuccess(List<HomePageBean.CategoryListsBean.GoodListBean> goodListBeans) {
+        goodBeans.clear();
+        goodBeans.addAll(goodListBeans);
+        commodityAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void cartGoodsAddSuccess(String s) {
+
+    }
+
+    @Override
+    public void cartGoodsDeleteSuccess(String s) {
+
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
         BusUtil.getBus().unregister(this);
+    }
+
+    public void handlerCarNum(int type, int position, boolean refreshGoodList) {
+        int count = -1;
+        HomePageBean.CategoryListsBean.GoodListBean temp = goodBeans.get(position);
+        if (type == 0) {
+            if (temp != null) {
+                if (temp.getCounts() < 2) {
+                    temp.setCounts(0);
+                    count = 0;
+                } else {
+                    int i = temp.getCounts();
+                    temp.setCounts(--i);
+                    count = i;
+                }
+            }
+
+        } else if (type == 1) {
+            if (temp == null) {
+                temp.setCounts(1);
+                count = 1;
+            } else {
+                int i = temp.getCounts();
+                temp.setCounts(++i);
+                count = i;
+            }
+        }
+        commodityAdapter.notifyDataSetChanged();
+
+        mPresenter.cartGoodsAdd(temp.getGoodsId() + "", count + "",
+                mSPUtil.getCIRCLE_ID() + "");
     }
 
 }

@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.android.frameproj.library.dialog.LoadingDialog;
 import com.android.frameproj.library.util.ToastUtil;
 import com.google.gson.JsonParseException;
 import com.lh.rapid.Constants;
@@ -35,6 +36,7 @@ public abstract class BaseFragment extends SupportFragment {
 
     protected BaseActivity baseActivity;
     protected View rootView;
+    private LoadingDialog mLoadingDialog;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -100,7 +102,7 @@ public abstract class BaseFragment extends SupportFragment {
                 SPUtil spUtil = new SPUtil(baseActivity);
                 spUtil.setIS_LOGIN(0);
                 spUtil.setTOKNE("");
-                UserStorage userStorage = new UserStorage(baseActivity,spUtil);
+                UserStorage userStorage = new UserStorage(baseActivity, spUtil);
                 userStorage.setToken("");
                 openActivity(LoginActivity.class);
             } else if (((CommonApi.APIException) throwable).code == Constants.TOKEN_FREEZE) {
@@ -108,7 +110,7 @@ public abstract class BaseFragment extends SupportFragment {
                 SPUtil spUtil = new SPUtil(baseActivity);
                 spUtil.setIS_LOGIN(0);
                 spUtil.setTOKNE("");
-                UserStorage userStorage = new UserStorage(baseActivity,spUtil);
+                UserStorage userStorage = new UserStorage(baseActivity, spUtil);
                 userStorage.setToken("");
                 openActivity(LoginActivity.class);
             }
@@ -141,6 +143,17 @@ public abstract class BaseFragment extends SupportFragment {
             //            ToastUtil.showToast(getResources().getString(R.string.error_overtime));
         } else {
             //            ToastUtil.showToast(getResources().getString(R.string.error_unknow));
+        }
+    }
+
+    public void showLoading() {
+        hideLoading();
+        mLoadingDialog = LoadingDialog.show(getActivity(), "");
+    }
+
+    public void hideLoading() {
+        if (mLoadingDialog != null && mLoadingDialog.isShowing()) {
+            mLoadingDialog.dismiss();
         }
     }
 

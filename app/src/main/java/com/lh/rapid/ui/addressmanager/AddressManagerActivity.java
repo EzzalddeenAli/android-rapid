@@ -6,9 +6,11 @@ import android.support.v7.widget.RecyclerView;
 import android.widget.LinearLayout;
 
 import com.android.frameproj.library.decoration.RecyclerViewDivider;
+import com.android.frameproj.library.util.ToastUtil;
 import com.google.gson.Gson;
 import com.lh.rapid.R;
 import com.lh.rapid.bean.AddressListBean;
+import com.lh.rapid.inter.OnCartGoodsDelete;
 import com.lh.rapid.ui.BaseActivity;
 import com.lh.rapid.ui.addaddress.AddShippingAddressActivity;
 import com.lh.rapid.ui.widget.MyActionBar;
@@ -94,11 +96,23 @@ public class AddressManagerActivity extends BaseActivity implements AddressManag
                 startActivity(intent);
             }
         });
+        adapter.setOnCartGoodsDelete(new OnCartGoodsDelete() {
+            @Override
+            public void cartGoodsDelete(int addressId) {
+                mPresenter.addressDelete(addressId + "");
+            }
+        });
         mRvManageAddress.setLayoutManager(new LinearLayoutManager(this));
         mRvManageAddress.addItemDecoration(new RecyclerViewDivider(this, LinearLayout.VERTICAL, 2, R.color.line));
         mRvManageAddress.setAdapter(adapter);
 
         mRefreshLayout.finishRefresh(300);
+    }
+
+    @Override
+    public void addressDeleteSuccess(String s) {
+        ToastUtil.showToast(s);
+        mRefreshLayout.autoRefresh();
     }
 
     @Override

@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/px68dp"
+        android:paddingLeft="@dimen/px28dp"
+        android:paddingRight="@dimen/px40dp">
+
+        <CheckBox
+            android:id="@+id/cb_cart_choose"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:button="@drawable/check_box_bg"
+            android:checkMark="?android:attr/listChoiceIndicatorMultiple"
+            android:gravity="center_vertical"
+            android:minHeight="64dp"
+            android:minWidth="32dp"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:visibility="visible"/>
+
+        <ImageView
+            android:id="@+id/iv_cart_go"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:src="@mipmap/icon_mine_right_b"/>
+
+        <TextView
+            android:id="@+id/tv_quan_zhu"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_toRightOf="@id/cb_cart_choose"
+            android:gravity="center_vertical"
+            android:textColor="@color/gray_text"
+            android:textSize="@dimen/px28sp"/>
+    </RelativeLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recyclerViewChild"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <RelativeLayout
+        android:id="@+id/rl_cart_topay"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/px100dp"
+        android:visibility="visible">
+
+        <Button
+            android:id="@+id/bt_cart_jiesuan"
+            android:layout_width="@dimen/px160dp"
+            android:layout_height="@dimen/px60dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/px40dp"
+            android:background="@drawable/button_cornor_green_bg"
+            android:text="去结算"
+            android:textColor="@color/white"
+            android:textSize="@dimen/px32sp"/>
+
+        <TextView
+            android:id="@+id/tv_cart_total_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/px20dp"
+            android:layout_toLeftOf="@id/bt_cart_jiesuan"
+            android:textColor="@color/red_text"
+            android:textSize="@dimen/px36sp"/>
+
+    </RelativeLayout>
+
+</LinearLayout>

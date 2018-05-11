@@ -26,6 +26,10 @@ import com.lh.rapid.bean.Hover;
 import com.lh.rapid.ui.BaseActivity;
 import com.lh.rapid.ui.widget.MyActionBar;
 import com.lh.rapid.ui.widget.PullUpToLoadMore;
+import com.lh.rapid.util.CommonEvent;
+import com.lh.rapid.util.SPUtil;
+import com.squareup.otto.Bus;
+import com.squareup.otto.Subscribe;
 
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
@@ -92,11 +96,17 @@ public class ProductDetailActivity extends BaseActivity implements ProductDetail
     private ProductDetailAdapter adapter;
     private ViewGroup anim_mask_layout;//动画层
     private List<Hover> hovers = new ArrayList<>();
+    private GoodsDetailBean mGoodsDetailBean;
 
     private int mGoodsId;
     @Inject
     ProductDetailPresenter mPresenter;
     private String mGoodsDesc;
+
+    @Inject
+    Bus mBus;
+    @Inject
+    SPUtil mSPUtil;
 
     @Override
     public int initContentView() {
@@ -114,13 +124,13 @@ public class ProductDetailActivity extends BaseActivity implements ProductDetail
 
     @Override
     public void initUiAndListener() {
-
+        mBus.register(this);
         selectedList = new SparseArray<>();
         df = new DecimalFormat("0.00");
 
         mGoodsId = getIntent().getIntExtra("goodsId", -1);
         mPresenter.attachView(this);
-        mPresenter.loadDate(mGoodsId+"");
+        mPresenter.loadDate(mSPUtil.getCIRCLE_ID()+"", mGoodsId + "");
     }
 
     @Override
@@ -147,30 +157,34 @@ public class ProductDetailActivity extends BaseActivity implements ProductDetail
     }
 
     public void handlerCarNum(int type, Hover hover, boolean refreshGoodList) {
+        int count = -1;
         if (type == 0) {
             Hover temp = selectedList.get(hover.getProduct_id());
             if (temp != null) {
                 if (temp.getNum() < 2) {
                     hover.setNum(0);
                     selectedList.remove(hover.getProduct_id());
-
+                    count = 0;
                 } else {
                     int i = hover.getNum();
                     hover.setNum(--i);
+                    count = i;
                 }
             }
-
         } else if (type == 1) {
             Hover temp = selectedList.get(hover.getProduct_id());
             if (temp == null) {
                 hover.setNum(1);
                 selectedList.append(hover.getProduct_id(), hover);
+                count = 1;
             } else {
                 int i = hover.getNum();
                 hover.setNum(++i);
+                count = i;
             }
         }
         update(refreshGoodList);
+        mBus.post(new CommonEvent().new ProductCartCountEvent(count));
     }
 
     private void update(boolean refreshGoodList) {
@@ -297,7 +311,8 @@ public class ProductDetailActivity extends BaseActivity implements ProductDetail
     @Override
     public void onLoadDateCompleted(final GoodsDetailBean goodsDetailBean) {
         hovers = getData(goodsDetailBean);
-        adapter = new ProductDetailAdapter(this,hovers);
+        mGoodsDetailBean = goodsDetailBean;
+        adapter = new ProductDetailAdapter(this, hovers);
         mRvProductDetail.setLayoutManager(new LinearLayoutManager(this));
         mRvProductDetail.setAdapter(adapter);
         mTvProductWeight.setText(goodsDetailBean.getStandard());
@@ -318,7 +333,7 @@ public class ProductDetailActivity extends BaseActivity implements ProductDetail
                 @Override
                 public View getView() {
                     ImageView imageView = new ImageView(ProductDetailActivity.this);
-                    ImageLoaderUtil.getInstance().loadImage(image,imageView);
+                    ImageLoaderUtil.getInstance().loadImage(image, imageView);
                     return imageView;
                 }
             };
@@ -332,7 +347,8 @@ public class ProductDetailActivity extends BaseActivity implements ProductDetail
         Hover hover = new Hover();
         hover.setName(goodsDetailBean.getGoodsName());
         hover.setDiscounts(goodsDetailBean.getShareDesc());
-        hover.setPrice(goodsDetailBean.getSalePrice()+"");
+        hover.setPrice(goodsDetailBean.getSalePrice() + "");
+        hover.setNum(goodsDetailBean.getCounts());
         list.add(hover);
         return list;
     }
@@ -341,6 +357,27 @@ public class ProductDetailActivity extends BaseActivity implements ProductDetail
     protected void onDestroy() {
         super.onDestroy();
         mPresenter.detachView();
+        mBus.unregister(this);
+    }
+
+    @Override
+    public void cartGoodsAddSuccess(String s) {
+//        ToastUtil.showToast(s);
+    }
+
+    @Override
+    public void cartGoodsDeleteSuccess(String s) {
+//        ToastUtil.showToast(s);
+    }
+
+    @Subscribe
+    public void productCartCountEvent(CommonEvent.ProductCartCountEvent productCartCountEvent) {
+
+        if (productCartCountEvent != null && productCartCountEvent.getCount() != -1) {
+            mPresenter.cartGoodsAdd(mGoodsDetailBean.getGoodsId() + "", productCartCountEvent.getCount() + "", mSPUtil.getCIRCLE_ID() + "");
+        } else {
+
+        }
     }
 
 }

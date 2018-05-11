@@ -23,6 +23,15 @@ public class GoodsDetailBean {
     private double coin;
     private String goodsDesc;
     private List<String> imgs;
+    private int counts;
+
+    public int getCounts() {
+        return counts;
+    }
+
+    public void setCounts(int counts) {
+        this.counts = counts;
+    }
 
     public String getStandard() {
         return standard;

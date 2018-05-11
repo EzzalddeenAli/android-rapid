@@ -81,7 +81,7 @@ public class ApplicationModule {
     @PerApp
     @Named("api")
     // 区分返回类型相同的@Provides 方法
-    OkHttpClient provideApiOkHttpClient(final Context context) {
+    OkHttpClient provideApiOkHttpClient(final Context context,final SPUtil spUtil) {
         HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor(new HttpLoggingInterceptor.Logger() {
             @Override
             public void log(String message) {
@@ -108,6 +108,7 @@ public class ApplicationModule {
                         builder1.addHeader("device_id", deviceId);
                         //我的deviceId：860076031766214
                         builder1.addHeader("app_version", getVersion(context));
+                        builder1.addHeader("token", spUtil.getTOKNE()+"");
                         Request build = builder1.build();
                         return chain.proceed(build);
                     }

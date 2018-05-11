@@ -21,11 +21,19 @@ public interface ProductDetailContract {
 
         void onLoadDateCompleted(GoodsDetailBean goodsDetailBean);
 
+        void cartGoodsAddSuccess(String s);
+
+        void cartGoodsDeleteSuccess(String s);
+
     }
 
     interface Presenter extends BasePresenter<ProductDetailContract.View> {
 
-        void loadDate(String goodsId);
+        void loadDate(String circleId, String goodsId);
+
+        void cartGoodsAdd(String goodsId,String quantity,String circleId);
+
+        void cartGoodsDelete(String goodsId,String circleId);
 
     }
 

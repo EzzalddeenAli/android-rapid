@@ -14,7 +14,7 @@ import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
+import com.android.frameproj.library.util.imageloader.ImageLoaderUtil;
 import com.lh.rapid.R;
 import com.lh.rapid.bean.HomePageBean;
 
@@ -53,8 +53,8 @@ public class CategoryCommodityAdapter extends RecyclerView.Adapter<CategoryCommo
 
         myViewHolder.tv_cart_comm_name.setText(list.get(i).getGoodsName());
         myViewHolder.tv_cart_comm_norm.setText(list.get(i).getWeight());
-        myViewHolder.tv_cart_comm_price.setText(list.get(i).getGoodsPrice()+"");
-        //        myViewHolder.tv_cart_comm_num
+        myViewHolder.tv_cart_comm_price.setText(list.get(i).getGoodsPrice() + "");
+        myViewHolder.tv_cart_comm_num.setText(list.get(i).getCounts() + "");
 
         if (list.get(i) != null) {
             if (list.get(i).getCounts() < 1) {
@@ -73,13 +73,14 @@ public class CategoryCommodityAdapter extends RecyclerView.Adapter<CategoryCommo
         }
 
         if (list.get(i).getGoodsImg() != null) {
-            Glide
-                    .with(context)
-                    .load(list.get(i).getGoodsImg())
-                    .centerCrop()
-                    //                    .placeholder(R.mipmap.icon_logo_image_default)
-                    .crossFade()
-                    .into(myViewHolder.iv_cart_comm);
+            //            Glide
+            //                    .with(context)
+            //                    .load(list.get(i).getGoodsImg())
+            //                    .centerCrop()
+            //                    .placeholder(R.mipmap.icon_logo_image_default)
+            //                    .crossFade()
+            //                    .into(myViewHolder.iv_cart_comm);
+            ImageLoaderUtil.getInstance().loadImage(list.get(i).getGoodsImg(), myViewHolder.iv_cart_comm);
         }
 
 
@@ -94,7 +95,7 @@ public class CategoryCommodityAdapter extends RecyclerView.Adapter<CategoryCommo
                     myViewHolder.iv_cart_comm_minus.setVisibility(View.VISIBLE);
                 }
 
-//                mFragment1.handlerCarNum(1, list.get(i), true);
+                mFragment1.handlerCarNum(1, i, true);
                 nameAdapter.notifyDataSetChanged();
 
                 int[] loc = new int[2];
@@ -108,20 +109,20 @@ public class CategoryCommodityAdapter extends RecyclerView.Adapter<CategoryCommo
                 ball.setImageResource(R.drawable.empty);
 
 
-//                myViewHolder.iv_cart_comm_minus.setOnClickListener(new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View v) {
-//                        int count = mFragment1.getSelectedItemCountById(list.get(i).getProduct_id());
-//                        Log.i("fyg", "iv_remove" + String.valueOf(count));
-//                        if (count < 2) {
-//                            myViewHolder.iv_cart_comm_minus.setAnimation(getHiddenAnimation());
-//                            myViewHolder.iv_cart_comm_minus.setVisibility(View.GONE);
-//                            myViewHolder.tv_cart_comm_num.setVisibility(View.GONE);
-//                        }
-//                        mFragment1.handlerCarNum(0, list.get(i), true);
-//                        nameAdapter.notifyDataSetChanged();
-//                    }
-//                });
+                myViewHolder.iv_cart_comm_minus.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        int count = mFragment1.getSelectedItemCountById(i);
+                        Log.i("fyg", "iv_remove" + String.valueOf(count));
+                        if (count < 2) {
+                            myViewHolder.iv_cart_comm_minus.setAnimation(getHiddenAnimation());
+                            myViewHolder.iv_cart_comm_minus.setVisibility(View.GONE);
+                            myViewHolder.tv_cart_comm_num.setVisibility(View.GONE);
+                        }
+                        mFragment1.handlerCarNum(0, i, true);
+                        nameAdapter.notifyDataSetChanged();
+                    }
+                });
             }
 
         });

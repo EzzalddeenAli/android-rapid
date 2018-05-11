@@ -1,7 +1,9 @@
 package com.lh.rapid.ui.addaddress;
 
 import android.support.annotation.NonNull;
+import android.text.TextUtils;
 
+import com.android.frameproj.library.util.ToastUtil;
 import com.lh.rapid.api.common.CommonApi;
 import com.lh.rapid.bean.HttpResult;
 
@@ -45,6 +47,22 @@ public class AddShippingAddressPresenter implements AddShippingAddressContract.P
 
     @Override
     public void updateShippingAddress(String addressId, String receiveName, String phone, String area, String detailAddress, String longitude, String latitude) {
+        if(TextUtils.isEmpty(receiveName)){
+            ToastUtil.showToast("请输入联系人");
+            return;
+        }
+        if(TextUtils.isEmpty(phone)){
+            ToastUtil.showToast("请输入电话");
+            return;
+        }
+        if(TextUtils.isEmpty(detailAddress)){
+            ToastUtil.showToast("请选择地址");
+            return;
+        }
+        if(TextUtils.isEmpty(area)){
+            ToastUtil.showToast("请输入门牌号");
+            return;
+        }
         mView.showLoading();
         disposables.add(mCommonApi.addressUpdate(addressId, receiveName, phone, area,
                 detailAddress, longitude, latitude)

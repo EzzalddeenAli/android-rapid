@@ -51,8 +51,8 @@ public class ProductDetailPresenter implements ProductDetailContract.Presenter {
 
 
     @Override
-    public void loadDate(String goodsId) {
-        disposables.add(mCommonApi.goodsDetail(goodsId)
+    public void loadDate(String circleId, String goodsId) {
+        disposables.add(mCommonApi.goodsDetail(circleId,goodsId)
                 .debounce(800, TimeUnit.MILLISECONDS)
                 .flatMap(new Function<HttpResult<GoodsDetailBean>, ObservableSource<GoodsDetailBean>>() {
                     @Override
@@ -65,6 +65,54 @@ public class ProductDetailPresenter implements ProductDetailContract.Presenter {
                     @Override
                     public void accept(@io.reactivex.annotations.NonNull GoodsDetailBean goodsDetailBean) throws Exception {
                         mView.onLoadDateCompleted(goodsDetailBean);
+                    }
+                }, new Consumer<Throwable>() {
+                    @Override
+                    public void accept(@io.reactivex.annotations.NonNull Throwable throwable) throws Exception {
+                        mView.loadError(throwable);
+                    }
+                }));
+    }
+
+    @Override
+    public void cartGoodsAdd(String goodsId, String quantity, String circleId) {
+        disposables.add(mCommonApi.cartGoodsAdd(goodsId, quantity, circleId)
+                .debounce(800, TimeUnit.MILLISECONDS)
+                .switchMap(new Function<HttpResult<String>, ObservableSource<String>>() {
+                    @Override
+                    public ObservableSource<String> apply(@io.reactivex.annotations.NonNull HttpResult<String> httpResult) throws Exception {
+                        return CommonApi.flatResponse(httpResult);
+                    }
+                })
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<String>() {
+                    @Override
+                    public void accept(@io.reactivex.annotations.NonNull String s) throws Exception {
+                        mView.cartGoodsAddSuccess(s);
+                    }
+                }, new Consumer<Throwable>() {
+                    @Override
+                    public void accept(@io.reactivex.annotations.NonNull Throwable throwable) throws Exception {
+                        mView.loadError(throwable);
+                    }
+                }));
+    }
+
+    @Override
+    public void cartGoodsDelete(String goodsId, String circleId) {
+        disposables.add(mCommonApi.cartGoodsDelete(goodsId, circleId)
+                .debounce(800, TimeUnit.MILLISECONDS)
+                .flatMap(new Function<HttpResult<String>, ObservableSource<String>>() {
+                    @Override
+                    public ObservableSource<String> apply(@io.reactivex.annotations.NonNull HttpResult<String> httpResult) throws Exception {
+                        return CommonApi.flatResponse(httpResult);
+                    }
+                })
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<String>() {
+                    @Override
+                    public void accept(@io.reactivex.annotations.NonNull String s) throws Exception {
+                        mView.cartGoodsDeleteSuccess(s);
                     }
                 }, new Consumer<Throwable>() {
                     @Override

@@ -197,6 +197,7 @@ public abstract class BaseActivity extends SupportActivity {
     }
 
     public void showLoading() {
+        hideLoading();
         mLoadingDialog = LoadingDialog.show(BaseActivity.this, "");
     }
 

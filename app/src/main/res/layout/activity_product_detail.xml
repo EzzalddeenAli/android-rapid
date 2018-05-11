@@ -13,6 +13,7 @@
         android:layout_alignParentBottom="true">
 
         <include layout="@layout/home_bottom" />
+
     </RelativeLayout>
 
 

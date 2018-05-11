@@ -1,26 +1,29 @@
 package com.lh.rapid.ui.fragment3;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.Button;
-import android.widget.ExpandableListView;
-import android.widget.FrameLayout;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 
-import com.android.frameproj.library.adapter.wrapper.LoadMoreWrapper;
-import com.android.frameproj.library.dialog.LoadingDialog;
-import com.android.frameproj.library.util.MathUtil;
-import com.lh.rapid.Constants;
+import com.android.frameproj.library.adapter.CommonAdapter;
+import com.android.frameproj.library.adapter.base.ViewHolder;
+import com.android.frameproj.library.decoration.DividerGridItemDecoration;
 import com.lh.rapid.R;
 import com.lh.rapid.bean.Cart;
+import com.lh.rapid.bean.CartGoodsBean;
 import com.lh.rapid.bean.CirLord;
 import com.lh.rapid.bean.StroeInfo;
 import com.lh.rapid.ui.BaseFragment;
 import com.lh.rapid.ui.main.MainComponent;
+import com.lh.rapid.ui.orderconfirm.OrderConfirmActivity;
 import com.lh.rapid.ui.widget.MyActionBar;
+import com.lh.rapid.ui.widget.SelectNumberView;
+import com.lh.rapid.util.SPUtil;
+import com.scwang.smartrefresh.layout.SmartRefreshLayout;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.squareup.otto.Bus;
 
 import java.math.BigDecimal;
@@ -33,48 +36,18 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 
-/**
- * 订单列表
- */
-public class Fragment3 extends BaseFragment implements Fragment3Contract.View, LoadMoreWrapper.OnLoadMoreListener {
+public class Fragment3 extends BaseFragment implements Fragment3Contract.View {
 
     public static final String EDITE = "edite";
     public static final String COMPLETE = "complete";
+    @BindView(R.id.fake_status_bar)
+    View mFakeStatusBar;
     @BindView(R.id.actionbar)
     MyActionBar mActionbar;
-    @BindView(R.id.lv_cart_cate)
-    ExpandableListView mLvCartCate;
-    @BindView(R.id.bt_cart_jiesuan)
-    Button mBtCartJiesuan;
-    @BindView(R.id.tv_cart_total_price)
-    TextView mTvCartTotalPrice;
-    @BindView(R.id.rl_cart_topay)
-    RelativeLayout mRlCartTopay;
-    @BindView(R.id.iv_cart_down)
-    ImageView mIvCartDown;
-    @BindView(R.id.iv_cart_up)
-    ImageView mIvCartUp;
-    @BindView(R.id.lv_cart_out)
-    ExpandableListView mLvCartOut;
-    @BindView(R.id.iv_cart_bg)
-    ImageView mIvCartBg;
-    @BindView(R.id.fl_cart_show)
-    FrameLayout mFlCartShow;
-    @BindView(R.id.lv_cart_outs)
-    ExpandableListView mLvCartOuts;
-    @BindView(R.id.iv_cart_bgs)
-    ImageView mIvCartBgs;
-    @BindView(R.id.fl_cart_shows)
-    FrameLayout mFlCartShows;
-    @BindView(R.id.ll_cart_show)
-    LinearLayout mLlCartShow;
-    @BindView(R.id.iv_cart_choose)
-    ImageView mIvCartChoose;
-    @BindView(R.id.bt_cart_delete)
-    Button mBtCartDelete;
-    @BindView(R.id.ll_cart_delete)
-    LinearLayout mLlCartDelete;
-
+    @BindView(R.id.recyclerView)
+    RecyclerView mRecyclerView;
+    @BindView(R.id.refreshLayout)
+    SmartRefreshLayout mRefreshLayout;
     private ShoppingCartOneAdapter cartOneAdapter;
     private ShoppingCartTwoAdapter cartTwoAdapter;
     private ShoppingCartThreeAdapter cartThreeAdapter;
@@ -86,18 +59,12 @@ public class Fragment3 extends BaseFragment implements Fragment3Contract.View, L
     private List<CirLord> cirLords = new ArrayList<>();
     public Map<String, StroeInfo> SCartInfo = new HashMap<>();
     public Map<Integer, Cart> SCart = new HashMap<>();
-    /**
-     * 购物车中总价格，全局静态变量
-     */
-    public static float totalPrice = 0;
-
     @Inject
     Fragment3Presenter mPresenter;
     @Inject
     Bus mBus;
-
-    private LoadMoreWrapper mLoadMoreWrapper;
-    private LoadingDialog mLoadingDialog;
+    @Inject
+    SPUtil mSPUtil;
 
     public static BaseFragment newInstance() {
         Fragment3 fragment3 = new Fragment3();
@@ -128,17 +95,21 @@ public class Fragment3 extends BaseFragment implements Fragment3Contract.View, L
         mBus.register(this);
         mPresenter.attachView(this);
 
+        mRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
+            @Override
+            public void onRefresh(RefreshLayout refreshlayout) {
+                mPresenter.loadDate();
+            }
+        });
+        mRefreshLayout.setEnableLoadMore(false);
+        mRefreshLayout.autoRefresh();
     }
 
     @Override
     public void initData() {
-        cartOneAdapter = new ShoppingCartOneAdapter(getActivity(), mCartInfo);
         cartTwoAdapter = new ShoppingCartTwoAdapter(getActivity(), cirLords);
         cartThreeAdapter = new ShoppingCartThreeAdapter(getActivity(), mCartInfo);
 
-        mLvCartCate.setAdapter(cartOneAdapter);
-        mLvCartOut.setAdapter(cartTwoAdapter);
-        mLvCartOuts.setAdapter(cartThreeAdapter);
 
         mActionbar.setTitle("购物车");
         mActionbar.setBackClickListener(new MyActionBar.IActionBarClickListener() {
@@ -147,127 +118,124 @@ public class Fragment3 extends BaseFragment implements Fragment3Contract.View, L
 
             }
         });
-        mActionbar.setRightIvClickLitener(new MyActionBar.IActionBarClickListener() {
-            @Override
-            public void onActionBarClicked() {
-                if (EDITE.equalsIgnoreCase(mEditeType)) {
-                    mActionbar.setRightText("完成");
-                    mEditeType = COMPLETE;
-                    mRlCartTopay.setVisibility(View.GONE);
-                    mLlCartDelete.setVisibility(View.VISIBLE);
-                    mFlCartShow.setVisibility(View.GONE);
-                    mFlCartShows.setVisibility(View.VISIBLE);
-                    //                    mFreight.setVisibility(View.GONE);
-                    toggleType();
-                    isEdit = true;
+    }
 
-                    changeTotal();
-                } else {
-                    mActionbar.setRightText("编辑");
-                    mEditeType = EDITE;
-                    mRlCartTopay.setVisibility(View.VISIBLE);
-                    mLlCartDelete.setVisibility(View.GONE);
-                    mFlCartShow.setVisibility(View.VISIBLE);
-                    mFlCartShows.setVisibility(View.GONE);
-                    toggleType();
-                    isEdit = false;
-                    for (StroeInfo pd : mCartInfo) {
-                        for (Cart cart : pd.cartList) {
-                            if (cart.saleStatus != 1) {
-                                pd.isChecked = false;
-                                cart.isCheck = false;
-                            }
+
+    private List<CartGoodsBean> mCartGoodsBeanArrayList = new ArrayList<>();
+
+    @Override
+    public void onLoadDateCompleted(List<CartGoodsBean> cartGoodsBeans) {
+        mCartGoodsBeanArrayList.clear();
+        mCartGoodsBeanArrayList.addAll(cartGoodsBeans);
+        mRefreshLayout.finishRefresh(300);
+        updateRecyclerView();
+    }
+
+    private LinearLayoutManager mLinearLayoutManager;
+    private CommonAdapter mCommonAdapter;
+
+    private void updateRecyclerView() {
+        if (mCommonAdapter == null) {
+            mCommonAdapter = new CommonAdapter<CartGoodsBean>(getActivity(), R.layout.layout_cart_item, mCartGoodsBeanArrayList) {
+                @Override
+                protected void convert(ViewHolder holder, final CartGoodsBean cartGoodsBean, final int position) {
+
+                    holder.setText(R.id.tv_quan_zhu, cartGoodsBean.getCircleName());
+                    holder.getView(R.id.bt_cart_jiesuan).setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Intent intent = new Intent(getActivity(), OrderConfirmActivity.class);
+                            startActivity(intent);
                         }
+                    });
+
+                    BigDecimal sumBigDecimal = new BigDecimal(0);
+                    for (int i = 0; i < cartGoodsBean.getGoodsLists().size(); i++) {
+                        CartGoodsBean.GoodsListsBean goodsListsBean = cartGoodsBean.getGoodsLists().get(i);
+                        double price = goodsListsBean.getPrice();
+                        int quantity = goodsListsBean.getQuantity();
+                        BigDecimal quantityBigDecimal = new BigDecimal(quantity);
+                        BigDecimal priceBigDecimal = new BigDecimal(price);
+                        BigDecimal bigDecimal = priceBigDecimal.multiply(quantityBigDecimal);
+                        sumBigDecimal = sumBigDecimal.add(bigDecimal);
                     }
-                    cartOneAdapter.notifyDataSetChanged();
-                    changeTotal();
+                    String sum = sumBigDecimal.setScale(1, BigDecimal.ROUND_HALF_UP).toString();
+                    holder.setText(R.id.tv_cart_total_price, "￥" + sum);
+
+                    RecyclerView recyclerViewChild = holder.getView(R.id.recyclerViewChild);
+                    recyclerViewChild.setLayoutManager(new LinearLayoutManager(getActivity()));
+                    CommonAdapter commonAdapter = new CommonAdapter<CartGoodsBean.GoodsListsBean>(getActivity(), R.layout.item_cart_product, cartGoodsBean.getGoodsLists()) {
+
+                        @Override
+                        protected void convert(final ViewHolder holder, final CartGoodsBean.GoodsListsBean goodsListsBean, int position) {
+                            holder.setImageUrl(R.id.iv_cart_item_pic, goodsListsBean.getGoodsImgUrl());
+                            holder.setText(R.id.tv_cart_item_name, goodsListsBean.getGoodsName());
+                            holder.setText(R.id.tv_cart_item_price, "￥" + goodsListsBean.getPrice());
+
+                            final SelectNumberView numberView = holder.getView(R.id.sn_cart_item);
+                            numberView.setQuantity(goodsListsBean.getQuantity());
+                            numberView.setSelectCallback(new SelectNumberView.ISelectCallback() {
+                                @Override
+                                public void onResult(int index, int qualitity) {
+                                    mPresenter.cartGoodsAdd(goodsListsBean.getGoodsId() + "", qualitity + "", mSPUtil.getCIRCLE_ID() + "");
+                                    goodsListsBean.setQuantity(qualitity);
+                                    mCommonAdapter.notifyDataSetChanged();
+                                }
+
+                                @Override
+                                public void onMaxQuantity() {
+
+                                }
+
+                                @Override
+                                public void onMinQuantity() {
+
+                                }
+                            });
+
+//                            SwipeLayout swipeLayout = holder.getView(R.id.swipeLayout);
+//                            swipeLayout.setLeftSwipeEnabled(true);
+                            //删除订单
+                            holder.getView(R.id.btn_delete).setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    mPresenter.cartGoodsDelete(goodsListsBean.getGoodsId() + "", mSPUtil.getCIRCLE_ID() + "");
+                                }
+                            });
+                        }
+
+                    };
+
+                    RecyclerView.Adapter adapter = recyclerViewChild.getAdapter();
+                    if (adapter == null) {
+                        recyclerViewChild.addItemDecoration(new DividerGridItemDecoration(getActivity(), 2));
+                        recyclerViewChild.setItemAnimator(new DefaultItemAnimator());
+                    }
+                    recyclerViewChild.setAdapter(commonAdapter);
+
                 }
-            }
-        });
-    }
-
-
-    @Override
-    public void onError(Throwable throwable) {
-
-    }
-
-    @Override
-    public void onLoadMoreRequested() {
-
-    }
-
-    private void toggleType() {
-        if (cartOneAdapter != null) {
-            cartOneAdapter.setType(mEditeType);
-            cartOneAdapter.notifyDataSetChanged();
-        }
-        if (EDITE.equalsIgnoreCase(mEditeType)) {
-            mRlCartTopay.setVisibility(View.VISIBLE);
-            mLlCartDelete.setVisibility(View.GONE);
+            };
+            mLinearLayoutManager = new LinearLayoutManager(getActivity());
+            mRecyclerView.setLayoutManager(mLinearLayoutManager);
+            mRecyclerView.setAdapter(mCommonAdapter);
+            mRecyclerView.setItemAnimator(new DefaultItemAnimator());
+            mRecyclerView.addItemDecoration(new DividerGridItemDecoration(getActivity(), 3));
         } else {
-            mRlCartTopay.setVisibility(View.GONE);
-            mLlCartDelete.setVisibility(View.VISIBLE);
-        }
-    }
-
-    private synchronized void changeTotal() {
-        boolean isAll = true;
-        int count = 0;
-        float total = 0;
-
-        for (StroeInfo pd : mCartInfo) {
-            for (Cart cart : pd.cartList) {
-                if (!cart.isCheck) {
-                    if (!isEdit) {
-                        //                    if (cart.isSale && cart.quantity > 0)
-                        if (cart.saleStatus == 1)
-                            isAll = false;
-                    } else {
-                        isAll = false;
-                    }
-                    if (mSelectedCartsToPay.contains(cart))
-                        mSelectedCartsToPay.remove(cart);
-                } else {
-                    if (cart.saleStatus == 1) {
-                        if (!mSelectedCartsToPay.contains(cart))
-                            mSelectedCartsToPay.add(cart);
-                        count += cart.count;
-                        //判断有促销价就使用促销价，没有促销价就使用原本的价格
-                        if (cart.promotionPrice != null && cart.promotionPrice > 0 && cart.promotionPrice < cart.price) {
-                            total += cart.count * cart.promotionPrice;
-                        } else {
-                            total += cart.count * cart.price;
-                        }
-                    }
-                }
+            if (mRecyclerView.getScrollState() == RecyclerView.SCROLL_STATE_IDLE || (mRecyclerView.isComputingLayout() == false)) {
+                mCommonAdapter.notifyDataSetChanged();
             }
         }
-
-        totalPrice = total;
-        int scale = 2;//设置位数
-        int roundingMode = 4;//表示四舍五入，可以选择其他舍值方式，例如去尾，等等.
-        BigDecimal bd = new BigDecimal((double) totalPrice);
-        bd = bd.setScale(scale, roundingMode);
-        totalPrice = bd.floatValue();
-        //        if (count > 0)
-        //            bt_cart_jiesuan.setText("结算(" + count + ")");
-        //        else
-        mBtCartJiesuan.setText("去结算");
-
-        setFreight();
-
-        Constants.isAllCheck = isAll;
-        mIvCartChoose.setSelected(Constants.isAllCheck);
-        //通知MainActivity修改购物车数量
-//        if (ShoppingCartActivity.this.getParent() instanceof MainActivity) {
-//            //            ((MainActivity) ShoppingCartActivity.this.getParent()).setCartNum(count);
-//        }
     }
 
-    private void setFreight() {
-        String price = "合计:￥" + MathUtil.point2decimal(totalPrice);
-        mTvCartTotalPrice.setText(price);
+
+    @Override
+    public void cartGoodsAddSuccess(String s) {
+
+    }
+
+    @Override
+    public void cartGoodsDeleteSuccess(String s) {
+        mRefreshLayout.autoRefresh();
     }
 
 }

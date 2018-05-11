@@ -27,6 +27,8 @@ public class ImageLoaderUtil {
     //持续优化更新
     private BaseImageLoaderStrategy mStrategy;
 
+    private int placeHolder = -1;
+
     public ImageLoaderUtil() {
         // 现在默认是Glide策略
         mStrategy = new GlideImageLoaderStrategy();
@@ -76,7 +78,11 @@ public class ImageLoaderUtil {
     public void loadImage(String url, ImageView imageView){
         // TODO 设置加载默认图比拼
 //        mStrategy.loadImage(url, imageView);
-        mStrategy.loadImage(imageView.getContext(), url, R.drawable.default_pic_loading, imageView);
+        if(placeHolder!=-1){
+            mStrategy.loadImage(imageView.getContext(), url, placeHolder, imageView);
+        }else {
+            mStrategy.loadImage(imageView.getContext(), url, R.drawable.default_pic_loading, imageView);
+        }
     }
 
     public void loadFitCenterImage(String url, ImageView imageView){
@@ -163,4 +169,12 @@ public class ImageLoaderUtil {
     public void saveImage(Context context, String url, String savePath, String saveFileName, ImageSaveListener listener) {
         mStrategy.saveImage(context, url, savePath, saveFileName, listener);
     }
+
+    /**
+     * 设置默认加载图片
+     */
+    public void setPlaceHolder(int placeholder) {
+        this.placeHolder = placeholder;
+    }
+
 }

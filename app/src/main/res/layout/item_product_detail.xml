@@ -41,10 +41,12 @@
             android:id="@+id/tv_product_price"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/px32dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignTop="@+id/iv_product_add"
             android:text="36"
             android:textColor="@color/red_text"
-            android:textSize="@dimen/px32sp" />
+            android:textSize="@dimen/px32sp"/>
 
         <ImageView
             android:id="@+id/iv_product_add"

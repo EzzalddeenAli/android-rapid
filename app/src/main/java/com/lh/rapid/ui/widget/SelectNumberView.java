@@ -98,7 +98,7 @@ public class SelectNumberView extends LinearLayout {
 			mMinus.setImageDrawable(getResources().getDrawable(R.mipmap.icon_home_minus));
 		}
 
-//		mTvQuantity.setText(String.valueOf(mQuantity));
+		mTvQuantity.setText(String.valueOf(mQuantity));
 		if(mSelectCB != null)
 			mSelectCB.onResult(index, mQuantity);
 	}
@@ -117,7 +117,7 @@ public class SelectNumberView extends LinearLayout {
 		if (mQuantity < mMax) {
 			mPlus.setImageDrawable(getResources().getDrawable(R.mipmap.icon_home_add));
 		}
-//		mTvQuantity.setText(String.valueOf(mQuantity));
+		mTvQuantity.setText(String.valueOf(mQuantity));
 		if(mSelectCB != null)
 			mSelectCB.onResult(index, mQuantity);
 	}

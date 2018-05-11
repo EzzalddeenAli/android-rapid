@@ -5,6 +5,7 @@ import android.support.multidex.MultiDexApplication;
 import android.util.Log;
 
 import com.android.frameproj.library.util.ToastUtil;
+import com.android.frameproj.library.util.imageloader.ImageLoaderUtil;
 import com.android.frameproj.library.util.log.CrashlyticsTree;
 import com.android.frameproj.library.util.log.Logger;
 import com.android.frameproj.library.util.log.Settings;
@@ -68,6 +69,7 @@ public class MyApplication extends MultiDexApplication {
         initFragmentation();
         //初始化百度地图SDK
         SDKInitializer.initialize(getApplicationContext());
+        ImageLoaderUtil.getInstance().setPlaceHolder(R.mipmap.no_pic);
     }
 
     private void initFragmentation() {
