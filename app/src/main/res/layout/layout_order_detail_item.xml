@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="108dp">
+
+    <ImageView
+        android:id="@+id/iv_product"
+        android:layout_width="81dp"
+        android:layout_height="81dp"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="15dp"/>
+
+    <TextView
+        android:id="@+id/tv_product_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/iv_product"
+        android:layout_marginLeft="9dp"
+        android:layout_toRightOf="@id/iv_product"
+        android:includeFontPadding="false"
+        android:maxLines="1"
+        android:textColor="@color/library_text_color_3"
+        android:textSize="14sp"/>
+
+    <TextView
+        android:id="@+id/tv_product_guige"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_below="@id/tv_product_name"
+        android:layout_marginTop="10dp"
+        android:layout_toRightOf="@id/iv_product"
+        android:includeFontPadding="false"
+        android:maxLines="1"
+        android:textSize="12sp"/>
+
+    <TextView
+        android:id="@+id/tv_product_price"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="20dp"
+        android:layout_toRightOf="@id/iv_product"
+        android:includeFontPadding="false"
+        android:maxLines="1"
+        android:textColor="@color/library_red"
+        android:textSize="12sp"/>
+
+    <TextView
+        android:id="@+id/tv_product_count"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="16dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="20dp"
+        android:textSize="12sp"
+        android:textColor="@color/library_text_color_9"
+        android:includeFontPadding="false"/>
+
+</RelativeLayout>

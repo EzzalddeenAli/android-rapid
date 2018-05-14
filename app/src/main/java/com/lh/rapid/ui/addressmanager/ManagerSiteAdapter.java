@@ -8,8 +8,10 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.android.frameproj.library.inter.OnItemClickListener;
 import com.daimajia.swipe.SwipeLayout;
 import com.lh.rapid.R;
 import com.lh.rapid.bean.AddressListBean;
@@ -38,8 +40,6 @@ public class ManagerSiteAdapter extends RecyclerView.Adapter<ManagerSiteAdapter.
 
     @Override
     public void onBindViewHolder(MyViewHolder holder, final int position) {
-
-
         holder.tv_site_address.setText(list.get(position).getDetailAddress());
         holder.tv_site_name.setText(list.get(position).getReceiveGoodsName());
         holder.tv_site_phone.setText(list.get(position).getPhone());
@@ -60,6 +60,12 @@ public class ManagerSiteAdapter extends RecyclerView.Adapter<ManagerSiteAdapter.
                 mOnCartGoodsDelete.cartGoodsDelete(list.get(position).getAddressId());
             }
         });
+        holder.rl_item.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mOnItemClickListener.onItemClick(v,position);
+            }
+        });
 
     }
 
@@ -67,6 +73,12 @@ public class ManagerSiteAdapter extends RecyclerView.Adapter<ManagerSiteAdapter.
 
     public void setOnCartGoodsDelete(OnCartGoodsDelete onCartGoodsDelete) {
         mOnCartGoodsDelete = onCartGoodsDelete;
+    }
+
+    private OnItemClickListener mOnItemClickListener;
+
+    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
+        mOnItemClickListener = onItemClickListener;
     }
 
     @Override
@@ -82,6 +94,7 @@ public class ManagerSiteAdapter extends RecyclerView.Adapter<ManagerSiteAdapter.
         ImageView iv_site_address;
         SwipeLayout swipeLayout;
         Button btn_delete;
+        RelativeLayout rl_item;
 
         public MyViewHolder(View itemView) {
             super(itemView);
@@ -94,6 +107,7 @@ public class ManagerSiteAdapter extends RecyclerView.Adapter<ManagerSiteAdapter.
             view_line = itemView.findViewById(R.id.view_line);
             swipeLayout = (SwipeLayout) itemView.findViewById(R.id.swipeLayout);
             btn_delete = (Button) itemView.findViewById(R.id.btn_delete);
+            rl_item = (RelativeLayout) itemView.findViewById(R.id.rl_item);
         }
 
     }

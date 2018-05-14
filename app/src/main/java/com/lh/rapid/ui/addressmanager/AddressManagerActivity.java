@@ -3,11 +3,14 @@ package com.lh.rapid.ui.addressmanager;
 import android.content.Intent;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 import android.widget.LinearLayout;
 
 import com.android.frameproj.library.decoration.RecyclerViewDivider;
+import com.android.frameproj.library.inter.OnItemClickListener;
 import com.android.frameproj.library.util.ToastUtil;
 import com.google.gson.Gson;
+import com.lh.rapid.Constants;
 import com.lh.rapid.R;
 import com.lh.rapid.bean.AddressListBean;
 import com.lh.rapid.inter.OnCartGoodsDelete;
@@ -41,6 +44,7 @@ public class AddressManagerActivity extends BaseActivity implements AddressManag
 
     @Inject
     AddressManagerPresenter mPresenter;
+    private int mComefrom;
 
     @Override
     public int initContentView() {
@@ -58,6 +62,7 @@ public class AddressManagerActivity extends BaseActivity implements AddressManag
 
     @Override
     public void initUiAndListener() {
+        mComefrom = getIntent().getIntExtra("comefrom", -1);
         mPresenter.attachView(this);
         mActionbar.setBackClickListener(new MyActionBar.IActionBarClickListener() {
             @Override
@@ -102,6 +107,18 @@ public class AddressManagerActivity extends BaseActivity implements AddressManag
                 mPresenter.addressDelete(addressId + "");
             }
         });
+        if(mComefrom == 1) {
+            adapter.setOnItemClickListener(new OnItemClickListener() {
+                @Override
+                public void onItemClick(View view, int position) {
+                    AddressListBean addressListBean = addressListBeans.get(position);
+                    Intent data = new Intent();
+                    data.putExtra("addressListBean",new Gson().toJson(addressListBean));
+                    setResult(Constants.RESULT_LOCATION_MANAGER_CODE,data);
+                    finish();
+                }
+            });
+        }
         mRvManageAddress.setLayoutManager(new LinearLayoutManager(this));
         mRvManageAddress.addItemDecoration(new RecyclerViewDivider(this, LinearLayout.VERTICAL, 2, R.color.line));
         mRvManageAddress.setAdapter(adapter);

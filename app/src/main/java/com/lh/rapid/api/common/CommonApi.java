@@ -4,6 +4,7 @@ import android.content.Context;
 import android.text.TextUtils;
 
 import com.lh.rapid.Constants;
+import com.lh.rapid.bean.AccountInfoBean;
 import com.lh.rapid.bean.AddressListBean;
 import com.lh.rapid.bean.CartGoodsBean;
 import com.lh.rapid.bean.CategoryDetailsBean;
@@ -13,6 +14,10 @@ import com.lh.rapid.bean.HomeCircleBean;
 import com.lh.rapid.bean.HomePageBean;
 import com.lh.rapid.bean.HttpResult;
 import com.lh.rapid.bean.LoginEntity;
+import com.lh.rapid.bean.OrderBean;
+import com.lh.rapid.bean.OrderDetailBean;
+import com.lh.rapid.bean.OrderSubmitBean;
+import com.lh.rapid.bean.OrderSubmitConfirmBean;
 import com.lh.rapid.bean.ProductListBean;
 import com.lh.rapid.components.retrofit.RequestHelper;
 import com.lh.rapid.components.storage.UserStorage;
@@ -387,6 +392,16 @@ public class CommonApi {
     }
 
     /**
+     * 获取默认收货地址
+     */
+    public Observable<HttpResult<AddressListBean>> addressDefault() {
+        long currentTimeMillis = System.currentTimeMillis();
+        Map<String, Object> params = mRequestHelper.getHttpRequestMap(currentTimeMillis);
+        String sign = mRequestHelper.getRequestSign(params, currentTimeMillis);
+        return mCommonService.addressDefault(currentTimeMillis, sign, params).subscribeOn(Schedulers.io());
+    }
+
+    /**
      * 购物车列表
      */
     public Observable<HttpResult<List<CartGoodsBean>>> cartGoodsList() {
@@ -441,6 +456,90 @@ public class CommonApi {
         params.put("circleId", circleId);
         String sign = mRequestHelper.getRequestSign(params, currentTimeMillis);
         return mCommonService.goodsListHome(currentTimeMillis, sign, params).subscribeOn(Schedulers.io());
+    }
+
+    /**
+     * 确认订单
+     */
+    public Observable<HttpResult<OrderSubmitConfirmBean>> orderSubmitConfirm(String addressId, String circleId, String paramsString) {
+        long currentTimeMillis = System.currentTimeMillis();
+        Map<String, Object> params = mRequestHelper.getHttpRequestMap(currentTimeMillis);
+        params.put("addressId", addressId);
+        params.put("circleId", circleId);
+        params.put("params", paramsString);
+        String sign = mRequestHelper.getRequestSign(params, currentTimeMillis);
+        return mCommonService.orderSubmitConfirm(currentTimeMillis, sign, params).subscribeOn(Schedulers.io());
+    }
+
+    /**
+     * 提交订单
+     */
+    public Observable<HttpResult<OrderSubmitBean>> orderSubmit(String addressId, String circleId, String paramsString) {
+        long currentTimeMillis = System.currentTimeMillis();
+        Map<String, Object> params = mRequestHelper.getHttpRequestMap(currentTimeMillis);
+        params.put("addressId", addressId);
+        params.put("circleId", circleId);
+        params.put("params", paramsString);
+        String sign = mRequestHelper.getRequestSign(params, currentTimeMillis);
+        return mCommonService.orderSubmit(currentTimeMillis, sign, params).subscribeOn(Schedulers.io());
+    }
+
+    /**
+     * 我的订单
+     * @param status 订单状态：1-待付款，2-准备中，3-配送中，4-已完成 5-已取消 0-全部
+     * @return
+     */
+    public Observable<HttpResult<List<OrderBean>>> orderList(String status, int page, int pageSize) {
+        long currentTimeMillis = System.currentTimeMillis();
+        Map<String, Object> params = mRequestHelper.getHttpRequestMap(currentTimeMillis);
+        params.put("status", status);
+        params.put("page", page);
+        params.put("pageSize", pageSize);
+        String sign = mRequestHelper.getRequestSign(params, currentTimeMillis);
+        return mCommonService.orderList(currentTimeMillis, sign, params).subscribeOn(Schedulers.io());
+    }
+
+    /**
+     * 完成订单
+     */
+    public Observable<HttpResult<String>> orderFinish(String orderId) {
+        long currentTimeMillis = System.currentTimeMillis();
+        Map<String, Object> params = mRequestHelper.getHttpRequestMap(currentTimeMillis);
+        params.put("orderId", orderId);
+        String sign = mRequestHelper.getRequestSign(params, currentTimeMillis);
+        return mCommonService.orderFinish(currentTimeMillis, sign, params).subscribeOn(Schedulers.io());
+    }
+
+    /**
+     * 订单取消
+     */
+    public Observable<HttpResult<String>> orderCancel(String orderId) {
+        long currentTimeMillis = System.currentTimeMillis();
+        Map<String, Object> params = mRequestHelper.getHttpRequestMap(currentTimeMillis);
+        params.put("orderId", orderId);
+        String sign = mRequestHelper.getRequestSign(params, currentTimeMillis);
+        return mCommonService.orderCancel(currentTimeMillis, sign, params).subscribeOn(Schedulers.io());
+    }
+
+    /**
+     * 订单详情
+     */
+    public Observable<HttpResult<OrderDetailBean>> orderDetail(String orderId) {
+        long currentTimeMillis = System.currentTimeMillis();
+        Map<String, Object> params = mRequestHelper.getHttpRequestMap(currentTimeMillis);
+        params.put("orderId", orderId);
+        String sign = mRequestHelper.getRequestSign(params, currentTimeMillis);
+        return mCommonService.orderDetail(currentTimeMillis, sign, params).subscribeOn(Schedulers.io());
+    }
+
+    /**
+     * 个人基本信息
+     */
+    public Observable<HttpResult<AccountInfoBean>> accountInfo() {
+        long currentTimeMillis = System.currentTimeMillis();
+        Map<String, Object> params = mRequestHelper.getHttpRequestMap(currentTimeMillis);
+        String sign = mRequestHelper.getRequestSign(params, currentTimeMillis);
+        return mCommonService.accountInfo(currentTimeMillis, sign, params).subscribeOn(Schedulers.io());
     }
 
 }

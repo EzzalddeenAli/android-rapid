@@ -119,7 +119,7 @@ public class ProductListActivity extends BaseActivity implements ProductListCont
                     holder.setImageUrl(R.id.iv_cart_item_pic,goodsDetailBean.getGoodsImg());
                     holder.setText(R.id.tv_cart_item_name, goodsDetailBean.getGoodsName());
                     holder.setText(R.id.tv_cart_item_weight, goodsDetailBean.getWeight());
-                    holder.setText(R.id.tv_cart_item_price, goodsDetailBean.getGoodsPrice()+"");
+                    holder.setText(R.id.tv_cart_item_price, "￥"+goodsDetailBean.getGoodsPrice());
                 }
             };
             mCommonAdapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {

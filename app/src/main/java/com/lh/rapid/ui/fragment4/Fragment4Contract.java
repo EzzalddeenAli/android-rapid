@@ -1,6 +1,7 @@
 package com.lh.rapid.ui.fragment4;
 
 
+import com.lh.rapid.bean.AccountInfoBean;
 import com.lh.rapid.ui.BasePresenter;
 import com.lh.rapid.ui.BaseView;
 
@@ -13,16 +14,19 @@ public interface Fragment4Contract {
 
     interface  View extends BaseView {
 
-        void onError(Throwable throwable);
+        void loadError(Throwable throwable);
 
         void showLoading();
 
         void hideLoading();
 
+        void accountInfoSuccess(AccountInfoBean accountInfoBean);
+
     }
 
     interface Presenter extends BasePresenter<View> {
 
+        void accountInfo();
     }
 
 }

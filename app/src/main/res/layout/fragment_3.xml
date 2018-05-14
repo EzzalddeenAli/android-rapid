@@ -10,23 +10,6 @@
         android:layout_height="@dimen/statusbar_view_height"
         android:background="@android:color/transparent"/>
 
-    <com.android.frameproj.library.widget.swipeitem.SwipeItemLayout
-        android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:background="@color/md_white_1000">
-
-        <RelativeLayout
-            android:background="@color/dark_green"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
-
-        <RelativeLayout
-            android:background="@color/red"
-            android:layout_width="100dp"
-            android:layout_height="match_parent"/>
-
-    </com.android.frameproj.library.widget.swipeitem.SwipeItemLayout>
-
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">

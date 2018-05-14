@@ -1,5 +1,6 @@
 package com.lh.rapid.ui.fragment4;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
@@ -7,11 +8,13 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.lh.rapid.R;
+import com.lh.rapid.bean.AccountInfoBean;
 import com.lh.rapid.components.storage.UserStorage;
 import com.lh.rapid.ui.BaseFragment;
 import com.lh.rapid.ui.addressmanager.AddressManagerActivity;
 import com.lh.rapid.ui.main.MainComponent;
 import com.lh.rapid.ui.myshare.MyShareActivity;
+import com.lh.rapid.ui.orderlist.OrderListActivity;
 
 import javax.inject.Inject;
 
@@ -35,6 +38,7 @@ public class Fragment4 extends BaseFragment implements Fragment4Contract.View {
     Fragment4Presenter mPresenter;
     @Inject
     UserStorage mUserStorage;
+
 
     public static BaseFragment newInstance() {
         Fragment4 fragment4 = new Fragment4();
@@ -63,7 +67,7 @@ public class Fragment4 extends BaseFragment implements Fragment4Contract.View {
     @Override
     public void initUI(View view) {
         mPresenter.attachView(this);
-
+        mPresenter.accountInfo();
     }
 
     @Override
@@ -76,39 +80,37 @@ public class Fragment4 extends BaseFragment implements Fragment4Contract.View {
     public void initData() {
     }
 
-    @Override
-    public void onError(Throwable throwable) {
-
-    }
-
-    @Override
-    public void showLoading() {
-
-    }
-
-    @Override
-    public void hideLoading() {
-
-    }
-
     @OnClick(R.id.rl_address_manager)
-    public void mRlAddressManager(){
-        openActivity(AddressManagerActivity.class);
+    public void mRlAddressManager() {
+        Intent intent = new Intent(getActivity(),AddressManagerActivity.class);
+        intent.putExtra("comefrom",2);
+        startActivity(intent);
     }
 
     @OnClick(R.id.my_share)
-    public void mMyShare(){
+    public void mMyShare() {
         openActivity(MyShareActivity.class);
     }
 
     @OnClick(R.id.service_center)
-    public void mServiceCenter(){
+    public void mServiceCenter() {
 
     }
 
     @OnClick(R.id.about_me)
-    public void mAboutMe(){
+    public void mAboutMe() {
 
+    }
+
+    @OnClick(R.id.tv_all_order)
+    public void mTvAllOrder(){
+        openActivity(OrderListActivity.class);
+    }
+
+    @Override
+    public void accountInfoSuccess(AccountInfoBean accountInfoBean) {
+        mTv1.setText(accountInfoBean.getCardId());
+        mTv2.setText(accountInfoBean.getName());
     }
 
 }

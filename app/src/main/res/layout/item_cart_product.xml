@@ -1,9 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.android.frameproj.library.widget.swipeitem.SwipeItemLayout
+<com.daimajia.swipe.SwipeLayout
+    android:id="@+id/swipeLayout"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="100dp"
+    android:layout_height="wrap_content"
     android:background="@color/md_white_1000">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent">
+
+        <Button
+            android:id="@+id/btn_delete"
+            android:layout_width="55dp"
+            android:layout_height="100dp"
+            android:background="@color/library_support_color_red"
+            android:text="删除"
+            android:textColor="@color/md_white_1000"
+            android:textSize="12sp"/>
+
+    </LinearLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -95,19 +111,4 @@
 
     </RelativeLayout>
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent">
-
-        <Button
-            android:id="@+id/btn_delete"
-            android:layout_width="55dp"
-            android:layout_height="100dp"
-            android:background="@color/library_support_color_red"
-            android:text="删除"
-            android:textColor="@color/md_white_1000"
-            android:textSize="12sp"/>
-
-    </LinearLayout>
-
-</com.android.frameproj.library.widget.swipeitem.SwipeItemLayout>
+</com.daimajia.swipe.SwipeLayout>

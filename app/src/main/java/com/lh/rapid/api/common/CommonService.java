@@ -1,5 +1,6 @@
 package com.lh.rapid.api.common;
 
+import com.lh.rapid.bean.AccountInfoBean;
 import com.lh.rapid.bean.AddressListBean;
 import com.lh.rapid.bean.CartGoodsBean;
 import com.lh.rapid.bean.CategoryDetailsBean;
@@ -9,6 +10,10 @@ import com.lh.rapid.bean.HomeCircleBean;
 import com.lh.rapid.bean.HomePageBean;
 import com.lh.rapid.bean.HttpResult;
 import com.lh.rapid.bean.LoginEntity;
+import com.lh.rapid.bean.OrderBean;
+import com.lh.rapid.bean.OrderDetailBean;
+import com.lh.rapid.bean.OrderSubmitBean;
+import com.lh.rapid.bean.OrderSubmitConfirmBean;
 import com.lh.rapid.bean.ProductListBean;
 
 import java.util.List;
@@ -128,6 +133,12 @@ public interface CommonService {
     Observable<HttpResult<String>> addressDelete(@Header("timestamp") long timestamp, @Header("sign") String sign,
                                                  @FieldMap Map<String, Object> params);
 
+    //获取默认收货地址
+    @FormUrlEncoded
+    @POST("address/default")
+    Observable<HttpResult<AddressListBean>> addressDefault(@Header("timestamp") long timestamp, @Header("sign") String sign,
+                                                           @FieldMap Map<String, Object> params);
+
     //购物车列表
     @FormUrlEncoded
     @POST("cart/goods/list")
@@ -157,5 +168,47 @@ public interface CommonService {
     @POST("goods/list/home")
     Observable<HttpResult<List<HomePageBean.CategoryListsBean.GoodListBean>>> goodsListHome(@Header("timestamp") long timestamp, @Header("sign") String sign,
                                                                                             @FieldMap Map<String, Object> params);
+
+    //确认订单
+    @FormUrlEncoded
+    @POST("order/submit/confirm")
+    Observable<HttpResult<OrderSubmitConfirmBean>> orderSubmitConfirm(@Header("timestamp") long timestamp, @Header("sign") String sign,
+                                                                      @FieldMap Map<String, Object> params);
+
+    //提交订单
+    @FormUrlEncoded
+    @POST("order/submit")
+    Observable<HttpResult<OrderSubmitBean>> orderSubmit(@Header("timestamp") long timestamp, @Header("sign") String sign,
+                                                        @FieldMap Map<String, Object> params);
+
+    //我的订单
+    @FormUrlEncoded
+    @POST("order/list")
+    Observable<HttpResult<List<OrderBean>>> orderList(@Header("timestamp") long timestamp, @Header("sign") String sign,
+                                                @FieldMap Map<String, Object> params);
+
+    //完成订单
+    @FormUrlEncoded
+    @POST("order/finish")
+    Observable<HttpResult<String>> orderFinish(@Header("timestamp") long timestamp, @Header("sign") String sign,
+                                               @FieldMap Map<String, Object> params);
+
+    //订单取消
+    @FormUrlEncoded
+    @POST("order/cancel")
+    Observable<HttpResult<String>> orderCancel(@Header("timestamp") long timestamp, @Header("sign") String sign,
+                                               @FieldMap Map<String, Object> params);
+
+    //订单详情
+    @FormUrlEncoded
+    @POST("order/detail")
+    Observable<HttpResult<OrderDetailBean>> orderDetail(@Header("timestamp") long timestamp, @Header("sign") String sign,
+                                                        @FieldMap Map<String, Object> params);
+
+    //个人基本信息
+    @FormUrlEncoded
+    @POST("account/info")
+    Observable<HttpResult<AccountInfoBean>> accountInfo(@Header("timestamp") long timestamp, @Header("sign") String sign,
+                                                        @FieldMap Map<String, Object> params);
 
 }

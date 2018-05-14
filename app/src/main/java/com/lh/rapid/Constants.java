@@ -53,6 +53,8 @@ public class Constants {
     public static final int RESULT_LOGIN_CODE = 113;
     public static final int REQUEST_CHOOSE_LOCATION_CODE_CUSTOM_MAP = 120;
     public static final int RESULT_CHOOSE_LOCATION_CODE_CUSTOM_MAP = 121;
+    public static final int REQUEST_LOCATION_MANAGER_CODE = 122;
+    public static final int RESULT_LOCATION_MANAGER_CODE = 123;
 
     public static boolean isAllCheck = true;
 

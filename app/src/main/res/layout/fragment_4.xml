@@ -64,7 +64,6 @@
                                 android:layout_toRightOf="@id/imageView"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="8818888"
                                 android:layout_marginTop="5dp"
                                 android:layout_marginLeft="14dp"
                                 android:textSize="16dp"
@@ -76,7 +75,6 @@
                                 android:layout_toRightOf="@id/imageView"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="甲乙丙"
                                 android:layout_marginLeft="14dp"
                                 android:layout_alignParentBottom="true"
                                 android:layout_marginBottom="5dp"
@@ -89,7 +87,6 @@
                                 android:layout_marginRight="16dp"/>
 
                         </RelativeLayout>
-
 
                     </RelativeLayout>
 
@@ -199,6 +196,7 @@
                         style="@style/iv_user_center_arrow"/>
 
                     <TextView
+                        android:id="@+id/tv_all_order"
                         style="@style/tv_user_center"
                         android:layout_marginRight="5dp"
                         android:layout_toLeftOf="@id/my_order_arrow"

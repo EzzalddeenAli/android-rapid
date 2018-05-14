@@ -10,6 +10,8 @@ import android.view.View;
 import com.android.frameproj.library.adapter.CommonAdapter;
 import com.android.frameproj.library.adapter.base.ViewHolder;
 import com.android.frameproj.library.decoration.DividerGridItemDecoration;
+import com.daimajia.swipe.SwipeLayout;
+import com.google.gson.Gson;
 import com.lh.rapid.R;
 import com.lh.rapid.bean.Cart;
 import com.lh.rapid.bean.CartGoodsBean;
@@ -145,6 +147,17 @@ public class Fragment3 extends BaseFragment implements Fragment3Contract.View {
                         @Override
                         public void onClick(View v) {
                             Intent intent = new Intent(getActivity(), OrderConfirmActivity.class);
+                            List<CartGoodsBean.GoodsListsBean> goodsLists = cartGoodsBean.getGoodsLists();
+                            List<Map<String, Object>> mapList = new ArrayList<>();
+                            for (int i = 0; i < goodsLists.size(); i++) {
+                                CartGoodsBean.GoodsListsBean goodsListsBean = goodsLists.get(i);
+                                Map<String, Object> stringObjectMap = new HashMap<>();
+                                stringObjectMap.put("goodsId", goodsListsBean.getGoodsId());
+                                stringObjectMap.put("counts", goodsListsBean.getQuantity());
+                                mapList.add(stringObjectMap);
+                            }
+                            intent.putExtra("params", new Gson().toJson(mapList));
+                            intent.putExtra("cartGoodsBean", new Gson().toJson(cartGoodsBean));
                             startActivity(intent);
                         }
                     });
@@ -193,8 +206,8 @@ public class Fragment3 extends BaseFragment implements Fragment3Contract.View {
                                 }
                             });
 
-//                            SwipeLayout swipeLayout = holder.getView(R.id.swipeLayout);
-//                            swipeLayout.setLeftSwipeEnabled(true);
+                            SwipeLayout swipeLayout = holder.getView(R.id.swipeLayout);
+                            swipeLayout.setLeftSwipeEnabled(true);
                             //删除订单
                             holder.getView(R.id.btn_delete).setOnClickListener(new View.OnClickListener() {
                                 @Override
