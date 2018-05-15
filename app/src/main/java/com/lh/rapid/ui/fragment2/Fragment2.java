@@ -76,6 +76,7 @@ public class Fragment2 extends BaseFragment implements Fragment2Contract.View {
     @Override
     public void initUI(View view) {
         mActionbar.setTitle("分类");
+        mActionbar.setLeftVisible(View.GONE);
         mBus.register(this);
         mFragment2Presenter.attachView(this);
         mFragment2Presenter.categoryOneLevel();

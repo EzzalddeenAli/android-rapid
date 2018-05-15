@@ -2,6 +2,7 @@ package com.lh.rapid.ui.fragment4;
 
 
 import com.lh.rapid.bean.AccountInfoBean;
+import com.lh.rapid.bean.AccountUserHomeBean;
 import com.lh.rapid.ui.BasePresenter;
 import com.lh.rapid.ui.BaseView;
 
@@ -22,11 +23,15 @@ public interface Fragment4Contract {
 
         void accountInfoSuccess(AccountInfoBean accountInfoBean);
 
+        void accountUserHomeSuccess(AccountUserHomeBean accountInfoBean);
+
     }
 
     interface Presenter extends BasePresenter<View> {
 
         void accountInfo();
+
+        void accountUserHome();
     }
 
 }

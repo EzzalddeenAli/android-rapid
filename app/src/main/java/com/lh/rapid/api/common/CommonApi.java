@@ -5,6 +5,7 @@ import android.text.TextUtils;
 
 import com.lh.rapid.Constants;
 import com.lh.rapid.bean.AccountInfoBean;
+import com.lh.rapid.bean.AccountUserHomeBean;
 import com.lh.rapid.bean.AddressListBean;
 import com.lh.rapid.bean.CartGoodsBean;
 import com.lh.rapid.bean.CategoryDetailsBean;
@@ -486,6 +487,7 @@ public class CommonApi {
 
     /**
      * 我的订单
+     *
      * @param status 订单状态：1-待付款，2-准备中，3-配送中，4-已完成 5-已取消 0-全部
      * @return
      */
@@ -540,6 +542,65 @@ public class CommonApi {
         Map<String, Object> params = mRequestHelper.getHttpRequestMap(currentTimeMillis);
         String sign = mRequestHelper.getRequestSign(params, currentTimeMillis);
         return mCommonService.accountInfo(currentTimeMillis, sign, params).subscribeOn(Schedulers.io());
+    }
+
+    /**
+     * 密码重置
+     */
+    public Observable<HttpResult<String>> passwordReset(String mobile, String smsCode, String newPassword) {
+        long currentTimeMillis = System.currentTimeMillis();
+        Map<String, Object> params = mRequestHelper.getHttpRequestMap(currentTimeMillis);
+        params.put("mobile", mobile);
+        params.put("smsCode", smsCode);
+        params.put("newPassword", newPassword);
+        String sign = mRequestHelper.getRequestSign(params, currentTimeMillis);
+        return mCommonService.passwordReset(currentTimeMillis, sign, params).subscribeOn(Schedulers.io());
+    }
+
+    /**
+     * 个人主页
+     */
+    public Observable<HttpResult<AccountUserHomeBean>> accountUserHome() {
+        long currentTimeMillis = System.currentTimeMillis();
+        Map<String, Object> params = mRequestHelper.getHttpRequestMap(currentTimeMillis);
+        String sign = mRequestHelper.getRequestSign(params, currentTimeMillis);
+        return mCommonService.accountUserHome(currentTimeMillis, sign, params).subscribeOn(Schedulers.io());
+    }
+
+    /**
+     * 刷新token
+     */
+    public Observable<HttpResult<LoginEntity>> accountRefreshToken() {
+        long currentTimeMillis = System.currentTimeMillis();
+        Map<String, Object> params = mRequestHelper.getHttpRequestMap(currentTimeMillis);
+        String sign = mRequestHelper.getRequestSign(params, currentTimeMillis);
+        return mCommonService.accountRefreshToken(currentTimeMillis, sign, params).subscribeOn(Schedulers.io());
+    }
+
+    /**
+     * 完善用户信息
+     */
+    public Observable<HttpResult<String>> accountInfoCompleted(String nickName, String gender, String email, String birthday) {
+        long currentTimeMillis = System.currentTimeMillis();
+        Map<String, Object> params = mRequestHelper.getHttpRequestMap(currentTimeMillis);
+        params.put("nickName", nickName);
+        params.put("gender", gender);
+        params.put("email", email);
+        params.put("birthday", birthday);
+        String sign = mRequestHelper.getRequestSign(params, currentTimeMillis);
+        return mCommonService.accountInfoCompleted(currentTimeMillis, sign, params).subscribeOn(Schedulers.io());
+    }
+
+    /**
+     * 修改密码
+     */
+    public Observable<HttpResult<String>> accountChangePassword(String newPassword, String oldPassword) {
+        long currentTimeMillis = System.currentTimeMillis();
+        Map<String, Object> params = mRequestHelper.getHttpRequestMap(currentTimeMillis);
+        params.put("newPassword", newPassword);
+        params.put("oldPassword", oldPassword);
+        String sign = mRequestHelper.getRequestSign(params, currentTimeMillis);
+        return mCommonService.accountChangePassword(currentTimeMillis, sign, params).subscribeOn(Schedulers.io());
     }
 
 }

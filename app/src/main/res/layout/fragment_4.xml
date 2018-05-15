@@ -54,8 +54,8 @@
 
                             <ImageView
                                 android:id="@+id/imageView"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
+                                android:layout_width="@dimen/px212dp"
+                                android:layout_height="@dimen/px212dp"
                                 android:src="@mipmap/icon_mine_touxiang"
                                 android:layout_marginLeft="32dp"/>
 
@@ -133,11 +133,11 @@
                         </LinearLayout>
 
                         <TextView
+                            android:id="@+id/tv_user_amount"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_centerHorizontal="true"
                             android:textSize="16sp"
-                            android:text="￥100.00"
                             android:textColor="#dd000b"
                             android:layout_marginTop="24dp"/>
 
@@ -163,12 +163,12 @@
                             android:textSize="14sp"/>
 
                         <TextView
+                            android:id="@+id/tv_user_coin"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_centerHorizontal="true"
                             android:textSize="16sp"
                             android:textColor="@color/library_text_color_6"
-                            android:text="1000"
                             android:layout_marginTop="24dp"/>
 
                     </RelativeLayout>
@@ -216,6 +216,7 @@
                     android:paddingRight="10dp">
 
                     <LinearLayout
+                        android:id="@+id/ll_wait_pay"
                         style="@style/ll_user_center_my_order">
 
                         <ImageView
@@ -229,6 +230,7 @@
                     </LinearLayout>
 
                     <LinearLayout
+                        android:id="@+id/ll_preparing"
                         style="@style/ll_user_center_my_order">
 
                         <ImageView
@@ -245,6 +247,7 @@
                         style="@style/ll_user_center_my_order">
 
                         <ImageView
+                            android:id="@+id/ll_distribution"
                             style="@style/iv_user_center_my_order"
                             android:src="@mipmap/icon_mine_peisongzhong"/>
 
@@ -255,6 +258,7 @@
                     </LinearLayout>
 
                     <LinearLayout
+                        android:id="@+id/ll_finished"
                         style="@style/ll_user_center_my_order">
 
                         <ImageView
@@ -268,6 +272,7 @@
                     </LinearLayout>
 
                     <LinearLayout
+                        android:id="@+id/ll_canc"
                         style="@style/ll_user_center_my_order">
 
                         <ImageView

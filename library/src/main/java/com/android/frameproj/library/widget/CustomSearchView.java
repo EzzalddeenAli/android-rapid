@@ -43,7 +43,7 @@ public class CustomSearchView extends LinearLayout implements View.OnClickListen
     }
 
     private void initView(Context paramContext) {
-        View localView = View.inflate(paramContext, R.layout.custom_search_view, null);
+        View localView = View.inflate(paramContext, R.layout.custom_search_view_2, null);
         this.et_search_content = ((EditText) localView.findViewById(R.id.et_search_content));
         this.llBack = ((LinearLayout) localView.findViewById(R.id.ll_back));
         this.btn_function_btn = ((ImageView) localView.findViewById(R.id.btn_search_functionBtn));

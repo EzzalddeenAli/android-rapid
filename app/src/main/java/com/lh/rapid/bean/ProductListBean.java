@@ -13,6 +13,15 @@ public class ProductListBean {
     private String goodsName;
     private double coin;
     private String goodsDesc;
+    private int counts;
+
+    public int getCounts() {
+        return counts;
+    }
+
+    public void setCounts(int counts) {
+        this.counts = counts;
+    }
 
     public String getGoodsImg() {
         return goodsImg;

@@ -16,69 +16,137 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="@dimen/px2dp"
-        android:background="@color/color_efeff4" />
+        android:background="@color/color_efeff4"/>
 
-    <android.support.design.widget.CoordinatorLayout
-        android:id="@+id/cl_main"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <android.support.design.widget.AppBarLayout
+        <android.support.design.widget.CoordinatorLayout
+            android:id="@+id/cl_main"
             android:layout_width="match_parent"
-            android:layout_height="153dp"
-            app:elevation="@dimen/px0dp">
+            android:layout_height="match_parent">
 
-            <android.support.design.widget.CollapsingToolbarLayout
+            <android.support.design.widget.AppBarLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fitsSystemWindows="true"
-                app:contentScrim="@color/color_f2f2f2"
-                app:layout_scrollFlags="scroll|exitUntilCollapsed|snap">
+                android:layout_height="153dp"
+                app:elevation="@dimen/px0dp">
 
-                <com.youth.banner.Banner
-                    android:id="@+id/main_banner"
+                <android.support.design.widget.CollapsingToolbarLayout
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/px250dp"
-                    android:background="@color/color_f2f2f2" >
+                    android:layout_height="wrap_content"
+                    android:fitsSystemWindows="true"
+                    app:contentScrim="@color/color_f2f2f2"
+                    app:layout_scrollFlags="scroll|exitUntilCollapsed|snap">
 
-                    <ImageView
-                        android:id="@+id/iv_alf"
+                    <com.youth.banner.Banner
+                        android:id="@+id/main_banner"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="#000000"
-                        android:src="@mipmap/home_banner_no_pic"
-                        android:visibility="gone"/>
+                        android:layout_height="@dimen/px250dp"
+                        android:background="@color/color_f2f2f2">
 
-                </com.youth.banner.Banner>
+                        <ImageView
+                            android:id="@+id/iv_alf"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="#000000"
+                            android:src="@mipmap/home_banner_no_pic"
+                            android:visibility="gone"/>
 
-            </android.support.design.widget.CollapsingToolbarLayout>
+                    </com.youth.banner.Banner>
 
-            <include
-                layout="@layout/layout_mid_title"
-                app:layout_collapseMode="pin"
-                app:layout_scrollFlags="exitUntilCollapsed|enterAlways|enterAlwaysCollapsed" />
+                </android.support.design.widget.CollapsingToolbarLayout>
 
-        </android.support.design.widget.AppBarLayout>
+                <include
+                    layout="@layout/layout_mid_title"
+                    app:layout_collapseMode="pin"
+                    app:layout_scrollFlags="exitUntilCollapsed|enterAlways|enterAlwaysCollapsed"/>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal"
-            android:overScrollMode="never"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+            </android.support.design.widget.AppBarLayout>
 
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/rv_form_name"
-                android:layout_width="@dimen/px146dp"
-                android:layout_height="match_parent" />
-
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/rv_form_detail"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginLeft="@dimen/px20dp" />
+                android:orientation="horizontal"
+                android:overScrollMode="never"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/rv_form_name"
+                    android:layout_width="@dimen/px146dp"
+                    android:layout_height="match_parent"/>
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/rv_form_detail"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="@dimen/px20dp"/>
+            </LinearLayout>
+
+        </android.support.design.widget.CoordinatorLayout>
+
+        <View
+            android:id="@+id/viewMask"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#60000000"
+            android:visibility="gone"/>
+
+        <LinearLayout
+            android:id="@+id/rl_search"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/md_white_1000"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/md_white_1000"
+                android:orientation="vertical">
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/px2dp"
+                    android:background="@color/line"/>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/px60dp">
+
+                    <ImageView
+                        android:id="@+id/iv_location"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="@dimen/px28dp"
+                        android:src="@mipmap/icon_home_dingwei"/>
+
+                    <TextView
+                        android:id="@+id/tv_circle_name2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="@dimen/px16dp"
+                        android:layout_toRightOf="@id/iv_location"
+                        android:textColor="@color/tab_color"/>
+                </RelativeLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/px2dp"
+                    android:background="@color/line"/>
+
+            </LinearLayout>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recyclerViewSearch"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+
         </LinearLayout>
 
-    </android.support.design.widget.CoordinatorLayout>
+    </RelativeLayout>
 
 </LinearLayout>

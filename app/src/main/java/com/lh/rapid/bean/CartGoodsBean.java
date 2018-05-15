@@ -11,6 +11,15 @@ public class CartGoodsBean {
     private String circleName;
     private int circleId;
     private List<GoodsListsBean> goodsLists;
+    private boolean isChecked = true;
+
+    public boolean isChecked() {
+        return isChecked;
+    }
+
+    public void setChecked(boolean checked) {
+        isChecked = checked;
+    }
 
     public String getCircleName() {
         return circleName;
@@ -44,6 +53,15 @@ public class CartGoodsBean {
         private double price;
         private String goodsImgUrl;
         private int cartId;
+        private boolean isChecked = true;
+
+        public boolean isChecked() {
+            return isChecked;
+        }
+
+        public void setChecked(boolean checked) {
+            isChecked = checked;
+        }
 
         public int getQuantity() {
             return quantity;

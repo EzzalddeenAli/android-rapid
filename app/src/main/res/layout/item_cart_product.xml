@@ -101,7 +101,6 @@
             android:textColor="@color/red_text"
             android:textSize="@dimen/px28sp"/>
 
-
         <com.lh.rapid.ui.widget.SelectNumberView
             android:id="@+id/sn_cart_item"
             android:layout_width="wrap_content"

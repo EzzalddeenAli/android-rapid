@@ -52,4 +52,11 @@
         android:textColor="@color/red_text"
         android:textSize="@dimen/px28sp" />
 
+    <com.lh.rapid.ui.widget.SelectNumberView
+        android:id="@+id/sn_cart_item"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/iv_cart_item_pic"
+        android:layout_alignRight="@id/tv_cart_item_name"/>
+
 </RelativeLayout>

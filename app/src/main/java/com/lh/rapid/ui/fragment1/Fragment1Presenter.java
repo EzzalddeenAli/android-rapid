@@ -6,6 +6,7 @@ import com.lh.rapid.api.common.CommonApi;
 import com.lh.rapid.bean.HomeCircleBean;
 import com.lh.rapid.bean.HomePageBean;
 import com.lh.rapid.bean.HttpResult;
+import com.lh.rapid.bean.ProductListBean;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -178,6 +179,30 @@ public class Fragment1Presenter implements Fragment1Contract.Presenter {
                     @Override
                     public void accept(@io.reactivex.annotations.NonNull String s) throws Exception {
                         mView.cartGoodsDeleteSuccess(s);
+                    }
+                }, new Consumer<Throwable>() {
+                    @Override
+                    public void accept(@io.reactivex.annotations.NonNull Throwable throwable) throws Exception {
+                        mView.loadError(throwable);
+                    }
+                }));
+    }
+
+    @Override
+    public void search(String type, String goodsName, String sortType, String sortStr, String categoryId, String circleId) {
+        disposables.add(mCommonApi.goodsList(type, goodsName, sortType, sortStr, categoryId, circleId, 1, 20)
+                .debounce(800, TimeUnit.MILLISECONDS)
+                .flatMap(new Function<HttpResult<List<ProductListBean>>, ObservableSource<List<ProductListBean>>>() {
+                    @Override
+                    public ObservableSource<List<ProductListBean>> apply(@io.reactivex.annotations.NonNull HttpResult<List<ProductListBean>> homePageBeanHttpResult) throws Exception {
+                        return CommonApi.flatResponse(homePageBeanHttpResult);
+                    }
+                })
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<List<ProductListBean>>() {
+                    @Override
+                    public void accept(@io.reactivex.annotations.NonNull List<ProductListBean> productListBeanList) throws Exception {
+                        mView.searchSuccess(productListBeanList);
                     }
                 }, new Consumer<Throwable>() {
                     @Override

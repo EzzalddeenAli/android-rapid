@@ -1,6 +1,7 @@
 package com.lh.rapid.api.common;
 
 import com.lh.rapid.bean.AccountInfoBean;
+import com.lh.rapid.bean.AccountUserHomeBean;
 import com.lh.rapid.bean.AddressListBean;
 import com.lh.rapid.bean.CartGoodsBean;
 import com.lh.rapid.bean.CategoryDetailsBean;
@@ -185,7 +186,7 @@ public interface CommonService {
     @FormUrlEncoded
     @POST("order/list")
     Observable<HttpResult<List<OrderBean>>> orderList(@Header("timestamp") long timestamp, @Header("sign") String sign,
-                                                @FieldMap Map<String, Object> params);
+                                                      @FieldMap Map<String, Object> params);
 
     //完成订单
     @FormUrlEncoded
@@ -211,4 +212,33 @@ public interface CommonService {
     Observable<HttpResult<AccountInfoBean>> accountInfo(@Header("timestamp") long timestamp, @Header("sign") String sign,
                                                         @FieldMap Map<String, Object> params);
 
+    //密码重置
+    @FormUrlEncoded
+    @POST("account/password/reset")
+    Observable<HttpResult<String>> passwordReset(@Header("timestamp") long timestamp, @Header("sign") String sign,
+                                                 @FieldMap Map<String, Object> params);
+
+    //个人主页
+    @FormUrlEncoded
+    @POST("account/userHome")
+    Observable<HttpResult<AccountUserHomeBean>> accountUserHome(@Header("timestamp") long timestamp, @Header("sign") String sign,
+                                                                @FieldMap Map<String, Object> params);
+
+    //刷新token
+    @FormUrlEncoded
+    @POST("account/refreshToken")
+    Observable<HttpResult<LoginEntity>> accountRefreshToken(@Header("timestamp") long timestamp, @Header("sign") String sign,
+                                                            @FieldMap Map<String, Object> params);
+
+    //完善用户信息
+    @FormUrlEncoded
+    @POST("account/info/completed")
+    Observable<HttpResult<String>> accountInfoCompleted(@Header("timestamp") long timestamp, @Header("sign") String sign,
+                                                             @FieldMap Map<String, Object> params);
+
+    //修改密码
+    @FormUrlEncoded
+    @POST("account/changePassword")
+    Observable<HttpResult<String>> accountChangePassword(@Header("timestamp") long timestamp, @Header("sign") String sign,
+                                                              @FieldMap Map<String, Object> params);
 }

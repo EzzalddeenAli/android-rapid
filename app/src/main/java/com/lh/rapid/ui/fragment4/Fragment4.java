@@ -2,23 +2,30 @@ package com.lh.rapid.ui.fragment4;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.android.frameproj.library.util.imageloader.ImageLoaderUtil;
 import com.lh.rapid.R;
 import com.lh.rapid.bean.AccountInfoBean;
+import com.lh.rapid.bean.AccountUserHomeBean;
 import com.lh.rapid.components.storage.UserStorage;
 import com.lh.rapid.ui.BaseFragment;
+import com.lh.rapid.ui.aboutme.AboutMeActivity;
 import com.lh.rapid.ui.addressmanager.AddressManagerActivity;
 import com.lh.rapid.ui.main.MainComponent;
 import com.lh.rapid.ui.myshare.MyShareActivity;
 import com.lh.rapid.ui.orderlist.OrderListActivity;
+import com.lh.rapid.ui.servicecenter.ServiceCenterActivity;
 
 import javax.inject.Inject;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class Fragment4 extends BaseFragment implements Fragment4Contract.View {
@@ -38,7 +45,10 @@ public class Fragment4 extends BaseFragment implements Fragment4Contract.View {
     Fragment4Presenter mPresenter;
     @Inject
     UserStorage mUserStorage;
-
+    @BindView(R.id.tv_user_amount)
+    TextView mTvUserAmount;
+    @BindView(R.id.tv_user_coin)
+    TextView mTvUserCoin;
 
     public static BaseFragment newInstance() {
         Fragment4 fragment4 = new Fragment4();
@@ -68,6 +78,7 @@ public class Fragment4 extends BaseFragment implements Fragment4Contract.View {
     public void initUI(View view) {
         mPresenter.attachView(this);
         mPresenter.accountInfo();
+        mPresenter.accountUserHome();
     }
 
     @Override
@@ -82,8 +93,8 @@ public class Fragment4 extends BaseFragment implements Fragment4Contract.View {
 
     @OnClick(R.id.rl_address_manager)
     public void mRlAddressManager() {
-        Intent intent = new Intent(getActivity(),AddressManagerActivity.class);
-        intent.putExtra("comefrom",2);
+        Intent intent = new Intent(getActivity(), AddressManagerActivity.class);
+        intent.putExtra("comefrom", 2);
         startActivity(intent);
     }
 
@@ -94,23 +105,79 @@ public class Fragment4 extends BaseFragment implements Fragment4Contract.View {
 
     @OnClick(R.id.service_center)
     public void mServiceCenter() {
-
+        openActivity(ServiceCenterActivity.class);
     }
 
     @OnClick(R.id.about_me)
     public void mAboutMe() {
-
+        openActivity(AboutMeActivity.class);
     }
 
     @OnClick(R.id.tv_all_order)
-    public void mTvAllOrder(){
+    public void mTvAllOrder() {
         openActivity(OrderListActivity.class);
     }
 
     @Override
     public void accountInfoSuccess(AccountInfoBean accountInfoBean) {
-        mTv1.setText(accountInfoBean.getCardId());
-        mTv2.setText(accountInfoBean.getName());
+
     }
 
+    @Override
+    public void accountUserHomeSuccess(AccountUserHomeBean accountUserHomeBean) {
+        mTv1.setText(accountUserHomeBean.getNickName());
+        mTv2.setText(accountUserHomeBean.getPhone());
+        mTvUserAmount.setText("￥" + accountUserHomeBean.getUserAmount());
+        mTvUserCoin.setText(accountUserHomeBean.getUserCoin() + "");
+        ImageLoaderUtil.getInstance().loadCircleImage(accountUserHomeBean.getAvatarUrl(), R.mipmap.icon_mine_touxiang, mImageView);
+    }
+
+
+    @OnClick(R.id.ll_wait_pay)
+    public void mLlWaitPay() {
+        // 订单状态：1-待付款，2-准备中，3-配送中，4-已完成 5-已取消 0-全部
+        Intent intent = new Intent(getActivity(), OrderListActivity.class);
+        intent.putExtra("type", 1);
+        startActivity(intent);
+    }
+
+    @OnClick(R.id.ll_preparing)
+    public void mLlPreparing() {
+        // 订单状态：1-待付款，2-准备中，3-配送中，4-已完成 5-已取消 0-全部
+        Intent intent = new Intent(getActivity(), OrderListActivity.class);
+        intent.putExtra("type", 2);
+        startActivity(intent);
+    }
+
+    @OnClick(R.id.ll_distribution)
+    public void mLlDistribution() {
+        // 订单状态：1-待付款，2-准备中，3-配送中，4-已完成 5-已取消 0-全部
+        Intent intent = new Intent(getActivity(), OrderListActivity.class);
+        intent.putExtra("type", 3);
+        startActivity(intent);
+    }
+
+    @OnClick(R.id.ll_finished)
+    public void mLlFinished() {
+        // 订单状态：1-待付款，2-准备中，3-配送中，4-已完成 5-已取消 0-全部
+        Intent intent = new Intent(getActivity(), OrderListActivity.class);
+        intent.putExtra("type", 4);
+        startActivity(intent);
+    }
+
+    @OnClick(R.id.ll_canc)
+    public void mLlCanc() {
+        // 订单状态：1-待付款，2-准备中，3-配送中，4-已完成 5-已取消 0-全部
+        Intent intent = new Intent(getActivity(), OrderListActivity.class);
+        intent.putExtra("type", 5);
+        startActivity(intent);
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        // TODO: inflate a fragment view
+        View rootView = super.onCreateView(inflater, container, savedInstanceState);
+        ButterKnife.bind(this, rootView);
+        return rootView;
+    }
 }

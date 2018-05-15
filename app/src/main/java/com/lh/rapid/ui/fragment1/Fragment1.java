@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
+import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
@@ -15,7 +16,12 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.android.frameproj.library.adapter.CommonAdapter;
+import com.android.frameproj.library.adapter.MultiItemTypeAdapter;
+import com.android.frameproj.library.adapter.base.ViewHolder;
+import com.android.frameproj.library.decoration.DividerGridItemDecoration;
 import com.android.frameproj.library.decoration.RecyclerViewDivider;
+import com.android.frameproj.library.util.InputUtil;
 import com.android.frameproj.library.util.ToastUtil;
 import com.android.frameproj.library.util.log.Logger;
 import com.lh.rapid.Constants;
@@ -23,10 +29,12 @@ import com.lh.rapid.R;
 import com.lh.rapid.bean.CategoryName;
 import com.lh.rapid.bean.HomeCircleBean;
 import com.lh.rapid.bean.HomePageBean;
+import com.lh.rapid.bean.ProductListBean;
 import com.lh.rapid.ui.BaseFragment;
 import com.lh.rapid.ui.location.ChooseLocationActivity;
 import com.lh.rapid.ui.main.MainComponent;
 import com.lh.rapid.ui.productdetail.ProductDetailActivity;
+import com.lh.rapid.ui.widget.SelectNumberView;
 import com.lh.rapid.util.BusUtil;
 import com.lh.rapid.util.CommonEvent;
 import com.lh.rapid.util.LocationUtil;
@@ -97,6 +105,14 @@ public class Fragment1 extends BaseFragment implements Fragment1Contract.View {
     LinearLayout mLlCart;
     @BindView(R.id.tv_circle_name)
     TextView mTvCircleName;
+    @BindView(R.id.viewMask)
+    View mViewMask;
+    @BindView(R.id.tv_circle_name2)
+    TextView mTvCircleName2;
+    @BindView(R.id.recyclerViewSearch)
+    RecyclerView mRecyclerViewSearch;
+    @BindView(R.id.rl_search)
+    LinearLayout mRlSearch;
     private RxPermissions mRxPermissions;
     private CategoryCommNameAdapter nameAdapter;
     private CategoryCommodityAdapter commodityAdapter;
@@ -108,6 +124,7 @@ public class Fragment1 extends BaseFragment implements Fragment1Contract.View {
     Fragment1Presenter mPresenter;
     @Inject
     SPUtil mSPUtil;
+    private CommonAdapter mSearchCommonAdapter;
 
     public static BaseFragment newInstance() {
         Fragment1 fragment1 = new Fragment1();
@@ -173,9 +190,27 @@ public class Fragment1 extends BaseFragment implements Fragment1Contract.View {
                 if (mEtHomeName.getText().toString().equals("")) {
                     mIvHomeDelete.setVisibility(View.GONE);
                     mTvHomeSearch.setVisibility(View.GONE);
+
+                    mViewMask.setVisibility(View.GONE);
+                    mRlSearch.setVisibility(View.GONE);
+                    InputUtil.hideSoftInput(getActivity());
                 } else {
                     mIvHomeDelete.setVisibility(View.VISIBLE);
+                    mIvHomeDelete.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            mEtHomeName.setText("");
+                        }
+                    });
                     mTvHomeSearch.setVisibility(View.VISIBLE);
+                    mViewMask.setVisibility(View.VISIBLE);
+                    mTvHomeSearch.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            InputUtil.hideSoftInput(getActivity());
+                            mPresenter.search("", mEtHomeName.getText().toString(), "", "", "", mSPUtil.getCIRCLE_ID() + "");
+                        }
+                    });
                 }
             }
         });
@@ -222,6 +257,7 @@ public class Fragment1 extends BaseFragment implements Fragment1Contract.View {
         initBanner(homePageBean.getBnTop());
         initRecyclerView(homePageBean.getCategoryLists());
         mTvCircleName.setText(homePageBean.getCircleName());
+        mTvCircleName2.setText(homePageBean.getCircleName());
     }
 
     private void initBanner(List<HomePageBean.BnTopBean> bnTop) {
@@ -266,6 +302,7 @@ public class Fragment1 extends BaseFragment implements Fragment1Contract.View {
     @OnClick(R.id.rl_location)
     public void mRlLocation(View view) {
         Intent intent = new Intent(getActivity(), ChooseLocationActivity.class);
+        intent.putExtra("comefrom", 1);
         startActivityForResult(intent, Constants.REQUEST_CHOOSE_LOCATION_CODE);
     }
 
@@ -321,6 +358,58 @@ public class Fragment1 extends BaseFragment implements Fragment1Contract.View {
     @Override
     public void cartGoodsDeleteSuccess(String s) {
 
+    }
+
+    @Override
+    public void searchSuccess(final List<ProductListBean> productListBeanList) {
+        mRlSearch.setVisibility(View.VISIBLE);
+        mSearchCommonAdapter = new CommonAdapter<ProductListBean>(getActivity(), R.layout.layout_product_list, productListBeanList) {
+            @Override
+            protected void convert(ViewHolder holder, final ProductListBean goodsDetailBean, int position) {
+                holder.setImageUrl(R.id.iv_cart_item_pic, goodsDetailBean.getGoodsImg());
+                holder.setText(R.id.tv_cart_item_name, goodsDetailBean.getGoodsName());
+                holder.setText(R.id.tv_cart_item_weight, goodsDetailBean.getWeight());
+                holder.setText(R.id.tv_cart_item_price, "￥" + goodsDetailBean.getGoodsPrice());
+                final SelectNumberView numberView = holder.getView(R.id.sn_cart_item);
+                numberView.setQuantity(goodsDetailBean.getCounts());
+                numberView.setSelectCallback(new SelectNumberView.ISelectCallback() {
+                    @Override
+                    public void onResult(int index, int qualitity) {
+                        mPresenter.cartGoodsAdd(goodsDetailBean.getGoodsId() + "", qualitity + "", mSPUtil.getCIRCLE_ID() + "");
+                        goodsDetailBean.setCounts(qualitity);
+                        mSearchCommonAdapter.notifyDataSetChanged();
+                    }
+
+                    @Override
+                    public void onMaxQuantity() {
+
+                    }
+
+                    @Override
+                    public void onMinQuantity() {
+
+                    }
+                });
+            }
+        };
+        mSearchCommonAdapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
+                Intent intent = new Intent(getActivity(), ProductDetailActivity.class);
+                intent.putExtra("goodsId", productListBeanList.get(position).getGoodsId());
+                startActivity(intent);
+            }
+
+            @Override
+            public boolean onItemLongClick(View view, RecyclerView.ViewHolder holder, int position) {
+                return false;
+            }
+        });
+        LinearLayoutManager mLinearLayoutManager = new LinearLayoutManager(getActivity());
+        mRecyclerViewSearch.setLayoutManager(mLinearLayoutManager);
+        mRecyclerViewSearch.setAdapter(mSearchCommonAdapter);
+        mRecyclerViewSearch.setItemAnimator(new DefaultItemAnimator());
+        mRecyclerViewSearch.addItemDecoration(new DividerGridItemDecoration(getActivity(), 1));
     }
 
     @Override

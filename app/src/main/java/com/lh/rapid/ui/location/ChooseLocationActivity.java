@@ -2,6 +2,7 @@ package com.lh.rapid.ui.location;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -43,6 +44,7 @@ import com.lh.rapid.bean.GeoCoderResultEntity;
 import com.lh.rapid.bean.SearchItem;
 import com.lh.rapid.service.LocationService;
 import com.lh.rapid.ui.BaseActivity;
+import com.lh.rapid.ui.widget.MyActionBar;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -51,6 +53,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 
@@ -64,9 +67,10 @@ public class ChooseLocationActivity extends BaseActivity implements ChooseLocati
     MapView mBaiduMapView;
     @BindView(R.id.recyclerViewGeocoder)
     RecyclerView mRecyclerViewGeocoder;
-
     @Inject
     ChooseLocationPresenter mPresenter;
+    @BindView(R.id.actionbar)
+    MyActionBar mActionbar;
     private BaiduMap mBaiduMap;
     @Inject
     LocationService locationService;
@@ -96,6 +100,13 @@ public class ChooseLocationActivity extends BaseActivity implements ChooseLocati
         //初始化搜索
         initBaiduMapPoi();
 
+        int comefrom = getIntent().getIntExtra("comefrom", -1);
+        if (comefrom == 1) {
+            mActionbar.setTitle("选择地址");
+        }else{
+            mActionbar.setTitle("新增收获地址");
+        }
+        mActionbar.line(View.GONE);
     }
 
     private CommonAdapter mCommonAdapterGeocoder;
@@ -429,7 +440,7 @@ public class ChooseLocationActivity extends BaseActivity implements ChooseLocati
             }
         });
         mSearchString = getIntent().getStringExtra("searchString");
-        mSearchType = getIntent().getIntExtra("searchType",0);
+        mSearchType = getIntent().getIntExtra("searchType", 0);
         mSearchView.setEditTextContent(mSearchString);
     }
 
@@ -505,14 +516,14 @@ public class ChooseLocationActivity extends BaseActivity implements ChooseLocati
                     List<SearchItem> datas = mCommonAdapterSearch.getDatas();
                     if (datas != null) {
                         if (datas != null && datas.size() > position) {
-                            if (mSearchType ==0){
-                            setResult(Constants.RESULT_CHOOSE_LOCATION_CODE, new Intent()
-                                    .putExtra("name", datas.get(position).getName())
-                                    .putExtra("addr", datas.get(position).getAddress())
-                                    .putExtra("longitude", datas.get(position).getLng())
-                                    .putExtra("latitude", datas.get(position).getLat())
-                                    .putExtra("check_point", mCheck_point));
-                        }else {
+                            if (mSearchType == 0) {
+                                setResult(Constants.RESULT_CHOOSE_LOCATION_CODE, new Intent()
+                                        .putExtra("name", datas.get(position).getName())
+                                        .putExtra("addr", datas.get(position).getAddress())
+                                        .putExtra("longitude", datas.get(position).getLng())
+                                        .putExtra("latitude", datas.get(position).getLat())
+                                        .putExtra("check_point", mCheck_point));
+                            } else {
                                 setResult(Constants.RESULT_CHOOSE_LOCATION_CODE_CUSTOM_MAP, new Intent()
                                         .putExtra("name", datas.get(position).getName())
                                         .putExtra("addr", datas.get(position).getAddress())
@@ -575,4 +586,10 @@ public class ChooseLocationActivity extends BaseActivity implements ChooseLocati
         mShadeView.setClickable(true);
     }
 
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // TODO: add setContentView(...) invocation
+        ButterKnife.bind(this);
+    }
 }

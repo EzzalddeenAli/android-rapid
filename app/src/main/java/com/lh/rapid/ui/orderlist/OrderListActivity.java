@@ -31,6 +31,7 @@ public class OrderListActivity extends BaseActivity implements HasComponent<Orde
     @BindView(R.id.viewPager)
     NoScrollViewPager mViewPager;
     private OrderListComponent mMyOrderComponent;
+    private int mType;
 
     @Override
     public int initContentView() {
@@ -57,10 +58,21 @@ public class OrderListActivity extends BaseActivity implements HasComponent<Orde
         mActionbar.setTitle("我的订单");
 
         OrderFragmentPagerAdapter orderFragmentPagerAdapter = new OrderFragmentPagerAdapter(getSupportFragmentManager());
-        orderFragmentPagerAdapter.addFragment(OrderAllFragment.newInstance(), "全部订单");
+        orderFragmentPagerAdapter.addFragment(OrderAllFragment.newInstance(), "全部");
+        orderFragmentPagerAdapter.addFragment(OrderAllFragment.newInstance(), "待支付");
+        orderFragmentPagerAdapter.addFragment(OrderAllFragment.newInstance(), "准备中");
+        orderFragmentPagerAdapter.addFragment(OrderAllFragment.newInstance(), "配送中");
+        orderFragmentPagerAdapter.addFragment(OrderAllFragment.newInstance(), "已完成");
+        orderFragmentPagerAdapter.addFragment(OrderAllFragment.newInstance(), "已取消");
         mViewPager.setAdapter(orderFragmentPagerAdapter);
         mTabLayout.setupWithViewPager(mViewPager);
-        mViewPager.setOffscreenPageLimit(1);
+        mViewPager.setOffscreenPageLimit(6);
+
+        mType = getIntent().getIntExtra("type", -1);
+        if (mType != -1) {
+            mViewPager.setCurrentItem(mType);
+        }
+
     }
 
     @Override

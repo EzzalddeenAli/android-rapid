@@ -6,6 +6,8 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 
 import com.android.frameproj.library.adapter.CommonAdapter;
 import com.android.frameproj.library.adapter.base.ViewHolder;
@@ -114,6 +116,7 @@ public class Fragment3 extends BaseFragment implements Fragment3Contract.View {
 
 
         mActionbar.setTitle("购物车");
+        mActionbar.setLeftVisible(View.GONE);
         mActionbar.setBackClickListener(new MyActionBar.IActionBarClickListener() {
             @Override
             public void onActionBarClicked() {
@@ -121,7 +124,6 @@ public class Fragment3 extends BaseFragment implements Fragment3Contract.View {
             }
         });
     }
-
 
     private List<CartGoodsBean> mCartGoodsBeanArrayList = new ArrayList<>();
 
@@ -142,6 +144,18 @@ public class Fragment3 extends BaseFragment implements Fragment3Contract.View {
                 @Override
                 protected void convert(ViewHolder holder, final CartGoodsBean cartGoodsBean, final int position) {
 
+                    ((CheckBox) holder.getView(R.id.cb_cart_choose)).setOnCheckedChangeListener(null);
+                    ((CheckBox) holder.getView(R.id.cb_cart_choose)).setChecked(cartGoodsBean.isChecked());
+                    ((CheckBox) holder.getView(R.id.cb_cart_choose)).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                        @Override
+                        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                            cartGoodsBean.setChecked(isChecked);
+                            for (int i = 0; i < cartGoodsBean.getGoodsLists().size(); i++) {
+                                cartGoodsBean.getGoodsLists().get(i).setChecked(isChecked);
+                            }
+                            mCommonAdapter.notifyDataSetChanged();
+                        }
+                    });
                     holder.setText(R.id.tv_quan_zhu, cartGoodsBean.getCircleName());
                     holder.getView(R.id.bt_cart_jiesuan).setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -151,36 +165,67 @@ public class Fragment3 extends BaseFragment implements Fragment3Contract.View {
                             List<Map<String, Object>> mapList = new ArrayList<>();
                             for (int i = 0; i < goodsLists.size(); i++) {
                                 CartGoodsBean.GoodsListsBean goodsListsBean = goodsLists.get(i);
-                                Map<String, Object> stringObjectMap = new HashMap<>();
-                                stringObjectMap.put("goodsId", goodsListsBean.getGoodsId());
-                                stringObjectMap.put("counts", goodsListsBean.getQuantity());
-                                mapList.add(stringObjectMap);
+                                if(goodsListsBean.isChecked()) {
+                                    Map<String, Object> stringObjectMap = new HashMap<>();
+                                    stringObjectMap.put("goodsId", goodsListsBean.getGoodsId());
+                                    stringObjectMap.put("counts", goodsListsBean.getQuantity());
+                                    mapList.add(stringObjectMap);
+                                }
                             }
                             intent.putExtra("params", new Gson().toJson(mapList));
-                            intent.putExtra("cartGoodsBean", new Gson().toJson(cartGoodsBean));
+
+                            CartGoodsBean cartGoodsBean1 = new CartGoodsBean();
+                            cartGoodsBean1.setChecked(cartGoodsBean.isChecked());
+                            cartGoodsBean1.setCircleId(cartGoodsBean.getCircleId());
+                            cartGoodsBean1.setCircleName(cartGoodsBean.getCircleName());
+                            List<CartGoodsBean.GoodsListsBean> goodsListsBeans = new ArrayList<>();
+                            for (int i = 0; i < cartGoodsBean.getGoodsLists().size(); i++) {
+                                CartGoodsBean.GoodsListsBean goodsListsBean = cartGoodsBean.getGoodsLists().get(i);
+                                if(goodsListsBean.isChecked()){
+                                    goodsListsBeans.add(goodsListsBean);
+                                }
+                            }
+                            cartGoodsBean1.setGoodsLists(goodsListsBeans);
+                            intent.putExtra("cartGoodsBean", new Gson().toJson(cartGoodsBean1));
                             startActivity(intent);
                         }
                     });
-
-                    BigDecimal sumBigDecimal = new BigDecimal(0);
-                    for (int i = 0; i < cartGoodsBean.getGoodsLists().size(); i++) {
-                        CartGoodsBean.GoodsListsBean goodsListsBean = cartGoodsBean.getGoodsLists().get(i);
-                        double price = goodsListsBean.getPrice();
-                        int quantity = goodsListsBean.getQuantity();
-                        BigDecimal quantityBigDecimal = new BigDecimal(quantity);
-                        BigDecimal priceBigDecimal = new BigDecimal(price);
-                        BigDecimal bigDecimal = priceBigDecimal.multiply(quantityBigDecimal);
-                        sumBigDecimal = sumBigDecimal.add(bigDecimal);
-                    }
-                    String sum = sumBigDecimal.setScale(1, BigDecimal.ROUND_HALF_UP).toString();
-                    holder.setText(R.id.tv_cart_total_price, "￥" + sum);
 
                     RecyclerView recyclerViewChild = holder.getView(R.id.recyclerViewChild);
                     recyclerViewChild.setLayoutManager(new LinearLayoutManager(getActivity()));
                     CommonAdapter commonAdapter = new CommonAdapter<CartGoodsBean.GoodsListsBean>(getActivity(), R.layout.item_cart_product, cartGoodsBean.getGoodsLists()) {
 
                         @Override
-                        protected void convert(final ViewHolder holder, final CartGoodsBean.GoodsListsBean goodsListsBean, int position) {
+                        protected void convert(final ViewHolder holder, final CartGoodsBean.GoodsListsBean goodsListsBean, final int position) {
+                            if(cartGoodsBean.isChecked()){
+                                goodsListsBean.setChecked(true);
+                                ((CheckBox) holder.getView(R.id.iv_cart_item_check)).setChecked(cartGoodsBean.isChecked());
+                            }else{
+                                ((CheckBox) holder.getView(R.id.iv_cart_item_check)).setChecked(goodsListsBean.isChecked());
+                            }
+
+                            ((CheckBox) holder.getView(R.id.iv_cart_item_check)).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                                @Override
+                                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                                    cartGoodsBean.getGoodsLists().get(position).setChecked(isChecked);
+                                    if (isChecked) {
+                                        boolean isAllChecked = true;
+                                        for (int i = 0; i < cartGoodsBean.getGoodsLists().size(); i++) {
+                                            if (!cartGoodsBean.getGoodsLists().get(i).isChecked()) {
+                                                isAllChecked = false;
+                                                break;
+                                            }
+                                        }
+                                        if (isAllChecked) {
+                                            cartGoodsBean.setChecked(true);
+                                        }
+                                    } else {
+                                        cartGoodsBean.setChecked(false);
+                                    }
+                                    mCommonAdapter.notifyDataSetChanged();
+                                }
+                            });
+
                             holder.setImageUrl(R.id.iv_cart_item_pic, goodsListsBean.getGoodsImgUrl());
                             holder.setText(R.id.tv_cart_item_name, goodsListsBean.getGoodsName());
                             holder.setText(R.id.tv_cart_item_price, "￥" + goodsListsBean.getPrice());
@@ -226,6 +271,21 @@ public class Fragment3 extends BaseFragment implements Fragment3Contract.View {
                     }
                     recyclerViewChild.setAdapter(commonAdapter);
 
+
+                    BigDecimal sumBigDecimal = new BigDecimal(0);
+                    for (int i = 0; i < cartGoodsBean.getGoodsLists().size(); i++) {
+                        CartGoodsBean.GoodsListsBean goodsListsBean = cartGoodsBean.getGoodsLists().get(i);
+                        if(goodsListsBean.isChecked()) {
+                            double price = goodsListsBean.getPrice();
+                            int quantity = goodsListsBean.getQuantity();
+                            BigDecimal quantityBigDecimal = new BigDecimal(quantity);
+                            BigDecimal priceBigDecimal = new BigDecimal(price);
+                            BigDecimal bigDecimal = priceBigDecimal.multiply(quantityBigDecimal);
+                            sumBigDecimal = sumBigDecimal.add(bigDecimal);
+                        }
+                    }
+                    String sum = sumBigDecimal.setScale(1, BigDecimal.ROUND_HALF_UP).toString();
+                    holder.setText(R.id.tv_cart_total_price, "￥" + sum);
                 }
             };
             mLinearLayoutManager = new LinearLayoutManager(getActivity());

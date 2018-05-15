@@ -4,6 +4,8 @@
                 android:layout_height="match_parent"
                 android:orientation="vertical">
 
+
+
     <RelativeLayout
         android:id="@+id/rl_mapview"
         android:layout_width="match_parent"
@@ -44,12 +46,18 @@
         android:background="@color/black_50_percent"
         android:visibility="gone"/>
 
+    <com.lh.rapid.ui.widget.MyActionBar
+        android:id="@+id/actionbar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/actionbar_height"
+        android:background="@color/md_white_1000"/>
+
     <com.android.frameproj.library.widget.CustomSearchView
         android:id="@+id/searchView"
-        android:layout_width="fill_parent"
+        android:layout_below="@id/actionbar"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:background="@android:color/transparent"
+        android:background="@color/md_white_1000"
         android:gravity="center"
         android:orientation="vertical"/>
 

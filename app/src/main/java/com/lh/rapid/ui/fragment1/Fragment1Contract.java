@@ -3,6 +3,7 @@ package com.lh.rapid.ui.fragment1;
 
 import com.lh.rapid.bean.HomeCircleBean;
 import com.lh.rapid.bean.HomePageBean;
+import com.lh.rapid.bean.ProductListBean;
 import com.lh.rapid.ui.BasePresenter;
 import com.lh.rapid.ui.BaseView;
 
@@ -32,6 +33,9 @@ public interface Fragment1Contract {
         void cartGoodsAddSuccess(String s);
 
         void cartGoodsDeleteSuccess(String s);
+
+        void searchSuccess(List<ProductListBean> productListBeanList);
+
     }
 
     interface Presenter extends BasePresenter<View> {
@@ -45,6 +49,10 @@ public interface Fragment1Contract {
         void cartGoodsAdd(String goodsId,String quantity,String circleId);
 
         void cartGoodsDelete(String goodsId,String circleId);
+
+
+        void search(String type, String goodsName, String sortType,
+                       String sortStr, String categoryId, String circleId);
     }
 
 }

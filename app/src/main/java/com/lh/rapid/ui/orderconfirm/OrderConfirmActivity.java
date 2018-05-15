@@ -4,11 +4,13 @@ import android.content.Intent;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 import android.widget.TextView;
 
 import com.android.frameproj.library.adapter.CommonAdapter;
 import com.android.frameproj.library.adapter.base.ViewHolder;
 import com.android.frameproj.library.decoration.DividerGridItemDecoration;
+import com.android.frameproj.library.dialog.InfoMsgHint;
 import com.google.gson.Gson;
 import com.lh.rapid.Constants;
 import com.lh.rapid.R;
@@ -122,6 +124,26 @@ public class OrderConfirmActivity extends BaseActivity implements OrderConfirmCo
         int flgRangeIn = orderSubmitConfirmBean.getFlgRangeIn(); // 0:不在配送范围内   1:在配送范围内
         double price = orderSubmitConfirmBean.getPrice();
         mTvOrderPrice.setText("￥" + price);
+        if (flgRangeIn == 0) {
+            InfoMsgHint infoMsgHint = new InfoMsgHint(OrderConfirmActivity.this);
+            infoMsgHint.setOKListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(OrderConfirmActivity.this, AddressManagerActivity.class);
+                    intent.putExtra("comefrom", 1);
+                    startActivityForResult(intent, Constants.REQUEST_LOCATION_MANAGER_CODE);
+                }
+            });
+            infoMsgHint.setCancleListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    finish();
+                }
+            });
+            infoMsgHint.setContent("您选择的送货地址不在配送范围内，请重新选择地址或按当前送货地址重新选择商品！",
+                    "","重选地址","重选商品");
+            infoMsgHint.show();
+        }
     }
 
     @Override

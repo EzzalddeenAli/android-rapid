@@ -107,6 +107,12 @@ public class AddressManagerActivity extends BaseActivity implements AddressManag
                 mPresenter.addressDelete(addressId + "");
             }
         });
+        adapter.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+
+            }
+        });
         if(mComefrom == 1) {
             adapter.setOnItemClickListener(new OnItemClickListener() {
                 @Override

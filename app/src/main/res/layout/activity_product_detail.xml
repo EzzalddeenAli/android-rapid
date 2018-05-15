@@ -112,13 +112,12 @@
                 </LinearLayout>
 
                 <TextView
-
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/ll_product_time"
                     android:background="#efeff4"
                     android:gravity="center_horizontal"
-                    android:padding="5dp"
+                    android:padding="15dp"
                     android:text="@string/slide_look_detail" />
 
             </RelativeLayout>
@@ -168,7 +167,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:visibility="gone" />
-        
+
     </RelativeLayout>
 
 </RelativeLayout>
