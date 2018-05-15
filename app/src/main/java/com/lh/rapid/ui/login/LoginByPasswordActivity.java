@@ -1,11 +1,12 @@
 package com.lh.rapid.ui.login;
 
+import android.view.View;
 import android.widget.EditText;
-import android.widget.TextView;
 
 import com.lh.rapid.R;
 import com.lh.rapid.components.storage.UserStorage;
 import com.lh.rapid.ui.BaseActivity;
+import com.lh.rapid.ui.forgetpassword.ForgetPasswordActivity;
 import com.lh.rapid.ui.main.MainActivity;
 import com.lh.rapid.ui.widget.MyActionBar;
 import com.lh.rapid.util.SPUtil;
@@ -33,8 +34,6 @@ public class LoginByPasswordActivity extends BaseActivity implements LoginContra
     EditText mEtLoginPhoneNum;
     @BindView(R.id.et_login_password)
     EditText mEtLoginPassword;
-    @BindView(R.id.tv_login_forget)
-    TextView mTvLoginForget;
 
 
     @Override
@@ -58,12 +57,7 @@ public class LoginByPasswordActivity extends BaseActivity implements LoginContra
         mSPUtil.setTOKNE("");
         mUserStorage.setToken("");
 
-        mActionbar.setBackClickListener(new MyActionBar.IActionBarClickListener() {
-            @Override
-            public void onActionBarClicked() {
-                finish();
-            }
-        });
+        mActionbar.setLeftVisible(View.GONE);
         mActionbar.setTitle("用户登录");
         mEtLoginPhoneNum.setText("15300936554");
         mEtLoginPassword.setText("a123456");
@@ -90,6 +84,11 @@ public class LoginByPasswordActivity extends BaseActivity implements LoginContra
         String mUserName = mEtLoginPhoneNum.getText().toString().trim();
         String mPassword = mEtLoginPassword.getText().toString().trim();
         mPresenter.login(mUserName, mPassword,1);
+    }
+
+    @OnClick(R.id.tv_login_forget)
+    public void mTvLoginForget(){
+        openActivity(ForgetPasswordActivity.class);
     }
 
 }

@@ -88,6 +88,10 @@
             android:screenOrientation="portrait"/>
 
         <activity
+            android:name=".ui.forgetpassword.ForgetPasswordActivity"
+            android:screenOrientation="portrait"/>
+
+        <activity
             android:name=".ui.myshare.MyShareActivity"
             android:screenOrientation="portrait"/>
 
@@ -133,6 +137,10 @@
 
         <activity
             android:name=".ui.servicecenter.ServiceCenterActivity"
+            android:screenOrientation="portrait"/>
+
+        <activity
+            android:name=".ui.userinfo.UserInfoActivity"
             android:screenOrientation="portrait"/>
 
         <provider

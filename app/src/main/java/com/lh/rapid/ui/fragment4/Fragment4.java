@@ -2,9 +2,7 @@ package com.lh.rapid.ui.fragment4;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -21,11 +19,11 @@ import com.lh.rapid.ui.main.MainComponent;
 import com.lh.rapid.ui.myshare.MyShareActivity;
 import com.lh.rapid.ui.orderlist.OrderListActivity;
 import com.lh.rapid.ui.servicecenter.ServiceCenterActivity;
+import com.lh.rapid.ui.userinfo.UserInfoActivity;
 
 import javax.inject.Inject;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class Fragment4 extends BaseFragment implements Fragment4Contract.View {
@@ -173,11 +171,9 @@ public class Fragment4 extends BaseFragment implements Fragment4Contract.View {
         startActivity(intent);
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // TODO: inflate a fragment view
-        View rootView = super.onCreateView(inflater, container, savedInstanceState);
-        ButterKnife.bind(this, rootView);
-        return rootView;
+    @OnClick(R.id.rl_user_info)
+    public void mRlUserInfo() {
+        openActivity(UserInfoActivity.class);
     }
+
 }

@@ -1,16 +1,13 @@
-package com.lh.rapid.ui.resetpassword;
+package com.lh.rapid.ui.forgetpassword;
 
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import com.lh.rapid.Constants;
 import com.lh.rapid.R;
 import com.lh.rapid.ui.BaseActivity;
 import com.lh.rapid.ui.main.MainActivity;
+import com.lh.rapid.ui.widget.MyActionBar;
 
 import java.util.concurrent.TimeUnit;
 
@@ -30,17 +27,13 @@ import io.reactivex.schedulers.Schedulers;
 /**
  * Created by lh on 2017/10/25.
  */
+public class ForgetPasswordActivity extends BaseActivity implements ForgetPasswordContract.View {
 
-public class ResetPasswordActivity extends BaseActivity implements ResetPasswordContract.View {
 
-    @BindView(R.id.tv_title)
-    TextView mTvTitle;
-    @BindView(R.id.rl_back)
-    RelativeLayout mRlBack;
-    @BindView(R.id.tv_right)
-    TextView mTvRight;
-    @BindView(R.id.iv_right)
-    ImageView mIvRight;
+    @Inject
+    ForgetPasswordPresenter mPresenter;
+    @BindView(R.id.actionbar)
+    MyActionBar mActionbar;
     @BindView(R.id.et_phone)
     EditText mEtPhone;
     @BindView(R.id.et_validate)
@@ -54,17 +47,14 @@ public class ResetPasswordActivity extends BaseActivity implements ResetPassword
     @BindView(R.id.btn_register)
     Button mBtnRegister;
 
-    @Inject
-    ResetPasswordPresenter mPresenter;
-
     @Override
     public int initContentView() {
-        return R.layout.activity_forget_password;
+        return R.layout.activity_reset_password;
     }
 
     @Override
     public void initInjector() {
-        DaggerResetPasswordComponent.builder()
+        DaggerForgetPasswordComponent.builder()
                 .applicationComponent(getApplicationComponent())
                 .activityModule(getActivityModule())
                 .build()
@@ -74,13 +64,13 @@ public class ResetPasswordActivity extends BaseActivity implements ResetPassword
     @Override
     public void initUiAndListener() {
         mPresenter.attachView(this);
-        mTvTitle.setText("重置密码");
-        mRlBack.setOnClickListener(new View.OnClickListener() {
+        mActionbar.setBackClickListener(new MyActionBar.IActionBarClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onActionBarClicked() {
                 finish();
             }
         });
+        mActionbar.setTitle("忘记密码");
     }
 
     @Override

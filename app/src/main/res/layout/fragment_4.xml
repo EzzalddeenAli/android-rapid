@@ -48,6 +48,7 @@
                             android:layout_marginTop="8dp"/>
 
                         <RelativeLayout
+                            android:id="@+id/rl_user_info"
                             android:layout_marginTop="52dp"
                             android:layout_width="match_parent"
                             android:layout_height="53dp">
