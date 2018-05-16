@@ -84,35 +84,6 @@
 
             </RelativeLayout>
 
-
-            <RelativeLayout
-                android:id="@+id/rl_station"
-                style="@style/user_info_relativelayout">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="15dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginTop="15dp"
-                    android:text="所属配送站"
-                    android:textColor="@color/login_gray"
-                    android:textSize="16sp"/>
-
-                <TextView
-                    android:id="@+id/tv_station"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginRight="10dp"
-                    android:drawablePadding="5dp"
-                    android:drawableRight="@mipmap/go"
-                    android:textColor="@color/login_gray"
-                    android:textSize="16sp"/>
-
-            </RelativeLayout>
-
             <RelativeLayout
                 android:id="@+id/rl_phone"
                 style="@style/user_info_relativelayout">
@@ -140,42 +111,6 @@
                     android:textSize="16sp"/>
 
             </RelativeLayout>
-
-
-            <RelativeLayout
-                android:id="@+id/rl_address"
-                style="@style/user_info_relativelayout">
-
-                <TextView
-                    android:id="@+id/tv_add"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="15dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginTop="15dp"
-                    android:text="地址"
-                    android:textColor="@color/login_gray"
-                    android:textSize="16sp"/>
-
-                <TextView
-                    android:id="@+id/tv_address"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_toRightOf="@+id/tv_add"
-                    android:drawablePadding="5dp"
-                    android:drawableRight="@mipmap/go"
-                    android:ellipsize="end"
-                    android:gravity="right"
-                    android:singleLine="true"
-                    android:textColor="@color/login_gray"
-                    android:textSize="16sp"/>
-
-            </RelativeLayout>
-
 
             <RelativeLayout
                 android:id="@+id/rl_sex"
@@ -233,34 +168,6 @@
                     android:drawablePadding="5dp"
                     android:drawableRight="@mipmap/go"
                     android:gravity="right"
-                    android:textColor="@color/text_black"
-                    android:textSize="16sp"/>
-
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:id="@+id/rl_tel"
-                style="@style/user_info_relativelayout">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="15dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginTop="15dp"
-                    android:text="电话"
-                    android:textColor="@color/login_gray"
-                    android:textSize="16sp"/>
-
-                <TextView
-                    android:id="@+id/tv_tel"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginRight="10dp"
-                    android:drawablePadding="5dp"
-                    android:drawableRight="@mipmap/go"
                     android:textColor="@color/text_black"
                     android:textSize="16sp"/>
 

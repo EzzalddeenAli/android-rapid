@@ -21,7 +21,7 @@ public class Constants {
     // 日志默认保存目录
     public static String LH_LOG_PATH = "/LH/Log/";
     // 本地测试地址
-    public static final String BASE_URL = "http://192.168.10.127:8080/";
+    public static final String BASE_URL = "http://192.168.10.148:8080/";
     // APK下载地址
     public static final String DOWNLOAD_APK_URL = BASE_URL + "static/app/ver.xml";
     // app类型：1:ios,2:andriod
@@ -51,6 +51,8 @@ public class Constants {
     public static final int RESULT_REGISTER_CODE = 109;
     public static final int REQUEST_LOGIN_CODE = 112;
     public static final int RESULT_LOGIN_CODE = 113;
+    public static final int REQUEST_EXIST_CODE = 114;
+    public static final int RESULT_EXIST_CODE = 115;
     public static final int REQUEST_CHOOSE_LOCATION_CODE_CUSTOM_MAP = 120;
     public static final int RESULT_CHOOSE_LOCATION_CODE_CUSTOM_MAP = 121;
     public static final int REQUEST_LOCATION_MANAGER_CODE = 122;
@@ -64,5 +66,15 @@ public class Constants {
     public static final String SMSCODE_TYPE_REGISTER = "1";
     public static final String SMSCODE_TYPE_LOGIN = "2";
     public static final String SMSCODE_TYPE_MODIFY_PASSWORD = "3";
+
+
+    // 微博授权回调页
+    public static final String SINA_REDIRECT_URL = "http://api.myhaving.com/thirdlogin/weibo/auth/callback";
+    // 微博取消授权回调页
+    public static final String SINA_REDIRECT_URL_CANCEL = "http://api.myhaving.com/thirdlogin/weibo/cancelauth/callback";
+    // 帮助中心HTML
+    public static final String HelpCenter = "http://www.baidu.com";
+    // 隐私协议HTML
+    public static final String PrivacyPolicy = "http://www.baidu.com";
 
 }

@@ -106,4 +106,65 @@
         <item name="android:layout_marginRight">15dp</item>
     </style>
 
+    <style name="rl_personal_profile">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">41dp</item>
+    </style>
+
+    <style name="tv_personal_profile_left">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:includeFontPadding">false</item>
+        <item name="android:layout_centerVertical">true</item>
+        <item name="android:layout_marginLeft">15dp</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">@color/library_text_color_3</item>
+    </style>
+
+    <style name="iv_personal_profile_left">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_centerVertical">true</item>
+        <item name="android:layout_marginLeft">15dp</item>
+    </style>
+
+    <style name="tv_personal_profile_right_light">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:includeFontPadding">false</item>
+        <item name="android:layout_centerVertical">true</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">@color/library_text_color_6</item>
+        <item name="android:layout_alignParentRight">true</item>
+    </style>
+
+    <style name="tv_personal_profile_right_grey">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:includeFontPadding">false</item>
+        <item name="android:layout_centerVertical">true</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">@color/library_text_color_9</item>
+        <item name="android:layout_alignParentRight">true</item>
+    </style>
+
+    <style name="tv_personal_profile_right_red">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:includeFontPadding">false</item>
+        <item name="android:layout_centerVertical">true</item>
+        <item name="android:textSize">10sp</item>
+        <item name="android:textColor">@color/library_support_color_red</item>
+        <item name="android:layout_alignParentRight">true</item>
+    </style>
+
+    <style name="iv_personal_profile_right">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_centerVertical">true</item>
+        <item name="android:layout_marginRight">16dp</item>
+        <item name="android:src">@mipmap/mine_arrow</item>
+        <item name="android:layout_alignParentRight">true</item>
+    </style>
+
 </resources>

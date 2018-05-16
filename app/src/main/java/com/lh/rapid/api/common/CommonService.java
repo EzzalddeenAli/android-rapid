@@ -71,12 +71,6 @@ public interface CommonService {
     Observable<HttpResult<String>> smsCodeSend(@Header("timestamp") long timestamp, @Header("sign") String sign,
                                                @FieldMap Map<String, Object> params);
 
-    //重置密码
-    @FormUrlEncoded
-    @POST("account/password/reset")
-    Observable<HttpResult<String>> accountPasswordReset(@Header("timestamp") long timestamp, @Header("sign") String sign,
-                                                        @FieldMap Map<String, Object> params);
-
     //首页
     @FormUrlEncoded
     @POST("home/page")
@@ -212,11 +206,11 @@ public interface CommonService {
     Observable<HttpResult<AccountInfoBean>> accountInfo(@Header("timestamp") long timestamp, @Header("sign") String sign,
                                                         @FieldMap Map<String, Object> params);
 
-    //密码重置
+    //重置密码
     @FormUrlEncoded
     @POST("account/password/reset")
-    Observable<HttpResult<String>> passwordReset(@Header("timestamp") long timestamp, @Header("sign") String sign,
-                                                 @FieldMap Map<String, Object> params);
+    Observable<HttpResult<String>> accountPasswordReset(@Header("timestamp") long timestamp, @Header("sign") String sign,
+                                                        @FieldMap Map<String, Object> params);
 
     //个人主页
     @FormUrlEncoded

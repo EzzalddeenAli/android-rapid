@@ -1,11 +1,14 @@
 package com.lh.rapid.ui.register;
 
+import android.content.Intent;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 
 import com.lh.rapid.Constants;
 import com.lh.rapid.R;
 import com.lh.rapid.ui.BaseActivity;
+import com.lh.rapid.ui.h5.H5Activity;
 import com.lh.rapid.ui.main.MainActivity;
 import com.lh.rapid.ui.widget.MyActionBar;
 
@@ -44,6 +47,8 @@ public class RegisterActivity extends BaseActivity implements RegisterContract.V
     EditText mEtConfirmPassword;
     @BindView(R.id.bt_register_get_code)
     Button mBtRegisterGetCode;
+    @BindView(R.id.checkPrivacyPolicy)
+    CheckBox mCheckPrivacyPolicy;
 
     @Override
     public int initContentView() {
@@ -134,13 +139,25 @@ public class RegisterActivity extends BaseActivity implements RegisterContract.V
         String validate = mEtRegisterCodeNum.getText().toString().trim();
         String password = mEtRegisterPassword.getText().toString().trim();
         String passwordConfirm = mEtConfirmPassword.getText().toString().trim();
-        mPresenter.register(phone, validate, password, passwordConfirm);
+        boolean checked = mCheckPrivacyPolicy.isChecked();
+        mPresenter.register(phone, validate, password, passwordConfirm,checked);
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
         mPresenter.detachView();
+    }
+
+    /**
+     * 隐私政策
+     */
+    @OnClick(R.id.tv_privacy_policy)
+    public void mTvPrivacyPolicy() {
+        Intent intent = new Intent(RegisterActivity.this, H5Activity.class);
+        intent.putExtra("url", Constants.PrivacyPolicy);
+        intent.putExtra("title", "用户协议");
+        startActivity(intent);
     }
 
 }

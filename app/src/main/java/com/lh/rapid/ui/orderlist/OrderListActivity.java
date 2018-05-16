@@ -10,6 +10,11 @@ import com.lh.rapid.R;
 import com.lh.rapid.injector.HasComponent;
 import com.lh.rapid.ui.BaseActivity;
 import com.lh.rapid.ui.orderlist.all.OrderAllFragment;
+import com.lh.rapid.ui.orderlist.canc.OrderCancFragment;
+import com.lh.rapid.ui.orderlist.distribution.OrderDistributionFragment;
+import com.lh.rapid.ui.orderlist.finished.OrderFinishedFragment;
+import com.lh.rapid.ui.orderlist.preparing.OrderPreparingFragment;
+import com.lh.rapid.ui.orderlist.waitpay.OrderWaitPayFragment;
 import com.lh.rapid.ui.widget.MyActionBar;
 
 import java.util.ArrayList;
@@ -59,11 +64,11 @@ public class OrderListActivity extends BaseActivity implements HasComponent<Orde
 
         OrderFragmentPagerAdapter orderFragmentPagerAdapter = new OrderFragmentPagerAdapter(getSupportFragmentManager());
         orderFragmentPagerAdapter.addFragment(OrderAllFragment.newInstance(), "全部");
-        orderFragmentPagerAdapter.addFragment(OrderAllFragment.newInstance(), "待支付");
-        orderFragmentPagerAdapter.addFragment(OrderAllFragment.newInstance(), "准备中");
-        orderFragmentPagerAdapter.addFragment(OrderAllFragment.newInstance(), "配送中");
-        orderFragmentPagerAdapter.addFragment(OrderAllFragment.newInstance(), "已完成");
-        orderFragmentPagerAdapter.addFragment(OrderAllFragment.newInstance(), "已取消");
+        orderFragmentPagerAdapter.addFragment(OrderWaitPayFragment.newInstance(), "待支付");
+        orderFragmentPagerAdapter.addFragment(OrderPreparingFragment.newInstance(), "准备中");
+        orderFragmentPagerAdapter.addFragment(OrderDistributionFragment.newInstance(), "配送中");
+        orderFragmentPagerAdapter.addFragment(OrderFinishedFragment.newInstance(), "已完成");
+        orderFragmentPagerAdapter.addFragment(OrderCancFragment.newInstance(), "已取消");
         mViewPager.setAdapter(orderFragmentPagerAdapter);
         mTabLayout.setupWithViewPager(mViewPager);
         mViewPager.setOffscreenPageLimit(6);

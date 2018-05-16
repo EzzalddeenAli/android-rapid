@@ -47,7 +47,11 @@ public class RegisterPresenter implements RegisterContract.Presenter {
     }
 
     @Override
-    public void register(String phone, String validate, String password, String passwordConfirm) {
+    public void register(String phone, String validate, String password, String passwordConfirm, boolean checked) {
+        if(!checked){
+            mView.showError("请认真阅读并同意《用户协议》");
+            return;
+        }
         if (!PhoneUtil.isMobile(phone)) {
             mView.showError("手机号码格式不正确");
             return;

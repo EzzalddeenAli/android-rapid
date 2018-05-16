@@ -19,6 +19,9 @@ import butterknife.BindView;
  */
 
 public class UserInfoActivity extends BaseActivity implements UserInfoContract.View {
+
+    @Inject
+    UserInfoPresenter mPresenter;
     @BindView(R.id.actionbar)
     MyActionBar mActionbar;
     @BindView(R.id.tv_card_num)
@@ -29,20 +32,10 @@ public class UserInfoActivity extends BaseActivity implements UserInfoContract.V
     TextView mTvName;
     @BindView(R.id.rl_name)
     RelativeLayout mRlName;
-    @BindView(R.id.tv_station)
-    TextView mTvStation;
-    @BindView(R.id.rl_station)
-    RelativeLayout mRlStation;
     @BindView(R.id.tv_phone)
     TextView mTvPhone;
     @BindView(R.id.rl_phone)
     RelativeLayout mRlPhone;
-    @BindView(R.id.tv_add)
-    TextView mTvAdd;
-    @BindView(R.id.tv_address)
-    TextView mTvAddress;
-    @BindView(R.id.rl_address)
-    RelativeLayout mRlAddress;
     @BindView(R.id.tv_sex)
     TextView mTvSex;
     @BindView(R.id.rl_sex)
@@ -53,17 +46,10 @@ public class UserInfoActivity extends BaseActivity implements UserInfoContract.V
     TextView mTvEmail;
     @BindView(R.id.rl_email)
     RelativeLayout mRlEmail;
-    @BindView(R.id.tv_tel)
-    TextView mTvTel;
-    @BindView(R.id.rl_tel)
-    RelativeLayout mRlTel;
     @BindView(R.id.tv_birthday)
     TextView mTvBirthday;
     @BindView(R.id.rl_birthday)
     RelativeLayout mRlBirthday;
-
-    @Inject
-    UserInfoPresenter mPresenter;
 
     @Override
     public int initContentView() {
@@ -102,9 +88,11 @@ public class UserInfoActivity extends BaseActivity implements UserInfoContract.V
 
     @Override
     public void onLoadDateCompleted(AccountInfoBean accountInfoBean) {
-        mTvName.setText(accountInfoBean.getName());
-        mTvPhone.setText(accountInfoBean.getMobile());
+        mTvName.setText(accountInfoBean.getNickName());
+        mTvPhone.setText(accountInfoBean.getPhone());
         mTvCardNum.setText(accountInfoBean.getCardId());
+        mTvEmail.setText(accountInfoBean.getEmail());
+        mTvBirthday.setText(accountInfoBean.getBirthday());
     }
 
 }

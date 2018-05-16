@@ -221,7 +221,7 @@ public class CommonApi {
         long currentTimeMillis = System.currentTimeMillis();
         Map<String, Object> params = mRequestHelper.getHttpRequestMap(currentTimeMillis);
         params.put("mobile", mobile);
-        params.put("authCode", authCode);
+        params.put("smsCode", authCode);
         params.put("newPassword", newPassword);
         String sign = mRequestHelper.getRequestSign(params, currentTimeMillis);
         return mCommonService.accountPasswordReset(currentTimeMillis, sign, params).subscribeOn(Schedulers.io());
@@ -542,19 +542,6 @@ public class CommonApi {
         Map<String, Object> params = mRequestHelper.getHttpRequestMap(currentTimeMillis);
         String sign = mRequestHelper.getRequestSign(params, currentTimeMillis);
         return mCommonService.accountInfo(currentTimeMillis, sign, params).subscribeOn(Schedulers.io());
-    }
-
-    /**
-     * 密码重置
-     */
-    public Observable<HttpResult<String>> passwordReset(String mobile, String smsCode, String newPassword) {
-        long currentTimeMillis = System.currentTimeMillis();
-        Map<String, Object> params = mRequestHelper.getHttpRequestMap(currentTimeMillis);
-        params.put("mobile", mobile);
-        params.put("smsCode", smsCode);
-        params.put("newPassword", newPassword);
-        String sign = mRequestHelper.getRequestSign(params, currentTimeMillis);
-        return mCommonService.passwordReset(currentTimeMillis, sign, params).subscribeOn(Schedulers.io());
     }
 
     /**

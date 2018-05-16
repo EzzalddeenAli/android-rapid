@@ -1,30 +1,34 @@
 package com.lh.rapid.ui.fragment4;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.android.frameproj.library.util.imageloader.ImageLoaderUtil;
 import com.lh.rapid.R;
 import com.lh.rapid.bean.AccountInfoBean;
 import com.lh.rapid.bean.AccountUserHomeBean;
 import com.lh.rapid.components.storage.UserStorage;
 import com.lh.rapid.ui.BaseFragment;
-import com.lh.rapid.ui.aboutme.AboutMeActivity;
 import com.lh.rapid.ui.addressmanager.AddressManagerActivity;
+import com.lh.rapid.ui.h5.H5Activity;
 import com.lh.rapid.ui.main.MainComponent;
 import com.lh.rapid.ui.myshare.MyShareActivity;
 import com.lh.rapid.ui.orderlist.OrderListActivity;
-import com.lh.rapid.ui.servicecenter.ServiceCenterActivity;
+import com.lh.rapid.ui.setting.SettingActivity;
 import com.lh.rapid.ui.userinfo.UserInfoActivity;
 
 import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import io.reactivex.annotations.NonNull;
 
 public class Fragment4 extends BaseFragment implements Fragment4Contract.View {
 
@@ -75,7 +79,7 @@ public class Fragment4 extends BaseFragment implements Fragment4Contract.View {
     @Override
     public void initUI(View view) {
         mPresenter.attachView(this);
-        mPresenter.accountInfo();
+        //        mPresenter.accountInfo();
         mPresenter.accountUserHome();
     }
 
@@ -103,12 +107,29 @@ public class Fragment4 extends BaseFragment implements Fragment4Contract.View {
 
     @OnClick(R.id.service_center)
     public void mServiceCenter() {
-        openActivity(ServiceCenterActivity.class);
+        //        openActivity(ServiceCenterActivity.class);
+        new MaterialDialog.Builder(getActivity())
+                .content("拨打客服电话：400-8917517")
+                .positiveText("拨打")
+                .negativeText("取消")
+                .onPositive(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        Intent intent = new Intent(Intent.ACTION_DIAL);
+                        intent.setData(Uri.parse("tel:4008917517"));
+                        startActivity(intent);
+                    }
+                })
+                .show();
     }
 
     @OnClick(R.id.about_me)
     public void mAboutMe() {
-        openActivity(AboutMeActivity.class);
+        //        openActivity(AboutMeActivity.class);
+        Intent intent = new Intent(getActivity(), H5Activity.class);
+        intent.putExtra("url", "http://www.baidu.com");
+        intent.putExtra("title", "关于我们");
+        startActivity(intent);
     }
 
     @OnClick(R.id.tv_all_order)
@@ -176,4 +197,9 @@ public class Fragment4 extends BaseFragment implements Fragment4Contract.View {
         openActivity(UserInfoActivity.class);
     }
 
+
+    @OnClick(R.id.iv_mine_shezhi)
+    public void mIvMineShezhi(){
+        openActivity(SettingActivity.class);
+    }
 }

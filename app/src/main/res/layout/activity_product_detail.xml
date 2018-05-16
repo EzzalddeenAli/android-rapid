@@ -1,18 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
 
     <RelativeLayout
         android:id="@+id/rl_product_bottom"
         android:layout_width="match_parent"
         android:layout_height="@dimen/px100dp"
-        android:layout_alignParentBottom="true">
+        android:layout_alignParentBottom="true"
+        android:visibility="gone">
 
-        <include layout="@layout/home_bottom" />
+        <include layout="@layout/home_bottom"/>
 
     </RelativeLayout>
 
@@ -36,7 +37,7 @@
                 <com.android.frameproj.library.widget.AdvertView
                     android:id="@+id/av_product_detail"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/px750dp" />
+                    android:layout_height="@dimen/px750dp"/>
 
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/rv_product_detail"
@@ -49,16 +50,16 @@
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/px2dp"
                     android:layout_below="@id/rv_product_detail"
-                    android:background="@color/line" />
+                    android:background="@color/line"/>
 
                 <LinearLayout
                     android:id="@+id/ll_product_weight"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/px60dp"
                     android:layout_below="@id/view_line"
-                    android:orientation="horizontal"
                     android:layout_marginLeft="@dimen/px28dp"
-                    android:layout_marginRight="@dimen/px28dp">
+                    android:layout_marginRight="@dimen/px28dp"
+                    android:orientation="horizontal">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -66,7 +67,7 @@
                         android:layout_gravity="center_vertical"
                         android:text="@string/weight"
                         android:textColor="@color/text_black"
-                        android:textSize="@dimen/px28sp" />
+                        android:textSize="@dimen/px28sp"/>
 
                     <TextView
                         android:id="@+id/tv_product_weight"
@@ -75,7 +76,7 @@
                         android:layout_gravity="center_vertical"
                         android:layout_marginLeft="@dimen/px20dp"
                         android:textColor="@color/text_black"
-                        android:textSize="@dimen/px28sp" />
+                        android:textSize="@dimen/px28sp"/>
                 </LinearLayout>
 
                 <View
@@ -83,24 +84,24 @@
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_below="@id/ll_product_weight"
-                    android:background="@color/line" />
+                    android:background="@color/line"/>
 
                 <LinearLayout
                     android:id="@+id/ll_product_time"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/px60dp"
                     android:layout_below="@id/view_line_two"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal"
                     android:layout_marginLeft="@dimen/px28dp"
-                    android:layout_marginRight="@dimen/px28dp">
+                    android:layout_marginRight="@dimen/px28dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/delivery_time"
                         android:textColor="@color/text_black"
-                        android:textSize="@dimen/px28sp" />
+                        android:textSize="@dimen/px28sp"/>
 
                     <TextView
                         android:id="@+id/tv_product_time"
@@ -108,21 +109,30 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/px20dp"
                         android:textColor="@color/product_price"
-                        android:textSize="@dimen/px28sp" />
+                        android:textSize="@dimen/px28sp"/>
                 </LinearLayout>
+
+                <RelativeLayout
+                    android:id="@+id/rl_blank"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/px100dp"
+                    android:layout_below="@id/ll_product_time">
+
+                </RelativeLayout>
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/ll_product_time"
+                    android:layout_below="@id/rl_blank"
                     android:background="#efeff4"
                     android:gravity="center_horizontal"
                     android:padding="15dp"
-                    android:text="@string/slide_look_detail" />
+                    android:text="@string/slide_look_detail"/>
 
             </RelativeLayout>
+
         </com.lh.rapid.ui.widget.MScrollView>
-        
+
         <com.lh.rapid.ui.widget.MScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -134,7 +144,7 @@
                 android:layout_height="wrap_content"
                 android:minHeight="300dp"
                 android:visibility="gone"/>
-            
+
         </com.lh.rapid.ui.widget.MScrollView>
 
     </com.lh.rapid.ui.widget.PullUpToLoadMore>
@@ -152,7 +162,7 @@
             android:layout_width="25dp"
             android:layout_height="25dp"
             android:background="@drawable/white_back_shape"
-            android:src="@mipmap/back" />
+            android:src="@mipmap/back"/>
 
         <ImageView
             android:id="@+id/iv_share"
@@ -160,13 +170,13 @@
             android:layout_height="25dp"
             android:layout_alignParentRight="true"
             android:background="@drawable/white_back_shape"
-            android:src="@mipmap/icon_mine_wodefenxiang" />
+            android:src="@mipmap/icon_mine_wodefenxiang"/>
 
         <com.lh.rapid.ui.widget.MyActionBar
             android:id="@+id/actionbar"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:visibility="gone" />
+            android:visibility="gone"/>
 
     </RelativeLayout>
 

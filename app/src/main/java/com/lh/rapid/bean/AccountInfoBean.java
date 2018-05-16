@@ -6,24 +6,52 @@ package com.lh.rapid.bean;
 
 public class AccountInfoBean {
 
-    private String name;
-    private String mobile;
+    private String birthday;
+    private boolean gender;
+    private String avatarUrl;
+    private String phone;
+    private String nickName;
     private String cardId;
+    private String email;
 
-    public String getName() {
-        return name;
+    public String getBirthday() {
+        return birthday;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setBirthday(String birthday) {
+        this.birthday = birthday;
     }
 
-    public String getMobile() {
-        return mobile;
+    public boolean isGender() {
+        return gender;
     }
 
-    public void setMobile(String mobile) {
-        this.mobile = mobile;
+    public void setGender(boolean gender) {
+        this.gender = gender;
+    }
+
+    public String getAvatarUrl() {
+        return avatarUrl;
+    }
+
+    public void setAvatarUrl(String avatarUrl) {
+        this.avatarUrl = avatarUrl;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getNickName() {
+        return nickName;
+    }
+
+    public void setNickName(String nickName) {
+        this.nickName = nickName;
     }
 
     public String getCardId() {
@@ -32,5 +60,13 @@ public class AccountInfoBean {
 
     public void setCardId(String cardId) {
         this.cardId = cardId;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }

@@ -40,6 +40,7 @@
                         android:background="@mipmap/mine_bgmine_bg_yonghu">
 
                         <ImageView
+                            android:id="@+id/iv_mine_shezhi"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:src="@mipmap/icon_mine_shezhi"

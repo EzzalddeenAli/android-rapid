@@ -31,6 +31,7 @@ import com.lh.rapid.bean.HomeCircleBean;
 import com.lh.rapid.bean.HomePageBean;
 import com.lh.rapid.bean.ProductListBean;
 import com.lh.rapid.ui.BaseFragment;
+import com.lh.rapid.ui.h5.H5Activity;
 import com.lh.rapid.ui.location.ChooseLocationActivity;
 import com.lh.rapid.ui.main.MainComponent;
 import com.lh.rapid.ui.productdetail.ProductDetailActivity;
@@ -43,6 +44,7 @@ import com.lh.rapid.util.SPUtil;
 import com.squareup.otto.Subscribe;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 import com.youth.banner.Banner;
+import com.youth.banner.listener.OnBannerListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -260,10 +262,19 @@ public class Fragment1 extends BaseFragment implements Fragment1Contract.View {
         mTvCircleName2.setText(homePageBean.getCircleName());
     }
 
-    private void initBanner(List<HomePageBean.BnTopBean> bnTop) {
+    private void initBanner(final List<HomePageBean.BnTopBean> bnTop) {
         mMainBanner.setImageLoader(new MyGlideImageLoader());
         mMainBanner.setImages(bnTop);
         mMainBanner.setDelayTime(2000);
+        mMainBanner.setOnBannerListener(new OnBannerListener() {
+            @Override
+            public void OnBannerClick(int position) {
+                Intent intent = new Intent(getActivity(), H5Activity.class);
+                intent.putExtra("url",bnTop.get(position).getBnRelationUrl());
+                intent.putExtra("title","");
+                startActivity(intent);
+            }
+        });
         mMainBanner.start();
     }
 

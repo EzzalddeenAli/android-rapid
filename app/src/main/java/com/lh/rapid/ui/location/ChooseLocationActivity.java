@@ -2,7 +2,6 @@ package com.lh.rapid.ui.location;
 
 import android.content.Intent;
 import android.graphics.Color;
-import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -53,7 +52,6 @@ import java.util.List;
 import javax.inject.Inject;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 
@@ -107,6 +105,12 @@ public class ChooseLocationActivity extends BaseActivity implements ChooseLocati
             mActionbar.setTitle("新增收获地址");
         }
         mActionbar.line(View.GONE);
+        mActionbar.setBackClickListener(new MyActionBar.IActionBarClickListener() {
+            @Override
+            public void onActionBarClicked() {
+                finish();
+            }
+        });
     }
 
     private CommonAdapter mCommonAdapterGeocoder;
@@ -586,10 +590,4 @@ public class ChooseLocationActivity extends BaseActivity implements ChooseLocati
         mShadeView.setClickable(true);
     }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        // TODO: add setContentView(...) invocation
-        ButterKnife.bind(this);
-    }
 }

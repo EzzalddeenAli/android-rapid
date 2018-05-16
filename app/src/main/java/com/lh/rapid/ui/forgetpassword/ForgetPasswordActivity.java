@@ -6,7 +6,6 @@ import android.widget.EditText;
 import com.lh.rapid.Constants;
 import com.lh.rapid.R;
 import com.lh.rapid.ui.BaseActivity;
-import com.lh.rapid.ui.main.MainActivity;
 import com.lh.rapid.ui.widget.MyActionBar;
 
 import java.util.concurrent.TimeUnit;
@@ -29,7 +28,6 @@ import io.reactivex.schedulers.Schedulers;
  */
 public class ForgetPasswordActivity extends BaseActivity implements ForgetPasswordContract.View {
 
-
     @Inject
     ForgetPasswordPresenter mPresenter;
     @BindView(R.id.actionbar)
@@ -49,7 +47,7 @@ public class ForgetPasswordActivity extends BaseActivity implements ForgetPasswo
 
     @Override
     public int initContentView() {
-        return R.layout.activity_reset_password;
+        return R.layout.activity_forget_password;
     }
 
     @Override
@@ -75,7 +73,6 @@ public class ForgetPasswordActivity extends BaseActivity implements ForgetPasswo
 
     @Override
     public void accountPasswordResetSuccess() {
-        openActivity(MainActivity.class);
         setResult(Constants.RESULT_REGISTER_CODE);
         finish();
     }

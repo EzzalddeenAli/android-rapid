@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.SystemClock;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
+
 import com.lh.rapid.Constants;
 import com.lh.rapid.api.common.CommonApi;
 import com.lh.rapid.bean.HttpResult;
@@ -11,15 +12,19 @@ import com.lh.rapid.bean.LoginEntity;
 import com.lh.rapid.components.retrofit.RequestHelper;
 import com.lh.rapid.components.storage.UserStorage;
 import com.lh.rapid.util.SPUtil;
+
 import org.json.JSONObject;
+
 import java.io.EOFException;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.charset.UnsupportedCharsetException;
 import java.util.concurrent.TimeUnit;
+
 import io.reactivex.ObservableSource;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Consumer;
+import io.reactivex.functions.Function;
 import okhttp3.Headers;
 import okhttp3.Interceptor;
 import okhttp3.MediaType;
@@ -174,7 +179,7 @@ public class TokenInterceptor implements Interceptor {
                     }
                 });
         CommonApi commonApi = new CommonApi(context, builder.build(), requestHelper, userStorage, spUtil);
-       /* commonApi.accountRefreshToken(spUtil.getTOKNE())
+        commonApi.accountRefreshToken()
                 .debounce(500, TimeUnit.MILLISECONDS)
                 .switchMap(new Function<HttpResult<LoginEntity>, ObservableSource<LoginEntity>>() {
                     @Override
@@ -197,7 +202,7 @@ public class TokenInterceptor implements Interceptor {
                         keyV = true;
                         KeyM = false;
                     }
-                });*/
+                });
         for (int i = 0; i < 1000; i++) {
             SystemClock.sleep(100);
             if (keyV) {

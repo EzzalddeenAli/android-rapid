@@ -149,6 +149,12 @@
         <item name="android:background">@color/library_grey_f1</item>
     </style>
 
+    <style name="line_05_df">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">0.5dp</item>
+        <item name="android:background">@color/library_grey_df</item>
+    </style>
+
     <style name="line_05_f1_16">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">0.5dp</item>
@@ -171,6 +177,12 @@
     <style name="line_1_f1">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">1dp</item>
+        <item name="android:background">@color/library_grey_f1</item>
+    </style>
+
+    <style name="line_5_f1">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">5dp</item>
         <item name="android:background">@color/library_grey_f1</item>
     </style>
 

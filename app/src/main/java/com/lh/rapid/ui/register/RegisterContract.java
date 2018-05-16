@@ -28,7 +28,7 @@ public class RegisterContract {
 
     interface Presenter extends BasePresenter<View> {
 
-        void register(String phone, String validate, String password, String passwordConfirm);
+        void register(String phone, String validate, String password, String passwordConfirm, boolean checked);
 
         void smsCodeSend(String mobile, String type);
 

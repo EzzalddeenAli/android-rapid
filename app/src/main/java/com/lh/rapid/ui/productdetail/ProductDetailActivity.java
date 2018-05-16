@@ -87,7 +87,6 @@ public class ProductDetailActivity extends BaseActivity implements ProductDetail
     @BindView(R.id.actionbar)
     MyActionBar mActionbar;
 
-
     private SparseArray<Hover> selectedList;
     private List<Hover> list;
     private Hover hover;

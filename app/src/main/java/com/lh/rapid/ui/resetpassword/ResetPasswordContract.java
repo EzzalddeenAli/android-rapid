@@ -17,19 +17,15 @@ public class ResetPasswordContract {
 
         void showError(String error);
 
-        void accountPasswordResetSuccess();
+        void accountChangePasswordSuccess();
 
-        void onError(Throwable throwable);
-
-        void refreshSmsCodeUi();
+        void loadError(Throwable throwable);
 
     }
 
     interface Presenter extends BasePresenter<View> {
 
-        void accountPasswordReset(String mobile, String authCode, String newPassword, String passwordConfirm);
-
-        void smsCodeSend(String mobile, String type);
+        void accountChangePassword(String newPassword, String oldPassword, String newPasswordAgain);
 
     }
 

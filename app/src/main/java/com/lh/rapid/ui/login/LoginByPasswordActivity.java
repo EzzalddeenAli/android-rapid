@@ -60,7 +60,7 @@ public class LoginByPasswordActivity extends BaseActivity implements LoginContra
         mActionbar.setLeftVisible(View.GONE);
         mActionbar.setTitle("用户登录");
         mEtLoginPhoneNum.setText("15300936554");
-        mEtLoginPassword.setText("a123456");
+        mEtLoginPassword.setText("1");
     }
 
     @Override
