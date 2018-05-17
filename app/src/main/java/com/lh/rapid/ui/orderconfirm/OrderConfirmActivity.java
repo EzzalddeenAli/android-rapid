@@ -16,6 +16,7 @@ import com.lh.rapid.Constants;
 import com.lh.rapid.R;
 import com.lh.rapid.bean.AddressListBean;
 import com.lh.rapid.bean.CartGoodsBean;
+import com.lh.rapid.bean.DictionaryBean;
 import com.lh.rapid.bean.OrderSubmitBean;
 import com.lh.rapid.bean.OrderSubmitConfirmBean;
 import com.lh.rapid.ui.BaseActivity;
@@ -23,6 +24,8 @@ import com.lh.rapid.ui.addressmanager.AddressManagerActivity;
 import com.lh.rapid.ui.orderpay.OrderPayActivity;
 import com.lh.rapid.ui.widget.MyActionBar;
 import com.lh.rapid.util.SPUtil;
+
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -81,6 +84,7 @@ public class OrderConfirmActivity extends BaseActivity implements OrderConfirmCo
         String cartGoodsBeanString = getIntent().getStringExtra("cartGoodsBean");
         mCartGoodsBean = new Gson().fromJson(cartGoodsBeanString, CartGoodsBean.class);
         mPresenter.addressDefault();
+        mPresenter.commonDictionaryQuery();
         mActionbar.setBackClickListener(new MyActionBar.IActionBarClickListener() {
             @Override
             public void onActionBarClicked() {
@@ -165,6 +169,11 @@ public class OrderConfirmActivity extends BaseActivity implements OrderConfirmCo
             mAddressId = addressListBean.getAddressId();
             mPresenter.orderSubmitConfirm(mAddressId + "", mSPUtil.getCIRCLE_ID() + "", mParams);
         }
+    }
+
+    @Override
+    public void commonDictionaryQuerySuccess(List<DictionaryBean> dictionaryBeanList) {
+
     }
 
     @OnClick(R.id.tv_commit)

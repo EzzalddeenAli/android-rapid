@@ -1,10 +1,12 @@
 package com.lh.rapid.ui.fragment3;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -12,6 +14,7 @@ import android.widget.CompoundButton;
 import com.android.frameproj.library.adapter.CommonAdapter;
 import com.android.frameproj.library.adapter.base.ViewHolder;
 import com.android.frameproj.library.decoration.DividerGridItemDecoration;
+import com.android.frameproj.library.interf.CallbackChangeFragment;
 import com.daimajia.swipe.SwipeLayout;
 import com.google.gson.Gson;
 import com.lh.rapid.R;
@@ -19,6 +22,7 @@ import com.lh.rapid.bean.Cart;
 import com.lh.rapid.bean.CartGoodsBean;
 import com.lh.rapid.bean.CirLord;
 import com.lh.rapid.bean.StroeInfo;
+import com.lh.rapid.components.storage.UserStorage;
 import com.lh.rapid.ui.BaseFragment;
 import com.lh.rapid.ui.main.MainComponent;
 import com.lh.rapid.ui.orderconfirm.OrderConfirmActivity;
@@ -69,6 +73,8 @@ public class Fragment3 extends BaseFragment implements Fragment3Contract.View {
     Bus mBus;
     @Inject
     SPUtil mSPUtil;
+    @Inject
+    UserStorage mUserStorage;
 
     public static BaseFragment newInstance() {
         Fragment3 fragment3 = new Fragment3();
@@ -106,7 +112,6 @@ public class Fragment3 extends BaseFragment implements Fragment3Contract.View {
             }
         });
         mRefreshLayout.setEnableLoadMore(false);
-        mRefreshLayout.autoRefresh();
     }
 
     @Override
@@ -123,6 +128,16 @@ public class Fragment3 extends BaseFragment implements Fragment3Contract.View {
 
             }
         });
+    }
+
+    @Override
+    public void onSupportVisible() {
+        super.onSupportVisible();
+        if (!TextUtils.isEmpty(mUserStorage.getToken())) {
+            mRefreshLayout.autoRefresh();
+        } else {
+            mCallbackChangeFragment.changeFragment(0);
+        }
     }
 
     private List<CartGoodsBean> mCartGoodsBeanArrayList = new ArrayList<>();
@@ -165,7 +180,7 @@ public class Fragment3 extends BaseFragment implements Fragment3Contract.View {
                             List<Map<String, Object>> mapList = new ArrayList<>();
                             for (int i = 0; i < goodsLists.size(); i++) {
                                 CartGoodsBean.GoodsListsBean goodsListsBean = goodsLists.get(i);
-                                if(goodsListsBean.isChecked()) {
+                                if (goodsListsBean.isChecked()) {
                                     Map<String, Object> stringObjectMap = new HashMap<>();
                                     stringObjectMap.put("goodsId", goodsListsBean.getGoodsId());
                                     stringObjectMap.put("counts", goodsListsBean.getQuantity());
@@ -181,7 +196,7 @@ public class Fragment3 extends BaseFragment implements Fragment3Contract.View {
                             List<CartGoodsBean.GoodsListsBean> goodsListsBeans = new ArrayList<>();
                             for (int i = 0; i < cartGoodsBean.getGoodsLists().size(); i++) {
                                 CartGoodsBean.GoodsListsBean goodsListsBean = cartGoodsBean.getGoodsLists().get(i);
-                                if(goodsListsBean.isChecked()){
+                                if (goodsListsBean.isChecked()) {
                                     goodsListsBeans.add(goodsListsBean);
                                 }
                             }
@@ -197,10 +212,10 @@ public class Fragment3 extends BaseFragment implements Fragment3Contract.View {
 
                         @Override
                         protected void convert(final ViewHolder holder, final CartGoodsBean.GoodsListsBean goodsListsBean, final int position) {
-                            if(cartGoodsBean.isChecked()){
+                            if (cartGoodsBean.isChecked()) {
                                 goodsListsBean.setChecked(true);
                                 ((CheckBox) holder.getView(R.id.iv_cart_item_check)).setChecked(cartGoodsBean.isChecked());
-                            }else{
+                            } else {
                                 ((CheckBox) holder.getView(R.id.iv_cart_item_check)).setChecked(goodsListsBean.isChecked());
                             }
 
@@ -275,7 +290,7 @@ public class Fragment3 extends BaseFragment implements Fragment3Contract.View {
                     BigDecimal sumBigDecimal = new BigDecimal(0);
                     for (int i = 0; i < cartGoodsBean.getGoodsLists().size(); i++) {
                         CartGoodsBean.GoodsListsBean goodsListsBean = cartGoodsBean.getGoodsLists().get(i);
-                        if(goodsListsBean.isChecked()) {
+                        if (goodsListsBean.isChecked()) {
                             double price = goodsListsBean.getPrice();
                             int quantity = goodsListsBean.getQuantity();
                             BigDecimal quantityBigDecimal = new BigDecimal(quantity);
@@ -309,6 +324,15 @@ public class Fragment3 extends BaseFragment implements Fragment3Contract.View {
     @Override
     public void cartGoodsDeleteSuccess(String s) {
         mRefreshLayout.autoRefresh();
+    }
+
+    // 切换到主页面
+    private CallbackChangeFragment mCallbackChangeFragment;
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        mCallbackChangeFragment = (CallbackChangeFragment) context;
     }
 
 }

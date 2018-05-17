@@ -6,6 +6,8 @@ import com.lh.rapid.bean.AddressListBean;
 import com.lh.rapid.bean.CartGoodsBean;
 import com.lh.rapid.bean.CategoryDetailsBean;
 import com.lh.rapid.bean.CategoryOneLevelBean;
+import com.lh.rapid.bean.CommonNewsInfoBean;
+import com.lh.rapid.bean.DictionaryBean;
 import com.lh.rapid.bean.GoodsDetailBean;
 import com.lh.rapid.bean.HomeCircleBean;
 import com.lh.rapid.bean.HomePageBean;
@@ -16,6 +18,7 @@ import com.lh.rapid.bean.OrderDetailBean;
 import com.lh.rapid.bean.OrderSubmitBean;
 import com.lh.rapid.bean.OrderSubmitConfirmBean;
 import com.lh.rapid.bean.ProductListBean;
+import com.lh.rapid.bean.UserCouponsBean;
 
 import java.util.List;
 import java.util.Map;
@@ -85,9 +88,10 @@ public interface CommonService {
 
 
     //商品分类
+    @FormUrlEncoded
     @POST("category/oneLevel")
     Observable<HttpResult<List<CategoryOneLevelBean>>> categoryOneLevel(@Header("timestamp") long timestamp, @Header("sign") String sign,
-                                                                        @Header("token") String token);
+                                                                        @FieldMap Map<String, Object> params);
 
     //商品分类详情
     @FormUrlEncoded
@@ -228,11 +232,29 @@ public interface CommonService {
     @FormUrlEncoded
     @POST("account/info/completed")
     Observable<HttpResult<String>> accountInfoCompleted(@Header("timestamp") long timestamp, @Header("sign") String sign,
-                                                             @FieldMap Map<String, Object> params);
+                                                        @FieldMap Map<String, Object> params);
 
     //修改密码
     @FormUrlEncoded
     @POST("account/changePassword")
     Observable<HttpResult<String>> accountChangePassword(@Header("timestamp") long timestamp, @Header("sign") String sign,
+                                                         @FieldMap Map<String, Object> params);
+
+    //关于我们
+    @FormUrlEncoded
+    @POST("common/news/info")
+    Observable<HttpResult<List<CommonNewsInfoBean>>> commonNewsInfo(@Header("timestamp") long timestamp, @Header("sign") String sign,
+                                                                    @FieldMap Map<String, Object> params);
+
+    //会员优惠券
+    @FormUrlEncoded
+    @POST("user/coupons")
+    Observable<HttpResult<List<UserCouponsBean>>> userCoupons(@Header("timestamp") long timestamp, @Header("sign") String sign,
                                                               @FieldMap Map<String, Object> params);
+
+    //字典
+    @FormUrlEncoded
+    @POST("common/dictionary/query")
+    Observable<HttpResult<List<DictionaryBean>>> commonDictionaryQuery(@Header("timestamp") long timestamp, @Header("sign") String sign,
+                                                                       @FieldMap Map<String, Object> params);
 }

@@ -10,6 +10,8 @@ import com.lh.rapid.bean.AddressListBean;
 import com.lh.rapid.bean.CartGoodsBean;
 import com.lh.rapid.bean.CategoryDetailsBean;
 import com.lh.rapid.bean.CategoryOneLevelBean;
+import com.lh.rapid.bean.CommonNewsInfoBean;
+import com.lh.rapid.bean.DictionaryBean;
 import com.lh.rapid.bean.GoodsDetailBean;
 import com.lh.rapid.bean.HomeCircleBean;
 import com.lh.rapid.bean.HomePageBean;
@@ -20,6 +22,7 @@ import com.lh.rapid.bean.OrderDetailBean;
 import com.lh.rapid.bean.OrderSubmitBean;
 import com.lh.rapid.bean.OrderSubmitConfirmBean;
 import com.lh.rapid.bean.ProductListBean;
+import com.lh.rapid.bean.UserCouponsBean;
 import com.lh.rapid.components.retrofit.RequestHelper;
 import com.lh.rapid.components.storage.UserStorage;
 import com.lh.rapid.util.SPUtil;
@@ -253,20 +256,22 @@ public class CommonApi {
     /**
      * 商品分类
      */
-    public Observable<HttpResult<List<CategoryOneLevelBean>>> categoryOneLevel() {
+    public Observable<HttpResult<List<CategoryOneLevelBean>>> categoryOneLevel(String circleId) {
         long currentTimeMillis = System.currentTimeMillis();
         Map<String, Object> params = mRequestHelper.getHttpRequestMap(currentTimeMillis);
+        params.put("circleId", circleId);
         String sign = mRequestHelper.getRequestSign(params, currentTimeMillis);
-        return mCommonService.categoryOneLevel(currentTimeMillis, sign, mUserStorage.getToken()).subscribeOn(Schedulers.io());
+        return mCommonService.categoryOneLevel(currentTimeMillis, sign, params).subscribeOn(Schedulers.io());
     }
 
     /**
      * 商品分类详情
      */
-    public Observable<HttpResult<List<CategoryDetailsBean>>> categoryDetails(int parentId) {
+    public Observable<HttpResult<List<CategoryDetailsBean>>> categoryDetails(int parentId, String circleId) {
         long currentTimeMillis = System.currentTimeMillis();
         Map<String, Object> params = mRequestHelper.getHttpRequestMap(currentTimeMillis);
         params.put("parentId", parentId);
+        params.put("circleId", circleId);
         String sign = mRequestHelper.getRequestSign(params, currentTimeMillis);
         return mCommonService.categoryDetails(currentTimeMillis, sign, params).subscribeOn(Schedulers.io());
     }
@@ -588,6 +593,36 @@ public class CommonApi {
         params.put("oldPassword", oldPassword);
         String sign = mRequestHelper.getRequestSign(params, currentTimeMillis);
         return mCommonService.accountChangePassword(currentTimeMillis, sign, params).subscribeOn(Schedulers.io());
+    }
+
+    /**
+     * 关于我们
+     */
+    public Observable<HttpResult<List<CommonNewsInfoBean>>> commonNewsInfo() {
+        long currentTimeMillis = System.currentTimeMillis();
+        Map<String, Object> params = mRequestHelper.getHttpRequestMap(currentTimeMillis);
+        String sign = mRequestHelper.getRequestSign(params, currentTimeMillis);
+        return mCommonService.commonNewsInfo(currentTimeMillis, sign, params).subscribeOn(Schedulers.io());
+    }
+
+    /**
+     * 会员优惠券
+     */
+    public Observable<HttpResult<List<UserCouponsBean>>> userCoupons() {
+        long currentTimeMillis = System.currentTimeMillis();
+        Map<String, Object> params = mRequestHelper.getHttpRequestMap(currentTimeMillis);
+        String sign = mRequestHelper.getRequestSign(params, currentTimeMillis);
+        return mCommonService.userCoupons(currentTimeMillis, sign, params).subscribeOn(Schedulers.io());
+    }
+
+    /**
+     * 查询字典
+     */
+    public Observable<HttpResult<List<DictionaryBean>>> commonDictionaryQuery() {
+        long currentTimeMillis = System.currentTimeMillis();
+        Map<String, Object> params = mRequestHelper.getHttpRequestMap(currentTimeMillis);
+        String sign = mRequestHelper.getRequestSign(params, currentTimeMillis);
+        return mCommonService.commonDictionaryQuery(currentTimeMillis, sign, params).subscribeOn(Schedulers.io());
     }
 
 }

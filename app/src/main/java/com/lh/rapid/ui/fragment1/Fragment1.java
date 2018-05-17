@@ -247,7 +247,13 @@ public class Fragment1 extends BaseFragment implements Fragment1Contract.View {
 
     //根据商品id获取当前商品的采购数量
     public int getSelectedItemCountById(int id) {
-        HomePageBean.CategoryListsBean.GoodListBean temp = goodBeans.get(id);
+        HomePageBean.CategoryListsBean.GoodListBean temp = null;
+        for (int i = 0; i < goodBeans.size(); i++) {
+            HomePageBean.CategoryListsBean.GoodListBean goodListBean = goodBeans.get(i);
+            if (goodListBean.getGoodsId() == id) {
+                temp = goodListBean;
+            }
+        }
         if (temp == null) {
             return 0;
         }

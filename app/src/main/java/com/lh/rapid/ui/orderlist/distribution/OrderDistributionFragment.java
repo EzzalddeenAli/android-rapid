@@ -134,6 +134,7 @@ public class OrderDistributionFragment extends BaseFragment implements OrderDist
                             break;
                     }
                     holder.setText(R.id.tv_state, orderStatus);
+                    holder.setText(R.id.tv_hint, "订单金额：");
 
                     RecyclerView recyclerView = holder.getView(R.id.recyclerView);
                     recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -172,7 +173,7 @@ public class OrderDistributionFragment extends BaseFragment implements OrderDist
             mRecyclerView.setLayoutManager(mLinearLayoutManager);
             mRecyclerView.setAdapter(mCommonAdapter);
             mRecyclerView.setItemAnimator(new DefaultItemAnimator());
-            mRecyclerView.addItemDecoration(new DividerGridItemDecoration(getActivity(), 1));
+            mRecyclerView.addItemDecoration(new DividerGridItemDecoration(getActivity(), 3));
         } else {
             if (mRecyclerView.getScrollState() == RecyclerView.SCROLL_STATE_IDLE || (mRecyclerView.isComputingLayout() == false)) {
                 mCommonAdapter.notifyDataSetChanged();

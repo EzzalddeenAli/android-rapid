@@ -37,6 +37,7 @@ import com.lh.rapid.ui.fragment3.Fragment3;
 import com.lh.rapid.ui.fragment3.ThirdFragment;
 import com.lh.rapid.ui.fragment4.FourthFragment;
 import com.lh.rapid.ui.fragment4.Fragment4;
+import com.lh.rapid.ui.login.LoginActivity;
 import com.lh.rapid.util.CommonEvent;
 import com.lh.rapid.util.SPUtil;
 import com.luck.picture.lib.config.PictureConfig;
@@ -70,8 +71,8 @@ import me.yokeyword.fragmentation.ISupportFragment;
 import me.yokeyword.fragmentation.SupportFragment;
 import okhttp3.ResponseBody;
 
-public class MainActivity extends BaseActivity implements MainContract.View
-        , HasComponent<MainComponent>, CallbackChangeFragment, BaseMainFragment.OnBackToFirstListener {
+public class MainActivity extends BaseActivity implements MainContract.View,
+        HasComponent<MainComponent>, CallbackChangeFragment, BaseMainFragment.OnBackToFirstListener {
 
     @BindView(R.id.frame_layout)
     FrameLayout mFrameLayout;
@@ -113,8 +114,8 @@ public class MainActivity extends BaseActivity implements MainContract.View
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //友盟测试
-//        String deviceInfo = getDeviceInfo(MainActivity.this);
-//        Logger.i("友盟deviceInfo：" + deviceInfo);
+        //        String deviceInfo = getDeviceInfo(MainActivity.this);
+        //        Logger.i("友盟deviceInfo：" + deviceInfo);
     }
 
     @Override
@@ -197,9 +198,9 @@ public class MainActivity extends BaseActivity implements MainContract.View
             @Override
             public void onTabSelected(int position, int prePosition) {
                 showHideFragment(mFragments[position], mFragments[prePosition]);
-                if (position == 3 && TextUtils.isEmpty(mUserStorage.getToken())) {
-//                    Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-//                    startActivityForResult(intent, Constants.REQUEST_LOGIN_CODE);
+                if ((position == 2 || position == 3) && TextUtils.isEmpty(mUserStorage.getToken())) {
+                    Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                    startActivityForResult(intent, Constants.REQUEST_LOGIN_CODE);
                 }
             }
 
@@ -210,9 +211,9 @@ public class MainActivity extends BaseActivity implements MainContract.View
 
             @Override
             public void onTabReselected(int position) {
-                if (position == 3 && TextUtils.isEmpty(mUserStorage.getToken())) {
-//                    Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-//                    startActivityForResult(intent, Constants.REQUEST_LOGIN_CODE);
+                if ((position == 2 || position == 3) && TextUtils.isEmpty(mUserStorage.getToken())) {
+                    Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                    startActivityForResult(intent, Constants.REQUEST_LOGIN_CODE);
                 }
                 final SupportFragment currentFragment = mFragments[position];
                 int count = currentFragment.getChildFragmentManager().getBackStackEntryCount();
@@ -280,7 +281,7 @@ public class MainActivity extends BaseActivity implements MainContract.View
         uploadLog();
         // 检查更新
         if (isCheckUpdate) {
-//            checkUpdate();
+            //            checkUpdate();
             isCheckUpdate = false;
         }
     }
@@ -465,7 +466,6 @@ public class MainActivity extends BaseActivity implements MainContract.View
     public void onBackToFirstFragment() {
         mBottomBar.setCurrentItem(0);
     }
-
 
     // =============================友盟测试代码
     public static boolean checkPermission(Context context, String permission) {

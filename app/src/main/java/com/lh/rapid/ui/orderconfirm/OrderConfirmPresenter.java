@@ -4,10 +4,12 @@ import android.support.annotation.NonNull;
 
 import com.lh.rapid.api.common.CommonApi;
 import com.lh.rapid.bean.AddressListBean;
+import com.lh.rapid.bean.DictionaryBean;
 import com.lh.rapid.bean.HttpResult;
 import com.lh.rapid.bean.OrderSubmitBean;
 import com.lh.rapid.bean.OrderSubmitConfirmBean;
 
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
@@ -130,6 +132,30 @@ public class OrderConfirmPresenter implements OrderConfirmContract.Presenter {
                     @Override
                     public void accept(@io.reactivex.annotations.NonNull AddressListBean addressListBean) throws Exception {
                         mView.addressDefaultSuccess(addressListBean);
+                    }
+                }, new Consumer<Throwable>() {
+                    @Override
+                    public void accept(@io.reactivex.annotations.NonNull Throwable throwable) throws Exception {
+                        mView.loadError(throwable);
+                    }
+                }));
+    }
+
+    @Override
+    public void commonDictionaryQuery() {
+        disposables.add(mCommonApi.commonDictionaryQuery()
+                .debounce(800, TimeUnit.MILLISECONDS)
+                .flatMap(new Function<HttpResult<List<DictionaryBean>>, ObservableSource<List<DictionaryBean>>>() {
+                    @Override
+                    public ObservableSource<List<DictionaryBean>> apply(@io.reactivex.annotations.NonNull HttpResult<List<DictionaryBean>> stringHttpResult) throws Exception {
+                        return CommonApi.flatResponse(stringHttpResult);
+                    }
+                })
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<List<DictionaryBean>>() {
+                    @Override
+                    public void accept(@io.reactivex.annotations.NonNull List<DictionaryBean> dictionaryBeanList) throws Exception {
+                        mView.commonDictionaryQuerySuccess(dictionaryBeanList);
                     }
                 }, new Consumer<Throwable>() {
                     @Override

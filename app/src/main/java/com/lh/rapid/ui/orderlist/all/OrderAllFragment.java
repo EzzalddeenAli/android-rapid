@@ -6,6 +6,8 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.android.frameproj.library.adapter.CommonAdapter;
@@ -17,6 +19,7 @@ import com.lh.rapid.bean.OrderBean;
 import com.lh.rapid.ui.BaseFragment;
 import com.lh.rapid.ui.orderdetail.OrderDetailActivity;
 import com.lh.rapid.ui.orderlist.OrderListComponent;
+import com.lh.rapid.ui.orderpay.OrderPayActivity;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
@@ -110,6 +113,28 @@ public class OrderAllFragment extends BaseFragment implements OrderAllContract.V
             mCommonAdapter = new CommonAdapter<OrderBean>(getActivity(), R.layout.layout_order_list, mOrderBeanList) {
                 @Override
                 protected void convert(ViewHolder holder, final OrderBean orderBean, int position) {
+
+                    Button btnPay = holder.getView(R.id.btn_pay);
+                    LinearLayout ll_pay_time = holder.getView(R.id.ll_pay_time);
+                    TextView tv_pay_time = holder.getView(R.id.tv_pay_time);
+                    if (orderBean.getStatus() == 1) {
+                        btnPay.setVisibility(View.VISIBLE);
+                        btnPay.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                Intent intent = new Intent(getActivity(), OrderPayActivity.class);
+                                intent.putExtra("orderId", orderBean.getOrderId());
+                                intent.putExtra("price", orderBean.getTotalPrice());
+                                startActivity(intent);
+                            }
+                        });
+                        ll_pay_time.setVisibility(View.VISIBLE);
+                        tv_pay_time.setText("30");
+                    } else {
+                        btnPay.setVisibility(View.GONE);
+                        ll_pay_time.setVisibility(View.GONE);
+                    }
+
                     holder.setText(R.id.tv_order_time, orderBean.getCreateDate());
                     holder.setText(R.id.tv_order_no, orderBean.getOrderNo());
                     holder.setText(R.id.tv_sum_price, "￥"+orderBean.getTotalPrice());
@@ -119,18 +144,23 @@ public class OrderAllFragment extends BaseFragment implements OrderAllContract.V
                     switch (orderBean.getStatus()){
                         case 1:
                             orderStatus = "待付款";
+                            holder.setText(R.id.tv_hint, "待付款：");
                             break;
                         case 2:
                             orderStatus = "准备中";
+                            holder.setText(R.id.tv_hint, "订单金额：");
                             break;
                         case 3:
                             orderStatus = "配送中";
+                            holder.setText(R.id.tv_hint, "订单金额：");
                             break;
                         case 4:
                             orderStatus = "已完成";
+                            holder.setText(R.id.tv_hint, "实付款：");
                             break;
                         case 5:
                             orderStatus = "已取消";
+                            holder.setText(R.id.tv_hint, "订单金额：");
                             break;
                     }
                     holder.setText(R.id.tv_state, orderStatus);
@@ -172,7 +202,7 @@ public class OrderAllFragment extends BaseFragment implements OrderAllContract.V
             mRecyclerView.setLayoutManager(mLinearLayoutManager);
             mRecyclerView.setAdapter(mCommonAdapter);
             mRecyclerView.setItemAnimator(new DefaultItemAnimator());
-            mRecyclerView.addItemDecoration(new DividerGridItemDecoration(getActivity(), 1));
+            mRecyclerView.addItemDecoration(new DividerGridItemDecoration(getActivity(), 3));
         } else {
             if (mRecyclerView.getScrollState() == RecyclerView.SCROLL_STATE_IDLE || (mRecyclerView.isComputingLayout() == false)) {
                 mCommonAdapter.notifyDataSetChanged();

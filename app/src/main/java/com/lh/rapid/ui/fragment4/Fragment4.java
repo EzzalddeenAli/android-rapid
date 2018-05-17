@@ -1,8 +1,10 @@
 package com.lh.rapid.ui.fragment4;
 
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -10,20 +12,24 @@ import android.widget.TextView;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.android.frameproj.library.interf.CallbackChangeFragment;
 import com.android.frameproj.library.util.imageloader.ImageLoaderUtil;
 import com.lh.rapid.R;
 import com.lh.rapid.bean.AccountInfoBean;
 import com.lh.rapid.bean.AccountUserHomeBean;
 import com.lh.rapid.components.storage.UserStorage;
 import com.lh.rapid.ui.BaseFragment;
+import com.lh.rapid.ui.aboutme.AboutMeActivity;
 import com.lh.rapid.ui.addressmanager.AddressManagerActivity;
-import com.lh.rapid.ui.h5.H5Activity;
+import com.lh.rapid.ui.coupon.CouponActivity;
 import com.lh.rapid.ui.main.MainComponent;
 import com.lh.rapid.ui.myshare.MyShareActivity;
 import com.lh.rapid.ui.orderlist.OrderListActivity;
 import com.lh.rapid.ui.setting.SettingActivity;
 import com.lh.rapid.ui.userinfo.UserInfoActivity;
+
 import javax.inject.Inject;
+
 import butterknife.BindView;
 import butterknife.OnClick;
 import io.reactivex.annotations.NonNull;
@@ -77,8 +83,7 @@ public class Fragment4 extends BaseFragment implements Fragment4Contract.View {
     @Override
     public void initUI(View view) {
         mPresenter.attachView(this);
-        //        mPresenter.accountInfo();
-        mPresenter.accountUserHome();
+
     }
 
     @Override
@@ -91,6 +96,16 @@ public class Fragment4 extends BaseFragment implements Fragment4Contract.View {
     public void initData() {
     }
 
+    @Override
+    public void onSupportVisible() {
+        super.onSupportVisible();
+        if (!TextUtils.isEmpty(mUserStorage.getToken())) {
+            mPresenter.accountUserHome();
+        } else {
+            mCallbackChangeFragment.changeFragment(0);
+        }
+    }
+
     @OnClick(R.id.rl_address_manager)
     public void mRlAddressManager() {
         Intent intent = new Intent(getActivity(), AddressManagerActivity.class);
@@ -101,6 +116,7 @@ public class Fragment4 extends BaseFragment implements Fragment4Contract.View {
     @OnClick(R.id.my_share)
     public void mMyShare() {
         openActivity(MyShareActivity.class);
+        openActivity(CouponActivity.class);
     }
 
     @OnClick(R.id.service_center)
@@ -123,10 +139,7 @@ public class Fragment4 extends BaseFragment implements Fragment4Contract.View {
 
     @OnClick(R.id.about_me)
     public void mAboutMe() {
-        //        openActivity(AboutMeActivity.class);
-        Intent intent = new Intent(getActivity(), H5Activity.class);
-        intent.putExtra("url", "http://www.baidu.com");
-        intent.putExtra("title", "关于我们");
+        Intent intent = new Intent(getActivity(), AboutMeActivity.class);
         startActivity(intent);
     }
 
@@ -196,8 +209,17 @@ public class Fragment4 extends BaseFragment implements Fragment4Contract.View {
     }
 
     @OnClick(R.id.iv_mine_shezhi)
-    public void mIvMineShezhi(){
+    public void mIvMineShezhi() {
         openActivity(SettingActivity.class);
+    }
+
+    // 切换到主页面
+    private CallbackChangeFragment mCallbackChangeFragment;
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        mCallbackChangeFragment = (CallbackChangeFragment) context;
     }
 
 }

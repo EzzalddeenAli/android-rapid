@@ -7,9 +7,7 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 
 import com.android.frameproj.library.adapter.CommonAdapter;
 import com.android.frameproj.library.adapter.base.ViewHolder;
@@ -23,6 +21,7 @@ import com.lh.rapid.ui.BaseFragment;
 import com.lh.rapid.ui.main.MainComponent;
 import com.lh.rapid.ui.productlist.ProductListActivity;
 import com.lh.rapid.ui.widget.MyActionBar;
+import com.lh.rapid.util.SPUtil;
 import com.squareup.otto.Bus;
 
 import java.util.List;
@@ -30,7 +29,6 @@ import java.util.List;
 import javax.inject.Inject;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 
 public class Fragment2 extends BaseFragment implements Fragment2Contract.View {
 
@@ -39,6 +37,8 @@ public class Fragment2 extends BaseFragment implements Fragment2Contract.View {
     Fragment2Presenter mFragment2Presenter;
     @Inject
     Bus mBus;
+    @Inject
+    SPUtil mSPUtil;
 
     @BindView(R.id.recyclerViewLeft)
     RecyclerView mRecyclerViewLeft;
@@ -79,14 +79,14 @@ public class Fragment2 extends BaseFragment implements Fragment2Contract.View {
         mActionbar.setLeftVisible(View.GONE);
         mBus.register(this);
         mFragment2Presenter.attachView(this);
-        mFragment2Presenter.categoryOneLevel();
+        mFragment2Presenter.categoryOneLevel(mSPUtil.getCIRCLE_ID() + "");
     }
 
     @Override
     public void onSupportVisible() {
         super.onSupportVisible();
         if (mCategoryOneLevelBeanList == null || mCategoryOneLevelBeanList.size() == 0) {
-            mFragment2Presenter.categoryOneLevel();
+            mFragment2Presenter.categoryOneLevel(mSPUtil.getCIRCLE_ID() + "");
         }
     }
 
@@ -139,13 +139,13 @@ public class Fragment2 extends BaseFragment implements Fragment2Contract.View {
             @Override
             public void onItemClick(View view, int position) {
                 classifyLeftAdapter.setCheckPosition(position);
-                mFragment2Presenter.categoryDetails(categoryOneLevelBeanList.get(position).getId());
+                mFragment2Presenter.categoryDetails(categoryOneLevelBeanList.get(position).getId(), mSPUtil.getCIRCLE_ID() + "");
             }
         });
         mRecyclerViewLeft.setAdapter(classifyLeftAdapter);
         mRecyclerViewLeft.setItemAnimator(new DefaultItemAnimator());
 
-        mFragment2Presenter.categoryDetails(categoryOneLevelBeanList.get(0).getId());
+        mFragment2Presenter.categoryDetails(categoryOneLevelBeanList.get(0).getId(), mSPUtil.getCIRCLE_ID() + "");
     }
 
     private void showRightRecyclerView(List<CategoryDetailsBean> categoryDetailsBeanList) {
@@ -205,11 +205,4 @@ public class Fragment2 extends BaseFragment implements Fragment2Contract.View {
         mCallbackChangeFragment = (CallbackChangeFragment) context;
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // TODO: inflate a fragment view
-        View rootView = super.onCreateView(inflater, container, savedInstanceState);
-        ButterKnife.bind(this, rootView);
-        return rootView;
-    }
 }

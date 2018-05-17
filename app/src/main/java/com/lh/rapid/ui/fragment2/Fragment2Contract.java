@@ -30,9 +30,9 @@ public interface Fragment2Contract {
 
     interface Presenter extends BasePresenter<Fragment2Contract.View> {
 
-        void categoryOneLevel();
+        void categoryOneLevel(String circleId);
 
-        void categoryDetails(int parentId);
+        void categoryDetails(int parentId,String circleId);
 
     }
 

@@ -29,6 +29,7 @@ public class Fragment2Presenter implements Fragment2Contract.Presenter {
     private final CompositeDisposable disposables = new CompositeDisposable();
     private Fragment2Contract.View mView;
     private CommonApi mCommonApi;
+
     @Inject
     public Fragment2Presenter(CommonApi commonApi) {
         mCommonApi = commonApi;
@@ -46,9 +47,9 @@ public class Fragment2Presenter implements Fragment2Contract.Presenter {
     }
 
     @Override
-    public void categoryOneLevel() {
+    public void categoryOneLevel(String circleId) {
         mView.showLoading();
-        disposables.add(mCommonApi.categoryOneLevel()
+        disposables.add(mCommonApi.categoryOneLevel(circleId)
                 .debounce(800, TimeUnit.MILLISECONDS)
                 .flatMap(new Function<HttpResult<List<CategoryOneLevelBean>>, ObservableSource<List<CategoryOneLevelBean>>>() {
                     @Override
@@ -76,9 +77,9 @@ public class Fragment2Presenter implements Fragment2Contract.Presenter {
     }
 
     @Override
-    public void categoryDetails(int parentId) {
+    public void categoryDetails(int parentId, String circleId) {
         mView.showLoading();
-        disposables.add(mCommonApi.categoryDetails(parentId)
+        disposables.add(mCommonApi.categoryDetails(parentId, circleId)
                 .debounce(800, TimeUnit.MILLISECONDS)
                 .flatMap(new Function<HttpResult<List<CategoryDetailsBean>>, ObservableSource<List<CategoryDetailsBean>>>() {
                     @Override

@@ -104,4 +104,28 @@ public class ProductListPresenter implements ProductListContract.Presenter {
         loadDate();
     }
 
+    @Override
+    public void cartGoodsAdd(String goodsId, String quantity, String circleId) {
+        disposables.add(mCommonApi.cartGoodsAdd(goodsId, quantity, circleId)
+                .debounce(800, TimeUnit.MILLISECONDS)
+                .switchMap(new Function<HttpResult<String>, ObservableSource<String>>() {
+                    @Override
+                    public ObservableSource<String> apply(@io.reactivex.annotations.NonNull HttpResult<String> httpResult) throws Exception {
+                        return CommonApi.flatResponse(httpResult);
+                    }
+                })
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<String>() {
+                    @Override
+                    public void accept(@io.reactivex.annotations.NonNull String s) throws Exception {
+                        mView.cartGoodsAddSuccess(s);
+                    }
+                }, new Consumer<Throwable>() {
+                    @Override
+                    public void accept(@io.reactivex.annotations.NonNull Throwable throwable) throws Exception {
+                        mView.loadError(throwable);
+                    }
+                }));
+    }
+
 }

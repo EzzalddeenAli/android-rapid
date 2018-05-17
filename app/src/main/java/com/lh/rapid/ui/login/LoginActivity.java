@@ -9,7 +9,6 @@ import com.lh.rapid.Constants;
 import com.lh.rapid.R;
 import com.lh.rapid.components.storage.UserStorage;
 import com.lh.rapid.ui.BaseActivity;
-import com.lh.rapid.ui.main.MainActivity;
 import com.lh.rapid.ui.register.RegisterActivity;
 import com.lh.rapid.util.SPUtil;
 
@@ -77,7 +76,8 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
 
     @Override
     public void loginSuccess() {
-        openActivity(MainActivity.class);
+        setResult(Constants.RESULT_LOGIN_CODE);
+        finish();
     }
 
     @Override
@@ -156,6 +156,12 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
     @OnClick(R.id.ll_cardnum_login)
     public void mLlCardnumLogin(){
         openActivity(LoginByCardActivity.class);
+    }
+
+    @Override
+    public void onBackPressedSupport() {
+        setResult(Constants.RESULT_LOGIN_CODE);
+        finish();
     }
 
 }

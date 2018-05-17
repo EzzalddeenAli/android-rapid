@@ -1,20 +1,18 @@
-package com.lh.rapid.ui.aboutme;
+package com.lh.rapid.ui.coupon;
 
-import android.content.Intent;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.View;
+import android.widget.TextView;
 
 import com.android.frameproj.library.adapter.CommonAdapter;
-import com.android.frameproj.library.adapter.MultiItemTypeAdapter;
 import com.android.frameproj.library.adapter.base.ViewHolder;
 import com.android.frameproj.library.decoration.DividerGridItemDecoration;
 import com.lh.rapid.R;
-import com.lh.rapid.bean.CommonNewsInfoBean;
+import com.lh.rapid.bean.UserCouponsBean;
 import com.lh.rapid.ui.BaseActivity;
-import com.lh.rapid.ui.h5.H5Activity;
 import com.lh.rapid.ui.widget.MyActionBar;
+import com.lh.rapid.util.SPUtil;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
@@ -26,32 +24,36 @@ import javax.inject.Inject;
 import butterknife.BindView;
 
 /**
- * Created by lh on 2018/5/15.
+ * Created by lh on 2018/5/2.
  */
 
-public class AboutMeActivity extends BaseActivity implements AboutMeContract.View {
+public class CouponActivity extends BaseActivity implements CouponContract.View {
 
-    @BindView(R.id.actionbar)
-    MyActionBar mActionbar;
-
-    @Inject
-    AboutMePresenter mPresenter;
     @BindView(R.id.recyclerView)
     RecyclerView mRecyclerView;
+    @BindView(R.id.tv_empty)
+    TextView mTvEmpty;
     @BindView(R.id.refreshLayout)
     SmartRefreshLayout mRefreshLayout;
+    @BindView(R.id.actionbar)
+    MyActionBar mActionbar;
 
     private LinearLayoutManager mLinearLayoutManager;
     private CommonAdapter mCommonAdapter;
 
+    @Inject
+    CouponPresenter mPresenter;
+    @Inject
+    SPUtil mSPUtil;
+
     @Override
     public int initContentView() {
-        return R.layout.activity_about_me;
+        return R.layout.activity_coupon;
     }
 
     @Override
     public void initInjector() {
-        DaggerAboutMeComponent.builder()
+        DaggerCouponComponent.builder()
                 .applicationComponent(getApplicationComponent())
                 .activityModule(getActivityModule())
                 .build()
@@ -67,12 +69,13 @@ public class AboutMeActivity extends BaseActivity implements AboutMeContract.Vie
                 finish();
             }
         });
-        mActionbar.setTitle("关于我们");
+        mActionbar.setTitle("我的优惠券");
 
         mRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(RefreshLayout refreshlayout) {
-                mPresenter.commonNewsInfo();
+                mPresenter.loadDate();
+
             }
         });
         mRefreshLayout.setEnableLoadMore(false);
@@ -80,51 +83,30 @@ public class AboutMeActivity extends BaseActivity implements AboutMeContract.Vie
     }
 
     @Override
-    public void loadError(Throwable throwable) {
-        super.loadError(throwable);
-        mRefreshLayout.finishRefresh(300);
+    protected void onDestroy() {
+        super.onDestroy();
+        mPresenter.detachView();
     }
 
     @Override
-    public void commonNewsInfoSuccess(final List<CommonNewsInfoBean> commonNewsInfoBeanList) {
-        mRefreshLayout.finishRefresh(300);
+    public void onRefreshCompleted(List<UserCouponsBean> goodsDetailBeanList) {
         if (mCommonAdapter == null) {
-            mCommonAdapter = new CommonAdapter<CommonNewsInfoBean>(AboutMeActivity.this, R.layout.layout_about_me, commonNewsInfoBeanList) {
+            mCommonAdapter = new CommonAdapter<UserCouponsBean>(CouponActivity.this, R.layout.layout_coupon, goodsDetailBeanList) {
                 @Override
-                protected void convert(ViewHolder holder, final CommonNewsInfoBean commonNewsInfoBean, int position) {
-                    holder.setText(R.id.textView, commonNewsInfoBean.getTitle());
+                protected void convert(ViewHolder holder, final UserCouponsBean userCouponsBean, int position) {
+
                 }
             };
-            mCommonAdapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
-                @Override
-                public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
-                    Intent intent = new Intent(AboutMeActivity.this, H5Activity.class);
-                    intent.putExtra("url",commonNewsInfoBeanList.get(position).getContent());
-                    intent.putExtra("title",commonNewsInfoBeanList.get(position).getTitle());
-                    startActivity(intent);
-                }
-
-                @Override
-                public boolean onItemLongClick(View view, RecyclerView.ViewHolder holder, int position) {
-                    return false;
-                }
-            });
-            mLinearLayoutManager = new LinearLayoutManager(AboutMeActivity.this);
+            mLinearLayoutManager = new LinearLayoutManager(CouponActivity.this);
             mRecyclerView.setLayoutManager(mLinearLayoutManager);
             mRecyclerView.setAdapter(mCommonAdapter);
             mRecyclerView.setItemAnimator(new DefaultItemAnimator());
-            mRecyclerView.addItemDecoration(new DividerGridItemDecoration(AboutMeActivity.this, 1));
+            mRecyclerView.addItemDecoration(new DividerGridItemDecoration(CouponActivity.this, 1));
         } else {
             if (mRecyclerView.getScrollState() == RecyclerView.SCROLL_STATE_IDLE || (mRecyclerView.isComputingLayout() == false)) {
                 mCommonAdapter.notifyDataSetChanged();
             }
         }
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        mPresenter.detachView();
     }
 
 }

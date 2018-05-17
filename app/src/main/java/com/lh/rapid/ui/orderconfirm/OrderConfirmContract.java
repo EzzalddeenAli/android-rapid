@@ -1,10 +1,13 @@
 package com.lh.rapid.ui.orderconfirm;
 
 import com.lh.rapid.bean.AddressListBean;
+import com.lh.rapid.bean.DictionaryBean;
 import com.lh.rapid.bean.OrderSubmitBean;
 import com.lh.rapid.bean.OrderSubmitConfirmBean;
 import com.lh.rapid.ui.BasePresenter;
 import com.lh.rapid.ui.BaseView;
+
+import java.util.List;
 
 /**
  * Created by lh on 2018/5/14.
@@ -25,6 +28,8 @@ public class OrderConfirmContract {
         void orderSubmitSuccess(OrderSubmitBean orderSubmitBean);
 
         void addressDefaultSuccess(AddressListBean addressListBean);
+
+        void commonDictionaryQuerySuccess(List<DictionaryBean> dictionaryBeanList);
     }
 
     interface Presenter extends BasePresenter<View> {
@@ -34,6 +39,8 @@ public class OrderConfirmContract {
         void orderSubmit(String addressId, String circleId, String paramsString);
 
         void addressDefault();
+
+        void commonDictionaryQuery();
 
     }
 

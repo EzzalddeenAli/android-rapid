@@ -28,6 +28,7 @@ public class ProductListContract {
 
         void hideLoading();
 
+        void cartGoodsAddSuccess(String s);
     }
 
     interface Presenter extends BasePresenter<View> {
@@ -38,6 +39,8 @@ public class ProductListContract {
         void onLoadMore();
 
         void loadDate();
+
+        void cartGoodsAdd(String goodsId,String quantity,String circleId);
     }
 
 }

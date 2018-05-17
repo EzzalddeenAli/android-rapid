@@ -21,7 +21,7 @@ public class Constants {
     // 日志默认保存目录
     public static String LH_LOG_PATH = "/LH/Log/";
     // 本地测试地址
-    public static final String BASE_URL = "http://192.168.10.148:8080/";
+    public static final String BASE_URL = "http://192.168.10.127:8080/";
     // APK下载地址
     public static final String DOWNLOAD_APK_URL = BASE_URL + "static/app/ver.xml";
     // app类型：1:ios,2:andriod

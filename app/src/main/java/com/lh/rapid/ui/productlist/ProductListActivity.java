@@ -16,6 +16,7 @@ import com.lh.rapid.bean.ProductListBean;
 import com.lh.rapid.ui.BaseActivity;
 import com.lh.rapid.ui.productdetail.ProductDetailActivity;
 import com.lh.rapid.ui.widget.MyActionBar;
+import com.lh.rapid.ui.widget.SelectNumberView;
 import com.lh.rapid.util.SPUtil;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
@@ -120,7 +121,27 @@ public class ProductListActivity extends BaseActivity implements ProductListCont
                     holder.setText(R.id.tv_cart_item_name, goodsDetailBean.getGoodsName());
                     holder.setText(R.id.tv_cart_item_weight, goodsDetailBean.getWeight());
                     holder.setText(R.id.tv_cart_item_price, "￥"+goodsDetailBean.getGoodsPrice());
-                    holder.getView(R.id.sn_cart_item).setVisibility(View.GONE);
+
+                    final SelectNumberView numberView = holder.getView(R.id.sn_cart_item);
+                    numberView.setQuantity(goodsDetailBean.getCounts());
+                    numberView.setSelectCallback(new SelectNumberView.ISelectCallback() {
+                        @Override
+                        public void onResult(int index, int qualitity) {
+                            mPresenter.cartGoodsAdd(goodsDetailBean.getCounts() + "", qualitity + "", mSPUtil.getCIRCLE_ID() + "");
+                            goodsDetailBean.setCounts(qualitity);
+                            mCommonAdapter.notifyDataSetChanged();
+                        }
+
+                        @Override
+                        public void onMaxQuantity() {
+
+                        }
+
+                        @Override
+                        public void onMinQuantity() {
+
+                        }
+                    });
                 }
             };
             mCommonAdapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
@@ -156,6 +177,11 @@ public class ProductListActivity extends BaseActivity implements ProductListCont
     @Override
     public void onEmpty() {
         mRefreshLayout.finishRefresh(300);
+    }
+
+    @Override
+    public void cartGoodsAddSuccess(String s) {
+
     }
 
     @Override

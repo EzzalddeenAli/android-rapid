@@ -78,4 +78,36 @@ public class UserInfoPresenter implements UserInfoContract.Presenter {
                 }));
     }
 
+    @Override
+    public void accountInfoCompleted(String nickName, String gender, String email, String birthday) {
+        mView.showLoading();
+        disposables.add(mCommonApi.accountInfoCompleted(nickName, gender, email, birthday)
+                .debounce(800, TimeUnit.MILLISECONDS)
+                .flatMap(new Function<HttpResult<String>, ObservableSource<String>>() {
+                    @Override
+                    public ObservableSource<String> apply(@io.reactivex.annotations.NonNull HttpResult<String> loginEntityHttpResult) throws Exception {
+                        return CommonApi.flatResponse(loginEntityHttpResult);
+                    }
+                })
+                .observeOn(AndroidSchedulers.mainThread())
+                .doFinally(new Action() {
+                    @Override
+                    public void run() throws Exception {
+                        mView.hideLoading();
+                    }
+                })
+                .subscribe(new Consumer<String>() {
+                    @Override
+                    public void accept(@io.reactivex.annotations.NonNull String string) throws Exception {
+                        mView.accountInfoCompletedSuccess(string);
+                    }
+                }, new Consumer<Throwable>() {
+                    @Override
+                    public void accept(@io.reactivex.annotations.NonNull Throwable throwable) throws Exception {
+                        mView.accountInfoCompletedError();
+                        mView.loadError(throwable);
+                    }
+                }));
+    }
+
 }

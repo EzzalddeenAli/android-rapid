@@ -56,13 +56,6 @@
             android:launchMode="singleTask"
             android:screenOrientation="portrait">
 
-        </activity>
-
-        <activity
-            android:name=".ui.login.LoginActivity"
-            android:launchMode="singleTask"
-            android:screenOrientation="portrait">
-
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
@@ -70,6 +63,11 @@
             </intent-filter>
 
         </activity>
+
+        <activity
+            android:name=".ui.login.LoginActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"/>
 
         <activity
             android:name=".ui.login.LoginByCardActivity"
@@ -149,6 +147,10 @@
 
         <activity
             android:name=".ui.setting.SettingActivity"
+            android:screenOrientation="portrait"/>
+
+        <activity
+            android:name=".ui.coupon.CouponActivity"
             android:screenOrientation="portrait"/>
 
         <provider

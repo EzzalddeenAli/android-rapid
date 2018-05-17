@@ -2,6 +2,7 @@ package com.lh.rapid.ui.setting;
 
 import android.support.annotation.NonNull;
 import android.view.View;
+import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -29,24 +30,20 @@ import butterknife.OnClick;
 
 public class SettingActivity extends BaseActivity {
 
-
+    @Inject
+    SPUtil mSPUtil;
+    @Inject
+    UserStorage mUserStorage;
     @BindView(R.id.actionbar)
     MyActionBar mActionbar;
     @BindView(R.id.tv_version)
     TextView mTvVersion;
-    @BindView(R.id.rl_version_code)
-    RelativeLayout mRlVersionCode;
     @BindView(R.id.tv_cache)
     TextView mTvCache;
     @BindView(R.id.rl_cache)
     RelativeLayout mRlCache;
     @BindView(R.id.btn_exit)
-    TextView mBtnExit;
-
-    @Inject
-    SPUtil mSPUtil;
-    @Inject
-    UserStorage mUserStorage;
+    Button mBtnExit;
 
     @Override
     public int initContentView() {
@@ -55,6 +52,11 @@ public class SettingActivity extends BaseActivity {
 
     @Override
     public void initInjector() {
+        DaggerSettingComponent.builder()
+                .applicationComponent(getApplicationComponent())
+                .activityModule(getActivityModule())
+                .build()
+                .inject(this);
     }
 
     @Override
@@ -67,7 +69,7 @@ public class SettingActivity extends BaseActivity {
             }
         });
 
-        mTvVersion.setText(CommonUtils.getVersionName(this));
+        mTvVersion.setText("V"+CommonUtils.getVersionName(this));
         mTvCache.setText(DataSizeManager.getTotalCacheSize(this));
         mBtnExit.setOnClickListener(new View.OnClickListener() {
             @Override

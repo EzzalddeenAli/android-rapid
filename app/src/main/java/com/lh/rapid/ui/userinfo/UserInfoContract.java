@@ -16,15 +16,21 @@ public class UserInfoContract {
 
         void loadError(Throwable throwable);
 
+        void accountInfoCompletedError();
+
         void showLoading();
 
         void hideLoading();
+
+        void accountInfoCompletedSuccess(String string);
 
     }
 
     interface Presenter extends BasePresenter<View> {
 
         void loadDate();
+
+        void accountInfoCompleted(String nickName, String gender, String email, String birthday);
 
     }
 
