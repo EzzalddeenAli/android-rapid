@@ -57,7 +57,6 @@ public class Constants {
     public static final int RESULT_CHOOSE_LOCATION_CODE_CUSTOM_MAP = 121;
     public static final int REQUEST_LOCATION_MANAGER_CODE = 122;
     public static final int RESULT_LOCATION_MANAGER_CODE = 123;
-
     public static boolean isAllCheck = true;
 
     /**
@@ -66,7 +65,6 @@ public class Constants {
     public static final String SMSCODE_TYPE_REGISTER = "1";
     public static final String SMSCODE_TYPE_LOGIN = "2";
     public static final String SMSCODE_TYPE_MODIFY_PASSWORD = "3";
-
 
     // 微博授权回调页
     public static final String SINA_REDIRECT_URL = "http://api.myhaving.com/thirdlogin/weibo/auth/callback";
