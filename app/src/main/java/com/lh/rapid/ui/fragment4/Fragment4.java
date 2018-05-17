@@ -23,9 +23,7 @@ import com.lh.rapid.ui.myshare.MyShareActivity;
 import com.lh.rapid.ui.orderlist.OrderListActivity;
 import com.lh.rapid.ui.setting.SettingActivity;
 import com.lh.rapid.ui.userinfo.UserInfoActivity;
-
 import javax.inject.Inject;
-
 import butterknife.BindView;
 import butterknife.OnClick;
 import io.reactivex.annotations.NonNull;
@@ -197,9 +195,9 @@ public class Fragment4 extends BaseFragment implements Fragment4Contract.View {
         openActivity(UserInfoActivity.class);
     }
 
-
     @OnClick(R.id.iv_mine_shezhi)
     public void mIvMineShezhi(){
         openActivity(SettingActivity.class);
     }
+
 }

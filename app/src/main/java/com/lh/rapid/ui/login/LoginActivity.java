@@ -35,6 +35,7 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
 
     @Inject
     LoginPresenter mPresenter;
+
     @Inject
     SPUtil mSPUtil;
     @Inject

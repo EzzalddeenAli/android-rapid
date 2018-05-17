@@ -37,5 +37,4 @@ public class DBModule {
     TestDao getTestDao(DaoSession session) {
         return session.getTestDao();
     }
-
 }
