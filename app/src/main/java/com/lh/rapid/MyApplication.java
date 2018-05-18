@@ -21,6 +21,8 @@ import com.scwang.smartrefresh.layout.api.RefreshHeader;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.footer.ClassicsFooter;
 import com.scwang.smartrefresh.layout.header.ClassicsHeader;
+import com.tencent.mm.opensdk.openapi.IWXAPI;
+import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -70,6 +72,9 @@ public class MyApplication extends MultiDexApplication {
         //初始化百度地图SDK
         SDKInitializer.initialize(getApplicationContext());
         ImageLoaderUtil.getInstance().setPlaceHolder(R.mipmap.no_pic);
+        // 将该app注册到微信
+        final IWXAPI msgApi = WXAPIFactory.createWXAPI(mContext, null);
+        msgApi.registerApp(Constants.WECHAT_PAY_APP_ID);
     }
 
     private void initFragmentation() {

@@ -8,7 +8,7 @@ import com.lh.rapid.ui.BaseView;
  * Created by we-win on 2017/7/21.
  */
 
-public interface LoginContract {
+public interface RechargeContract {
 
     interface View extends BaseView {
 
@@ -18,20 +18,12 @@ public interface LoginContract {
 
         void showError(String error);
 
-        void loginSuccess();
-
-        void onError(Throwable throwable);
-
-        void refreshSmsCodeUi();
+        void rechargeSuccess();
     }
 
     interface Presenter extends BasePresenter<View> {
 
-        void login(String userName, String identifyingCode, int type);
-
-        void loginMobile(String userName, String smsCode);
-
-        void smsCodeSend(String mobile, String type);
+        void recharge();
     }
 
 }

@@ -1,9 +1,11 @@
 package com.lh.rapid.ui.orderconfirm;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -12,7 +14,11 @@ import com.android.frameproj.library.adapter.CommonAdapter;
 import com.android.frameproj.library.adapter.base.ViewHolder;
 import com.android.frameproj.library.decoration.DividerGridItemDecoration;
 import com.android.frameproj.library.dialog.InfoMsgHint;
+import com.android.frameproj.library.util.TimeUtils;
+import com.android.frameproj.library.util.ToastUtil;
+import com.bigkoo.pickerview.OptionsPickerView;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.lh.rapid.Constants;
 import com.lh.rapid.R;
 import com.lh.rapid.bean.AddressListBean;
@@ -27,6 +33,8 @@ import com.lh.rapid.ui.orderpay.OrderPayActivity;
 import com.lh.rapid.ui.widget.MyActionBar;
 import com.lh.rapid.util.SPUtil;
 
+import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -42,8 +50,7 @@ public class OrderConfirmActivity extends BaseActivity implements OrderConfirmCo
 
     @Inject
     OrderConfirmPresenter mPresenter;
-    @Inject
-    SPUtil mSPUtil;
+
     @BindView(R.id.actionbar)
     MyActionBar mActionbar;
     @BindView(R.id.tv_name)
@@ -71,6 +78,11 @@ public class OrderConfirmActivity extends BaseActivity implements OrderConfirmCo
     private String mParams;
     private CartGoodsBean mCartGoodsBean;
     private int mCouponId = -1;
+
+    @Inject
+    SPUtil mSPUtil;
+
+    private boolean initTime = false;
 
     @Override
     public int initContentView() {
@@ -103,6 +115,58 @@ public class OrderConfirmActivity extends BaseActivity implements OrderConfirmCo
         mActionbar.setTitle("填写订单");
 
         initRecyclerView();
+        initChooseTime();
+    }
+
+    private void initChooseTime() {
+        String dictionary_data = mSPUtil.getDICTIONARY_DATA();
+        if(!TextUtils.isEmpty(dictionary_data)){
+            Type listType = new TypeToken<List<DictionaryBean>>() {
+            }.getType();
+            List<DictionaryBean>  dictionaryBeans = new Gson().fromJson(dictionary_data, listType);
+            String currentTime = TimeUtils.getCurrentTimeMillis();
+            for (int i = 1; i < 8; i++) {
+                String otherTime = (Long.valueOf(currentTime) + i * 60 * 60 * 24) + "";
+                String dayTime = TimeUtils.getDayTime(otherTime);
+                options1Items.add(dayTime);
+                List<String> stringList = new ArrayList<>();
+                for (int j = 0; j < dictionaryBeans.size(); j++) {
+                    stringList.add(dictionaryBeans.get(j).getDictionaryValue());
+                }
+                options2Items.add(stringList);
+            }
+            initTime = true;
+        }else{
+            mPresenter.commonDictionaryQuery();
+        }
+
+    }
+
+    private List<String> options1Items = new ArrayList<>();
+    private List<List<String>> options2Items = new ArrayList<>();
+
+    @OnClick(R.id.rl_send_time)
+    public void mRlSendTime() {
+        if(initTime) {
+            OptionsPickerView pvOptions = new OptionsPickerView.Builder(this, new OptionsPickerView.OnOptionsSelectListener() {
+                @Override
+                public void onOptionsSelect(int options1, int option2, int options3, View v) {
+                    //返回的分别是三个级别的选中位置
+                    String data = options1Items.get(options1) + "  " + options2Items.get(options1).get(option2);
+                    mTvEndTime.setText(data);
+                }
+            }).setTitleText("送货时间选择")
+                    .setDividerColor(Color.BLACK)
+                    .setTextColorCenter(Color.BLACK) //设置选中项文字颜色
+                    .setContentTextSize(20)
+                    .setOutSideCancelable(false)// default is true
+                    .build();
+            pvOptions.setPicker(options1Items, options2Items);
+            pvOptions.show();
+        }else{
+            ToastUtil.showToast("初始化送货时间请稍后");
+            mPresenter.commonDictionaryQuery();
+        }
     }
 
     private void initRecyclerView() {
@@ -124,7 +188,6 @@ public class OrderConfirmActivity extends BaseActivity implements OrderConfirmCo
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mRecyclerView.addItemDecoration(new DividerGridItemDecoration(OrderConfirmActivity.this, 2));
     }
-
 
     @Override
     protected void onDestroy() {
@@ -182,7 +245,14 @@ public class OrderConfirmActivity extends BaseActivity implements OrderConfirmCo
 
     @Override
     public void commonDictionaryQuerySuccess(List<DictionaryBean> dictionaryBeanList) {
-
+        if (dictionaryBeanList != null && dictionaryBeanList.size() > 0) {
+            mSPUtil.setDICTIONARY_DATA(new Gson().toJson(dictionaryBeanList));
+            options1Items.clear();
+            options2Items.clear();
+            initChooseTime();
+        }else{
+            ToastUtil.showToast("获取送货时间失败");
+        }
     }
 
     @OnClick(R.id.tv_commit)
@@ -196,11 +266,6 @@ public class OrderConfirmActivity extends BaseActivity implements OrderConfirmCo
         Intent intent = new Intent(OrderConfirmActivity.this, AddressManagerActivity.class);
         intent.putExtra("comefrom", 1);
         startActivityForResult(intent, Constants.REQUEST_LOCATION_MANAGER_CODE);
-    }
-
-    @OnClick(R.id.rl_send_time)
-    public void mRlSendTime() {
-
     }
 
     @Override

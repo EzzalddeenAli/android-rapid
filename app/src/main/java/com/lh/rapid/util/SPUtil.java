@@ -23,10 +23,11 @@ public class SPUtil {
     private final String REGISTRATIONID = "RegistrationID";
     private final String LATITUDE = "latitude";
     private final String LONGITUDE = "longitude";
-    private final String FLGSETPAY  = "flgsetpay";
+    private final String FLGSETPAY = "flgsetpay";
     private final String FIRST_LOGIN = "first_login";
     private final String FLG_MALL = "flg_mall";
     private final String CIRCLE_ID = "circle_id";
+    private final String DICTIONARY_DATA = "Dictionary_data";
 
     private SharedPreferences sharedPreferences;
     private SharedPreferences.Editor editor;
@@ -106,6 +107,14 @@ public class SPUtil {
 
     public int getCIRCLE_ID() {
         return getInt(CIRCLE_ID);
+    }
+
+    public void setDICTIONARY_DATA(String dictionary_data) {
+        save(DICTIONARY_DATA, dictionary_data);
+    }
+
+    public String getDICTIONARY_DATA() {
+        return getString(DICTIONARY_DATA);
     }
 
     public void setUSER(String user) {

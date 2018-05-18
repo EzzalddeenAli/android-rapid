@@ -77,5 +77,12 @@ public class CommonEvent {
 
     }
 
+    public class WeChatEvent {
+
+        public WeChatEvent() {
+        }
+
+    }
+
 
 }

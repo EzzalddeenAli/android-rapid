@@ -25,6 +25,7 @@ import com.lh.rapid.ui.coupon.CouponActivity;
 import com.lh.rapid.ui.main.MainComponent;
 import com.lh.rapid.ui.myshare.MyShareActivity;
 import com.lh.rapid.ui.orderlist.OrderListActivity;
+import com.lh.rapid.ui.recharge.RechargeActivity;
 import com.lh.rapid.ui.setting.SettingActivity;
 import com.lh.rapid.ui.userinfo.UserInfoActivity;
 
@@ -55,6 +56,12 @@ public class Fragment4 extends BaseFragment implements Fragment4Contract.View {
     TextView mTvUserAmount;
     @BindView(R.id.tv_user_coin)
     TextView mTvUserCoin;
+
+
+    @OnClick(R.id.tv_recharge)
+    public void mTvRecharge(){
+        openActivity(RechargeActivity.class);
+    }
 
     public static BaseFragment newInstance() {
         Fragment4 fragment4 = new Fragment4();
@@ -161,7 +168,6 @@ public class Fragment4 extends BaseFragment implements Fragment4Contract.View {
         mTvUserCoin.setText(accountUserHomeBean.getUserCoin() + "");
         ImageLoaderUtil.getInstance().loadCircleImage(accountUserHomeBean.getAvatarUrl(), R.mipmap.icon_mine_touxiang, mImageView);
     }
-
 
     @OnClick(R.id.ll_wait_pay)
     public void mLlWaitPay() {

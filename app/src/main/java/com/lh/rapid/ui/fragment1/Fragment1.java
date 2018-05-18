@@ -24,9 +24,11 @@ import com.android.frameproj.library.decoration.RecyclerViewDivider;
 import com.android.frameproj.library.util.InputUtil;
 import com.android.frameproj.library.util.ToastUtil;
 import com.android.frameproj.library.util.log.Logger;
+import com.google.gson.Gson;
 import com.lh.rapid.Constants;
 import com.lh.rapid.R;
 import com.lh.rapid.bean.CategoryName;
+import com.lh.rapid.bean.DictionaryBean;
 import com.lh.rapid.bean.HomeCircleBean;
 import com.lh.rapid.bean.HomePageBean;
 import com.lh.rapid.bean.ProductListBean;
@@ -156,6 +158,7 @@ public class Fragment1 extends BaseFragment implements Fragment1Contract.View {
     public void initUI(View view) {
         BusUtil.getBus().register(this);
         mPresenter.attachView(this);
+        mPresenter.commonDictionaryQuery();
         mRxPermissions = new RxPermissions(getActivity());
         mRxPermissions
                 .request(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.ACCESS_FINE_LOCATION,
@@ -276,8 +279,8 @@ public class Fragment1 extends BaseFragment implements Fragment1Contract.View {
             @Override
             public void OnBannerClick(int position) {
                 Intent intent = new Intent(getActivity(), H5Activity.class);
-                intent.putExtra("url",bnTop.get(position).getBnRelationUrl());
-                intent.putExtra("title","");
+                intent.putExtra("url", bnTop.get(position).getBnRelationUrl());
+                intent.putExtra("title", "");
                 startActivity(intent);
             }
         });
@@ -427,6 +430,13 @@ public class Fragment1 extends BaseFragment implements Fragment1Contract.View {
         mRecyclerViewSearch.setAdapter(mSearchCommonAdapter);
         mRecyclerViewSearch.setItemAnimator(new DefaultItemAnimator());
         mRecyclerViewSearch.addItemDecoration(new DividerGridItemDecoration(getActivity(), 1));
+    }
+
+    @Override
+    public void commonDictionaryQuerySuccess(List<DictionaryBean> dictionaryBeanList) {
+        if (dictionaryBeanList != null && dictionaryBeanList.size() > 0) {
+            mSPUtil.setDICTIONARY_DATA(new Gson().toJson(dictionaryBeanList));
+        }
     }
 
     @Override

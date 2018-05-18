@@ -4,7 +4,6 @@ package com.lh.rapid.ui.recharge;
 import com.lh.rapid.injector.PerActivity;
 import com.lh.rapid.injector.component.ApplicationComponent;
 import com.lh.rapid.injector.module.ActivityModule;
-import com.lh.rapid.ui.login.LoginActivity;
 
 import dagger.Component;
 
@@ -13,8 +12,8 @@ import dagger.Component;
  */
 @PerActivity
 @Component(dependencies = ApplicationComponent.class, modules = {ActivityModule.class})
-public interface LoginComponent {
+public interface RechargeComponent {
 
-    void inject(LoginActivity activity);
+    void inject(RechargeActivity activity);
 
 }

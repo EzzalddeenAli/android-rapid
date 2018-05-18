@@ -77,4 +77,7 @@ public class Constants {
     // 隐私协议HTML
     public static final String PrivacyPolicy = "http://www.baidu.com";
 
+    // 微信支付APPID
+    public static final String WECHAT_PAY_APP_ID = "";
+
 }

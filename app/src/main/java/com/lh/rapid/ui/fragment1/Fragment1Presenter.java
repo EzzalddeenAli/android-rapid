@@ -3,6 +3,7 @@ package com.lh.rapid.ui.fragment1;
 import android.support.annotation.NonNull;
 
 import com.lh.rapid.api.common.CommonApi;
+import com.lh.rapid.bean.DictionaryBean;
 import com.lh.rapid.bean.HomeCircleBean;
 import com.lh.rapid.bean.HomePageBean;
 import com.lh.rapid.bean.HttpResult;
@@ -203,6 +204,30 @@ public class Fragment1Presenter implements Fragment1Contract.Presenter {
                     @Override
                     public void accept(@io.reactivex.annotations.NonNull List<ProductListBean> productListBeanList) throws Exception {
                         mView.searchSuccess(productListBeanList);
+                    }
+                }, new Consumer<Throwable>() {
+                    @Override
+                    public void accept(@io.reactivex.annotations.NonNull Throwable throwable) throws Exception {
+                        mView.loadError(throwable);
+                    }
+                }));
+    }
+
+    @Override
+    public void commonDictionaryQuery() {
+        disposables.add(mCommonApi.commonDictionaryQuery()
+                .debounce(800, TimeUnit.MILLISECONDS)
+                .flatMap(new Function<HttpResult<List<DictionaryBean>>, ObservableSource<List<DictionaryBean>>>() {
+                    @Override
+                    public ObservableSource<List<DictionaryBean>> apply(@io.reactivex.annotations.NonNull HttpResult<List<DictionaryBean>> stringHttpResult) throws Exception {
+                        return CommonApi.flatResponse(stringHttpResult);
+                    }
+                })
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<List<DictionaryBean>>() {
+                    @Override
+                    public void accept(@io.reactivex.annotations.NonNull List<DictionaryBean> dictionaryBeanList) throws Exception {
+                        mView.commonDictionaryQuerySuccess(dictionaryBeanList);
                     }
                 }, new Consumer<Throwable>() {
                     @Override

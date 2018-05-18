@@ -1,6 +1,7 @@
 package com.lh.rapid.ui.fragment1;
 
 
+import com.lh.rapid.bean.DictionaryBean;
 import com.lh.rapid.bean.HomeCircleBean;
 import com.lh.rapid.bean.HomePageBean;
 import com.lh.rapid.bean.ProductListBean;
@@ -36,6 +37,7 @@ public interface Fragment1Contract {
 
         void searchSuccess(List<ProductListBean> productListBeanList);
 
+        void commonDictionaryQuerySuccess(List<DictionaryBean> dictionaryBeanList);
     }
 
     interface Presenter extends BasePresenter<View> {
@@ -50,9 +52,10 @@ public interface Fragment1Contract {
 
         void cartGoodsDelete(String goodsId,String circleId);
 
-
         void search(String type, String goodsName, String sortType,
                        String sortStr, String categoryId, String circleId);
+
+        void commonDictionaryQuery();
     }
 
 }

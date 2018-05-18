@@ -85,4 +85,6 @@ dependencies {
     compile 'me.yokeyword:fragmentation:1.1.6'
     //数字提醒
     compile 'q.rorbin:badgeview:1.1.3'
+    //微信支付
+    compile 'com.tencent.mm.opensdk:wechat-sdk-android-without-mta:+'
 }
