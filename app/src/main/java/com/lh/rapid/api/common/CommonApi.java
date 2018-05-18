@@ -608,9 +608,10 @@ public class CommonApi {
     /**
      * 会员优惠券
      */
-    public Observable<HttpResult<List<UserCouponsBean>>> userCoupons() {
+    public Observable<HttpResult<List<UserCouponsBean>>> userCoupons(String status) {
         long currentTimeMillis = System.currentTimeMillis();
         Map<String, Object> params = mRequestHelper.getHttpRequestMap(currentTimeMillis);
+        params.put("status", status);
         String sign = mRequestHelper.getRequestSign(params, currentTimeMillis);
         return mCommonService.userCoupons(currentTimeMillis, sign, params).subscribeOn(Schedulers.io());
     }

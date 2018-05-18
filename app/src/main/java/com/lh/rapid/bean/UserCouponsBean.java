@@ -6,12 +6,21 @@ package com.lh.rapid.bean;
 
 public class UserCouponsBean {
 
+    private int couponId;
     private String expressTime; // 2018-05-24 16:16:03
     private String couponName; // 满20减3
     private String couponsMemo; // 注册用户送优惠卷
     private double fullMoney; // 20
     private double saveMoney; // 3
     private String createTime; // 2018-05-17 16:16:03
+
+    public int getCouponId() {
+        return couponId;
+    }
+
+    public void setCouponId(int couponId) {
+        this.couponId = couponId;
+    }
 
     public String getExpressTime() {
         return expressTime;

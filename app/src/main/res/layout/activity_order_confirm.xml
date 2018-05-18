@@ -66,29 +66,14 @@
             style="@style/iv_user_center_arrow"
             android:layout_marginRight="21dp"/>
 
-    </RelativeLayout>
-
-    <View style="@style/line_10_f1"/>
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recyclerView"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"/>
-
-    <View
-        style="@style/line_1_f1"/>
-
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:orientation="horizontal">
-
         <RelativeLayout
             android:layout_width="0dp"
-            android:layout_weight="2"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="367dp"
+            android:layout_weight="2">
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -115,16 +100,88 @@
 
         </RelativeLayout>
 
+    </RelativeLayout>
+
+    <View style="@style/line_10_f1"/>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"/>
+
+    <View
+        style="@style/line_1_f1"/>
+
+
+    <RelativeLayout
+        android:id="@+id/rl_choose_coupon"
+        style="@style/rl_order_detail"
+        android:layout_height="40dp">
+
+        <TextView
+            style="@style/tv_order_detail"
+            android:text="选择优惠券:"/>
+
+        <ImageView
+            style="@style/iv_user_center_arrow"
+            android:layout_marginRight="21dp"/>
+
+        <TextView
+            android:id="@+id/tv_choose_coupon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="40dp"/>
+
+    </RelativeLayout>
+
+    <View
+        style="@style/line_1_f1"/>
+
+    <RelativeLayout
+        android:id="@+id/rl_distribution_fee"
+        style="@style/rl_order_detail"
+        android:layout_height="40dp">
+
+        <TextView
+            style="@style/tv_order_detail"
+            android:text="配送费:"/>
+
+        <ImageView
+            style="@style/iv_user_center_arrow"
+            android:layout_marginRight="21dp"
+            android:visibility="invisible"/>
+
+        <TextView
+            android:id="@+id/tv_distribution_fee"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="40dp"/>
+
+    </RelativeLayout>
+
+    <View
+        style="@style/line_1_f1"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:orientation="horizontal">
+
         <TextView
             android:id="@+id/tv_commit"
             android:layout_width="0dp"
-            android:layout_weight="1"
             android:layout_height="match_parent"
+            android:layout_weight="1"
             android:background="@color/g409c1d"
-            android:textSize="20sp"
-            android:text="提交订单"
             android:gravity="center"
-            android:textColor="@color/md_white_1000"/>
+            android:text="提交订单"
+            android:textColor="@color/md_white_1000"
+            android:textSize="20sp"/>
 
     </LinearLayout>
 

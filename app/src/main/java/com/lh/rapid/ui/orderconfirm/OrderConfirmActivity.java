@@ -5,6 +5,7 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.android.frameproj.library.adapter.CommonAdapter;
@@ -21,6 +22,7 @@ import com.lh.rapid.bean.OrderSubmitBean;
 import com.lh.rapid.bean.OrderSubmitConfirmBean;
 import com.lh.rapid.ui.BaseActivity;
 import com.lh.rapid.ui.addressmanager.AddressManagerActivity;
+import com.lh.rapid.ui.coupon.CouponActivity;
 import com.lh.rapid.ui.orderpay.OrderPayActivity;
 import com.lh.rapid.ui.widget.MyActionBar;
 import com.lh.rapid.util.SPUtil;
@@ -58,10 +60,17 @@ public class OrderConfirmActivity extends BaseActivity implements OrderConfirmCo
     TextView mTvOrderPrice;
     @BindView(R.id.tv_commit)
     TextView mTvCommit;
+    @BindView(R.id.tv_choose_coupon)
+    TextView mTvChooseCoupon;
+    @BindView(R.id.tv_distribution_fee)
+    TextView mTvDistributionFee;
+    @BindView(R.id.rl_distribution_fee)
+    RelativeLayout mRlDistributionFee;
 
     private int mAddressId;
     private String mParams;
     private CartGoodsBean mCartGoodsBean;
+    private int mCouponId = -1;
 
     @Override
     public int initContentView() {
@@ -145,7 +154,7 @@ public class OrderConfirmActivity extends BaseActivity implements OrderConfirmCo
                 }
             });
             infoMsgHint.setContent("您选择的送货地址不在配送范围内，请重新选择地址或按当前送货地址重新选择商品！",
-                    "","重选地址","重选商品");
+                    "", "重选地址", "重选商品");
             infoMsgHint.show();
         }
     }
@@ -205,7 +214,20 @@ public class OrderConfirmActivity extends BaseActivity implements OrderConfirmCo
             mTvPhone.setText(addressListBean.getPhone());
             mTvAddress.setText(addressListBean.getDetailAddress());
             mAddressId = addressListBean.getAddressId();
+        } else if (requestCode == Constants.REQUEST_COUPON_CODE && resultCode == Constants.RESULT_COUPON_CODE) {
+            mCouponId = data.getIntExtra("couponId", -1);
+            String couponName = data.getStringExtra("couponName");
+            double fullMoney = data.getDoubleExtra("fullMoney", -1);
+            double saveMoney = data.getDoubleExtra("saveMoney", -1);
+            mTvChooseCoupon.setText(couponName);
         }
+    }
+
+    @OnClick(R.id.rl_choose_coupon)
+    public void mRlChooseCoupon() {
+        Intent intent = new Intent(OrderConfirmActivity.this, CouponActivity.class);
+        intent.putExtra("comefrom", 1);
+        startActivityForResult(intent, Constants.REQUEST_COUPON_CODE);
     }
 
 }

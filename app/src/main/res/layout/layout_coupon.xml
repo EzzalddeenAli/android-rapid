@@ -1,62 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+<com.android.frameproj.library.widget.CouponBgView
+    android:id="@+id/couponBgView"
+    xmlns:coupon="http://schemas.android.com/apk/res-auto"
+    coupon:horizontal_style="circle"
+    coupon:vertical_style="circle"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="20dp"
+    android:layout_marginRight="20dp"
+    android:layout_marginTop="15dp"
+    android:background="#47BDBD"
+    android:gravity="center_vertical"
+    android:orientation="horizontal">
 
-    <ImageView
-        android:id="@+id/iv_cart_item_pic"
-        android:layout_width="@dimen/px188dp"
-        android:layout_height="@dimen/px188dp"
-        android:layout_centerVertical="true"
-        android:layout_marginBottom="@dimen/px28dp"
-        android:layout_marginTop="@dimen/px28dp"
-        android:layout_marginLeft="@dimen/px28dp"
-        android:contentDescription="@null"
-        android:scaleType="centerCrop" />
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:padding="15dp">
 
-    <TextView
-        android:id="@+id/tv_cart_item_name"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@id/iv_cart_item_pic"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="@dimen/px28dp"
-        android:layout_toRightOf="@id/iv_cart_item_pic"
-        android:ellipsize="end"
-        android:maxLines="2"
-        android:textColor="@color/text_black"
-        android:textSize="@dimen/px28sp" />
+        <TextView
+            android:id="@+id/tv_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="35dp"
+            android:textColor="#343673"
+            android:textSize="18sp"
+            android:layout_gravity="center_horizontal"/>
 
-    <TextView
-        android:id="@+id/tv_cart_item_weight"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/tv_cart_item_name"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginTop="5dp"
-        android:layout_toRightOf="@id/iv_cart_item_pic"
-        android:ellipsize="end"
-        android:singleLine="true"
-        android:textColor="@color/text_black"
-        android:textSize="15sp" />
+        <TextView
+            android:id="@+id/tv_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="8dp"
+            android:textColor="@color/white"
+            android:textSize="15sp"/>
 
-    <TextView
-        android:id="@+id/tv_cart_item_price"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:layout_alignBottom="@id/iv_cart_item_pic"
-        android:layout_alignLeft="@id/tv_cart_item_name"
-        android:layout_toRightOf="@id/iv_cart_item_pic"
-        android:textColor="@color/red_text"
-        android:textSize="@dimen/px28sp" />
+    </LinearLayout>
 
-    <com.lh.rapid.ui.widget.SelectNumberView
-        android:id="@+id/sn_cart_item"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@id/iv_cart_item_pic"
-        android:layout_alignRight="@id/tv_cart_item_name"/>
-
-</RelativeLayout>
+</com.android.frameproj.library.widget.CouponBgView>

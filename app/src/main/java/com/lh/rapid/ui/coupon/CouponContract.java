@@ -25,7 +25,7 @@ public class CouponContract {
 
     interface Presenter extends BasePresenter<View> {
 
-        void loadDate();
+        void loadDate(String status);
 
     }
 
