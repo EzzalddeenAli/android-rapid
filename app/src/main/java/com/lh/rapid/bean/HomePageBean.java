@@ -4,6 +4,8 @@ import java.util.List;
 
 /**
  * Created by lh on 2018/5/9.
+ *
+private List<LabelListsBean> labelLists;
  */
 
 public class HomePageBean {
@@ -48,8 +50,7 @@ public class HomePageBean {
     public static class BnTopBean {
 
         private String bnImgUrl;
-        private String bnRelationUrl;
-        private int sort;
+        private int bnRelationId;
 
         public String getBnImgUrl() {
             return bnImgUrl;
@@ -59,27 +60,29 @@ public class HomePageBean {
             this.bnImgUrl = bnImgUrl;
         }
 
-        public String getBnRelationUrl() {
-            return bnRelationUrl;
+        public int getBnRelationId() {
+            return bnRelationId;
         }
 
-        public void setBnRelationUrl(String bnRelationUrl) {
-            this.bnRelationUrl = bnRelationUrl;
-        }
-
-        public int getSort() {
-            return sort;
-        }
-
-        public void setSort(int sort) {
-            this.sort = sort;
+        public void setBnRelationId(int bnRelationId) {
+            this.bnRelationId = bnRelationId;
         }
     }
 
     public static class CategoryListsBean {
+
         private String categoryName;
         private int categoryId;
         private List<GoodListBean> goodList;
+        private int categoryType;
+
+        public int getCategoryType() {
+            return categoryType;
+        }
+
+        public void setCategoryType(int categoryType) {
+            this.categoryType = categoryType;
+        }
 
         public String getCategoryName() {
             return categoryName;
@@ -108,12 +111,13 @@ public class HomePageBean {
         public static class GoodListBean {
 
             private String goodsImg;
+            private int vegStock;
             private int goodsId;
             private int counts;
+            private int vegStockCart;
             private double goodsPrice;
             private String weight;
             private String goodsName;
-            private String goodsDesc;
 
             public String getGoodsImg() {
                 return goodsImg;
@@ -121,6 +125,14 @@ public class HomePageBean {
 
             public void setGoodsImg(String goodsImg) {
                 this.goodsImg = goodsImg;
+            }
+
+            public int getVegStock() {
+                return vegStock;
+            }
+
+            public void setVegStock(int vegStock) {
+                this.vegStock = vegStock;
             }
 
             public int getGoodsId() {
@@ -137,6 +149,14 @@ public class HomePageBean {
 
             public void setCounts(int counts) {
                 this.counts = counts;
+            }
+
+            public int getVegStockCart() {
+                return vegStockCart;
+            }
+
+            public void setVegStockCart(int vegStockCart) {
+                this.vegStockCart = vegStockCart;
             }
 
             public double getGoodsPrice() {
@@ -162,14 +182,7 @@ public class HomePageBean {
             public void setGoodsName(String goodsName) {
                 this.goodsName = goodsName;
             }
-
-            public String getGoodsDesc() {
-                return goodsDesc;
-            }
-
-            public void setGoodsDesc(String goodsDesc) {
-                this.goodsDesc = goodsDesc;
-            }
         }
     }
+
 }

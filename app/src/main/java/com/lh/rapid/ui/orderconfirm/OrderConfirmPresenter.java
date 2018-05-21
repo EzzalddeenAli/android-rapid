@@ -1,6 +1,7 @@
 package com.lh.rapid.ui.orderconfirm;
 
 import android.support.annotation.NonNull;
+import android.text.TextUtils;
 
 import com.lh.rapid.api.common.CommonApi;
 import com.lh.rapid.bean.AddressListBean;
@@ -80,9 +81,22 @@ public class OrderConfirmPresenter implements OrderConfirmContract.Presenter {
     }
 
     @Override
-    public void orderSubmit(String addressId, String circleId, String paramsString) {
+    public void orderSubmit(String addressId, String circleId, String couponId,
+                            String sendDate, String sendTime, String paramsString) {
+        if (addressId.equals("-1")) {
+            mView.showError("收货地址不能为空");
+            return;
+        }
+        if (TextUtils.isEmpty(sendDate)) {
+            mView.showError("请选择送货时间");
+            return;
+        }
+        if (TextUtils.isEmpty(sendTime)) {
+            mView.showError("请选择送货时间");
+            return;
+        }
         mView.showLoading();
-        disposables.add(mCommonApi.orderSubmit(addressId, circleId, paramsString)
+        disposables.add(mCommonApi.orderSubmit(addressId, circleId, couponId, sendDate, sendTime, paramsString)
                 .debounce(800, TimeUnit.MILLISECONDS)
                 .flatMap(new Function<HttpResult<OrderSubmitBean>, ObservableSource<OrderSubmitBean>>() {
                     @Override

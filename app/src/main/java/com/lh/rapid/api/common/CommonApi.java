@@ -480,11 +480,17 @@ public class CommonApi {
     /**
      * 提交订单
      */
-    public Observable<HttpResult<OrderSubmitBean>> orderSubmit(String addressId, String circleId, String paramsString) {
+    public Observable<HttpResult<OrderSubmitBean>> orderSubmit(String addressId, String circleId, String couponId,
+                                                               String sendDate, String sendTime, String paramsString) {
         long currentTimeMillis = System.currentTimeMillis();
         Map<String, Object> params = mRequestHelper.getHttpRequestMap(currentTimeMillis);
         params.put("addressId", addressId);
         params.put("circleId", circleId);
+        if(!couponId.equals("-1")) {
+            params.put("couponId", couponId);
+        }
+        params.put("sendDate", sendDate);
+        params.put("sendTime", sendTime);
         params.put("params", paramsString);
         String sign = mRequestHelper.getRequestSign(params, currentTimeMillis);
         return mCommonService.orderSubmit(currentTimeMillis, sign, params).subscribeOn(Schedulers.io());
@@ -608,10 +614,9 @@ public class CommonApi {
     /**
      * 会员优惠券
      */
-    public Observable<HttpResult<List<UserCouponsBean>>> userCoupons(String status) {
+    public Observable<HttpResult<List<UserCouponsBean>>> userCoupons() {
         long currentTimeMillis = System.currentTimeMillis();
         Map<String, Object> params = mRequestHelper.getHttpRequestMap(currentTimeMillis);
-        params.put("status", status);
         String sign = mRequestHelper.getRequestSign(params, currentTimeMillis);
         return mCommonService.userCoupons(currentTimeMillis, sign, params).subscribeOn(Schedulers.io());
     }

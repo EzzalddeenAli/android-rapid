@@ -8,6 +8,15 @@ public class OrderSubmitConfirmBean {
 
     private double price;
     private int flgRangeIn;
+    private double expressAmount;
+
+    public double getExpressAmount() {
+        return expressAmount;
+    }
+
+    public void setExpressAmount(double expressAmount) {
+        this.expressAmount = expressAmount;
+    }
 
     public double getPrice() {
         return price;

@@ -1,72 +1,105 @@
 package com.lh.rapid.bean;
 
+import java.util.List;
+
 /**
  * Created by lh on 2018/5/17.
  */
 
 public class UserCouponsBean {
 
-    private int couponId;
-    private String expressTime; // 2018-05-24 16:16:03
-    private String couponName; // 满20减3
-    private String couponsMemo; // 注册用户送优惠卷
-    private double fullMoney; // 20
-    private double saveMoney; // 3
-    private String createTime; // 2018-05-17 16:16:03
+    private int counts;
+    private int status;
+    private List<CouponsListBean> couponsList;
 
-    public int getCouponId() {
-        return couponId;
+    public int getCounts() {
+        return counts;
     }
 
-    public void setCouponId(int couponId) {
-        this.couponId = couponId;
+    public void setCounts(int counts) {
+        this.counts = counts;
     }
 
-    public String getExpressTime() {
-        return expressTime;
+    public int getStatus() {
+        return status;
     }
 
-    public void setExpressTime(String expressTime) {
-        this.expressTime = expressTime;
+    public void setStatus(int status) {
+        this.status = status;
     }
 
-    public String getCouponName() {
-        return couponName;
+    public List<CouponsListBean> getCouponsList() {
+        return couponsList;
     }
 
-    public void setCouponName(String couponName) {
-        this.couponName = couponName;
+    public void setCouponsList(List<CouponsListBean> couponsList) {
+        this.couponsList = couponsList;
     }
 
-    public String getCouponsMemo() {
-        return couponsMemo;
-    }
+    public static class CouponsListBean {
 
-    public void setCouponsMemo(String couponsMemo) {
-        this.couponsMemo = couponsMemo;
-    }
+        private String expressTime; // 2018-05-24 16:16:03
+        private String couponName; // 满20减3
+        private String couponsMemo; // 注册用户送优惠卷
+        private String createTime; // 2018-05-17 16:16:03
+        private double fullMoney; // 20
+        private double saveMoney; // 3
+        private int couponId; // 1
 
-    public double getFullMoney() {
-        return fullMoney;
-    }
+        public String getExpressTime() {
+            return expressTime;
+        }
 
-    public void setFullMoney(double fullMoney) {
-        this.fullMoney = fullMoney;
-    }
+        public void setExpressTime(String expressTime) {
+            this.expressTime = expressTime;
+        }
 
-    public double getSaveMoney() {
-        return saveMoney;
-    }
+        public String getCouponName() {
+            return couponName;
+        }
 
-    public void setSaveMoney(double saveMoney) {
-        this.saveMoney = saveMoney;
-    }
+        public void setCouponName(String couponName) {
+            this.couponName = couponName;
+        }
 
-    public String getCreateTime() {
-        return createTime;
-    }
+        public String getCouponsMemo() {
+            return couponsMemo;
+        }
 
-    public void setCreateTime(String createTime) {
-        this.createTime = createTime;
+        public void setCouponsMemo(String couponsMemo) {
+            this.couponsMemo = couponsMemo;
+        }
+
+        public String getCreateTime() {
+            return createTime;
+        }
+
+        public void setCreateTime(String createTime) {
+            this.createTime = createTime;
+        }
+
+        public double getFullMoney() {
+            return fullMoney;
+        }
+
+        public void setFullMoney(double fullMoney) {
+            this.fullMoney = fullMoney;
+        }
+
+        public double getSaveMoney() {
+            return saveMoney;
+        }
+
+        public void setSaveMoney(double saveMoney) {
+            this.saveMoney = saveMoney;
+        }
+
+        public int getCouponId() {
+            return couponId;
+        }
+
+        public void setCouponId(int couponId) {
+            this.couponId = couponId;
+        }
     }
 }

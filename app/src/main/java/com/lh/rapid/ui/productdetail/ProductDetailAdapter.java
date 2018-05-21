@@ -58,7 +58,6 @@ public class ProductDetailAdapter extends RecyclerView.Adapter<ProductDetailAdap
             holder.iv_product_minus.setVisibility(View.VISIBLE);
         }
 
-
         holder.iv_product_add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

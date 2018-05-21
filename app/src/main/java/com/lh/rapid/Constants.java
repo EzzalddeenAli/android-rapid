@@ -21,7 +21,7 @@ public class Constants {
     // 日志默认保存目录
     public static String LH_LOG_PATH = "/LH/Log/";
     // 本地测试地址
-    public static final String BASE_URL = "http://192.168.10.127:8080/";
+    public static final String BASE_URL = "http://192.168.10.148:8080/";
     // APK下载地址
     public static final String DOWNLOAD_APK_URL = BASE_URL + "static/app/ver.xml";
     // app类型：1:ios,2:andriod
@@ -59,6 +59,8 @@ public class Constants {
     public static final int RESULT_LOCATION_MANAGER_CODE = 123;
     public static final int REQUEST_COUPON_CODE = 134;
     public static final int RESULT_COUPON_CODE = 135;
+    public static final int REQUEST_CHOOSE_CIRCLE_CODE = 136;
+    public static final int RESULT_CHOOSE_CIRCLE_CODE = 137;
     public static boolean isAllCheck = true;
 
     /**
@@ -76,7 +78,6 @@ public class Constants {
     public static final String HelpCenter = "http://www.baidu.com";
     // 隐私协议HTML
     public static final String PrivacyPolicy = "http://www.baidu.com";
-
     // 微信支付APPID
     public static final String WECHAT_PAY_APP_ID = "";
 

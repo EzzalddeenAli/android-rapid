@@ -33,8 +33,7 @@ import com.lh.rapid.bean.HomeCircleBean;
 import com.lh.rapid.bean.HomePageBean;
 import com.lh.rapid.bean.ProductListBean;
 import com.lh.rapid.ui.BaseFragment;
-import com.lh.rapid.ui.h5.H5Activity;
-import com.lh.rapid.ui.location.ChooseLocationActivity;
+import com.lh.rapid.ui.choosecircle.ChooseCircleActivity;
 import com.lh.rapid.ui.main.MainComponent;
 import com.lh.rapid.ui.productdetail.ProductDetailActivity;
 import com.lh.rapid.ui.widget.SelectNumberView;
@@ -278,33 +277,42 @@ public class Fragment1 extends BaseFragment implements Fragment1Contract.View {
         mMainBanner.setOnBannerListener(new OnBannerListener() {
             @Override
             public void OnBannerClick(int position) {
-                Intent intent = new Intent(getActivity(), H5Activity.class);
-                intent.putExtra("url", bnTop.get(position).getBnRelationUrl());
-                intent.putExtra("title", "");
+                Intent intent = new Intent(getActivity(), ProductDetailActivity.class);
+                intent.putExtra("goodsId", bnTop.get(position).getBnRelationId());
                 startActivity(intent);
             }
         });
         mMainBanner.start();
     }
 
-    private void initRecyclerView(final List<HomePageBean.CategoryListsBean> categoryLists) {
+    private void initRecyclerView(final List<HomePageBean.CategoryListsBean> categoryListsBeans) {
 
         mRvFormName.setLayoutManager(new LinearLayoutManager(getActivity()));
         mRvFormName.addItemDecoration(new RecyclerViewDivider(getActivity().getApplicationContext(), LinearLayout.VERTICAL, 2, R.color.white));
-        nameAdapter = new CategoryCommNameAdapter(this, getActivity(), categoryLists);
+        nameAdapter = new CategoryCommNameAdapter(this, getActivity(), categoryListsBeans);
         nameAdapter.setItemClickLitener(new CategoryCommNameAdapter.rvItemClickLitener() {
             @Override
             public void itemClick(int position) {
-
                 nameAdapter.setSelection(position);
                 nameAdapter.notifyDataSetChanged();
-                mPresenter.onLoadProductList(categoryLists.get(position).getCategoryId() + "", mSPUtil.getCIRCLE_ID() + "");
+
+                HomePageBean.CategoryListsBean categoryListsBean = categoryListsBeans.get(position);
+                // 标签类型：1 商品分类 2 标签
+                if (categoryListsBean.getCategoryType() == 1) {
+                    mPresenter.onLoadProductList(categoryListsBeans.get(position).getCategoryId() + "", mSPUtil.getCIRCLE_ID() + "");
+                } else if (categoryListsBean.getCategoryType() == 2) {
+                    goodBeans.clear();
+                    goodBeans.addAll(categoryListsBeans.get(position).getGoodList());
+                    commodityAdapter.notifyDataSetChanged();
+                }
             }
         });
         mRvFormName.setAdapter(nameAdapter);
 
         goodBeans.clear();
-        goodBeans.addAll(categoryLists.get(0).getGoodList());
+        if (categoryListsBeans != null & categoryListsBeans.size() > 0) {
+            goodBeans.addAll(categoryListsBeans.get(0).getGoodList());
+        }
         mRvFormDetail.setLayoutManager(new LinearLayoutManager(getActivity()));
         mRvFormDetail.addItemDecoration(new RecyclerViewDivider(getActivity().getApplicationContext(), LinearLayout.VERTICAL, 2, R.color.line));
         commodityAdapter = new CategoryCommodityAdapter(this, getActivity(), goodBeans, nameAdapter);
@@ -319,23 +327,22 @@ public class Fragment1 extends BaseFragment implements Fragment1Contract.View {
         mRvFormDetail.setAdapter(commodityAdapter);
     }
 
-    @OnClick(R.id.rl_location)
+    @OnClick(R.id.rl_circle)
     public void mRlLocation(View view) {
-        Intent intent = new Intent(getActivity(), ChooseLocationActivity.class);
+        Intent intent = new Intent(getActivity(), ChooseCircleActivity.class);
         intent.putExtra("comefrom", 1);
-        startActivityForResult(intent, Constants.REQUEST_CHOOSE_LOCATION_CODE);
+        startActivityForResult(intent, Constants.REQUEST_CHOOSE_CIRCLE_CODE);
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == Constants.REQUEST_CHOOSE_LOCATION_CODE && resultCode == Constants.RESULT_CHOOSE_LOCATION_CODE) {
-            double longitude = data.getDoubleExtra("longitude", -1);
-            double latitude = data.getDoubleExtra("latitude", -1);
-            String name = data.getStringExtra("name");
-            String addr = data.getStringExtra("addr");
-            mPresenter.homeCircle(longitude, latitude);
-            mTvHomeLocation.setText(addr);
+        if (requestCode == Constants.REQUEST_CHOOSE_CIRCLE_CODE && resultCode == Constants.RESULT_CHOOSE_CIRCLE_CODE) {
+            String circleName = data.getStringExtra("name");
+            int circleId = data.getIntExtra("id", -1);
+            mPresenter.loadDate(circleId + "");
+            mSPUtil.setCIRCLE_ID(circleId);
+            mTvCircleName.setText(circleName);
         }
     }
 
@@ -360,6 +367,7 @@ public class Fragment1 extends BaseFragment implements Fragment1Contract.View {
             String circleName = homeCircleBeanList.get(0).getCircleName();
             mPresenter.loadDate(circleId + "");
             mSPUtil.setCIRCLE_ID(circleId);
+            mTvCircleName.setText(circleName);
         }
     }
 

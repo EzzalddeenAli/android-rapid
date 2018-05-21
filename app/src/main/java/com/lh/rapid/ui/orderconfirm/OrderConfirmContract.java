@@ -23,6 +23,8 @@ public class OrderConfirmContract {
 
         void loadError(Throwable throwable);
 
+        void showError(String string);
+
         void orderSubmitConfirmSuccess(OrderSubmitConfirmBean orderSubmitConfirmBean);
 
         void orderSubmitSuccess(OrderSubmitBean orderSubmitBean);
@@ -36,7 +38,8 @@ public class OrderConfirmContract {
 
         void orderSubmitConfirm(String addressId, String circleId, String paramsString);
 
-        void orderSubmit(String addressId, String circleId, String paramsString);
+        void orderSubmit(String addressId, String circleId, String couponId,
+                         String sendDate, String sendTime, String paramsString);
 
         void addressDefault();
 

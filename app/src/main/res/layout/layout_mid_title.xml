@@ -10,6 +10,7 @@
         android:layout_height="@dimen/px2dp"
         android:background="@color/line" />
     <RelativeLayout
+        android:id="@+id/rl_circle"
         android:layout_width="match_parent"
         android:layout_height="@dimen/px60dp">
         <ImageView

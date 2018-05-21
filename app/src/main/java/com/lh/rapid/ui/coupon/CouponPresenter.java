@@ -48,8 +48,8 @@ public class CouponPresenter implements CouponContract.Presenter {
     }
 
     @Override
-    public void loadDate(String status) {
-        disposables.add(mCommonApi.userCoupons(status)
+    public void loadDate() {
+        disposables.add(mCommonApi.userCoupons()
                 .debounce(800, TimeUnit.MILLISECONDS)
                 .flatMap(new Function<HttpResult<List<UserCouponsBean>>, ObservableSource<List<UserCouponsBean>>>() {
                     @Override

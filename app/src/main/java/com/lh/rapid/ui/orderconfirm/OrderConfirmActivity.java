@@ -74,11 +74,13 @@ public class OrderConfirmActivity extends BaseActivity implements OrderConfirmCo
     @BindView(R.id.rl_distribution_fee)
     RelativeLayout mRlDistributionFee;
 
-    private int mAddressId;
+    private int mAddressId = -1;
     private String mParams;
     private CartGoodsBean mCartGoodsBean;
     private int mCouponId = -1;
 
+    private String sendDate;
+    private String sendTime;
     @Inject
     SPUtil mSPUtil;
 
@@ -120,14 +122,14 @@ public class OrderConfirmActivity extends BaseActivity implements OrderConfirmCo
 
     private void initChooseTime() {
         String dictionary_data = mSPUtil.getDICTIONARY_DATA();
-        if(!TextUtils.isEmpty(dictionary_data)){
+        if (!TextUtils.isEmpty(dictionary_data)) {
             Type listType = new TypeToken<List<DictionaryBean>>() {
             }.getType();
-            List<DictionaryBean>  dictionaryBeans = new Gson().fromJson(dictionary_data, listType);
+            List<DictionaryBean> dictionaryBeans = new Gson().fromJson(dictionary_data, listType);
             String currentTime = TimeUtils.getCurrentTimeMillis();
             for (int i = 1; i < 8; i++) {
                 String otherTime = (Long.valueOf(currentTime) + i * 60 * 60 * 24) + "";
-                String dayTime = TimeUtils.getDayTime(otherTime);
+                String dayTime = TimeUtils.getYearAndDay(otherTime);
                 options1Items.add(dayTime);
                 List<String> stringList = new ArrayList<>();
                 for (int j = 0; j < dictionaryBeans.size(); j++) {
@@ -136,7 +138,7 @@ public class OrderConfirmActivity extends BaseActivity implements OrderConfirmCo
                 options2Items.add(stringList);
             }
             initTime = true;
-        }else{
+        } else {
             mPresenter.commonDictionaryQuery();
         }
 
@@ -147,13 +149,15 @@ public class OrderConfirmActivity extends BaseActivity implements OrderConfirmCo
 
     @OnClick(R.id.rl_send_time)
     public void mRlSendTime() {
-        if(initTime) {
+        if (initTime) {
             OptionsPickerView pvOptions = new OptionsPickerView.Builder(this, new OptionsPickerView.OnOptionsSelectListener() {
                 @Override
                 public void onOptionsSelect(int options1, int option2, int options3, View v) {
                     //返回的分别是三个级别的选中位置
                     String data = options1Items.get(options1) + "  " + options2Items.get(options1).get(option2);
                     mTvEndTime.setText(data);
+                    sendDate = options1Items.get(options1);
+                    sendTime = options2Items.get(options1).get(option2);
                 }
             }).setTitleText("送货时间选择")
                     .setDividerColor(Color.BLACK)
@@ -163,7 +167,7 @@ public class OrderConfirmActivity extends BaseActivity implements OrderConfirmCo
                     .build();
             pvOptions.setPicker(options1Items, options2Items);
             pvOptions.show();
-        }else{
+        } else {
             ToastUtil.showToast("初始化送货时间请稍后");
             mPresenter.commonDictionaryQuery();
         }
@@ -200,6 +204,8 @@ public class OrderConfirmActivity extends BaseActivity implements OrderConfirmCo
         int flgRangeIn = orderSubmitConfirmBean.getFlgRangeIn(); // 0:不在配送范围内   1:在配送范围内
         double price = orderSubmitConfirmBean.getPrice();
         mTvOrderPrice.setText("￥" + price);
+        double expressAmount = orderSubmitConfirmBean.getExpressAmount();
+        mTvDistributionFee.setText("￥" + expressAmount);
         if (flgRangeIn == 0) {
             InfoMsgHint infoMsgHint = new InfoMsgHint(OrderConfirmActivity.this);
             infoMsgHint.setOKListener(new View.OnClickListener() {
@@ -250,14 +256,15 @@ public class OrderConfirmActivity extends BaseActivity implements OrderConfirmCo
             options1Items.clear();
             options2Items.clear();
             initChooseTime();
-        }else{
+        } else {
             ToastUtil.showToast("获取送货时间失败");
         }
     }
 
     @OnClick(R.id.tv_commit)
     public void mTvCommit() {
-        mPresenter.orderSubmit(mAddressId + "", mSPUtil.getCIRCLE_ID() + "", mParams);
+        mPresenter.orderSubmit(mAddressId + "", mSPUtil.getCIRCLE_ID() + "", mCouponId + "",
+                sendDate, sendTime, mParams);
     }
 
 

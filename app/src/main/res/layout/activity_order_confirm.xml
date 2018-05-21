@@ -121,7 +121,7 @@
 
         <TextView
             style="@style/tv_order_detail"
-            android:text="选择优惠券:"/>
+            android:text="使用优惠券:"/>
 
         <ImageView
             style="@style/iv_user_center_arrow"
